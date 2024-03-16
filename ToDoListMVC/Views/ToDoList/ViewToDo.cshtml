@@ -23,7 +23,7 @@
                 <table class="form-group" style="width:100%">
                     <tr >
                         <td style="width:5%">
-                            <input type="checkbox" asp-for="isCaseCompletion" style="font-size:14px" />
+                            <input type="checkbox" asp-for="isCaseCompletion" style="font-size:14px;"/>
                         </td>
                         <td style="width:95%">
                             <textarea class="form-control" asp-for="description" contenteditable="true"></textarea>
@@ -39,24 +39,8 @@
     </div>
 
     <div style="padding-top:50px">
-        <table class="p-2" style="width:100%">
-            <thead>
-                <tr class="border-bottom">
-                    <th style="text-align:center; width:10%;">Complite</th>
-                    <th style="text-align:center; width:90%;">Description</th>
-                </tr>
-            </thead>
-
-            <tbody>
-                @foreach (var item in Service.GetAll())
-                {
-                    <tr class="border-bottom">
-                        <td style="text-align:center">@item.IsCaseCompletion</td>
-                        <td style="text-align:center">@item.Description</td>
-                    </tr>
-                }
-            </tbody>
-        </table>
+        @{
+            Html.RenderPartial("Table");
+        }    
     </div>
-
 </body>

@@ -1,8 +1,10 @@
-﻿@model List<ToDoList.Models.Affairs>
+﻿@using ToDoList.Core.Repository
 
 @{
     ViewData["Title"] = "Home Page";
 }
+
+@inject AffairsService Service
 
 <head>
     <meta  name="viewport", content="width=device=width"/>
@@ -12,9 +14,6 @@
 
 <body>
     <div>
-        <div class="panel-heading text-center">
-            <h3>ToDoList</h3>
-        </div>
         <div>
             <table class="p-2" style="width:100%">
                 <thead>
@@ -23,9 +22,9 @@
                         <th style="text-align:center; width:90%;">Description</th>
                     </tr>
                 </thead>
-
                 <tbody >
-                    @foreach (var item in Model) {
+                    @foreach (var item in Service.GetAll())
+                    {
                         <tr class="border-bottom">
                             <td style="text-align:center">@item.IsCaseCompletion</td>
                             <td style="text-align:left">@item.Description</td>

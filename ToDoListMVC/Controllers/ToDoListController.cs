@@ -19,7 +19,7 @@ namespace ToDoListMVC.Controllers
         [HttpGet]
         public IActionResult Table()
         {
-            return View(_caseService.GetAll());
+            return View();
         }
 
         [HttpGet]
