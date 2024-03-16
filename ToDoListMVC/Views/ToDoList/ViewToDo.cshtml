@@ -1,0 +1,62 @@
+﻿@using ToDoList.Core.Repository
+@model ToDoList.Models.AffairsModel
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+@inject AffairsService Service
+
+<head>
+    <meta  name="viewport", content="width=device=width"/>
+    <title>ViewToDo</title>
+    <link rel="stylesheet" href ="~/lib/bootstrap/dist/css/bootstrap.css"/>
+</head>
+
+<body>
+    <div class="panel panel-succses">
+        <div class="panel-heading text-center">
+            <h2>Affairs</h2>
+        </div>
+        <div class="panel-body">
+            <form class="p-2" asp-action="ToDoListView" method="post">
+                <table class="form-group" style="width:100%">
+                    <tr >
+                        <td style="width:5%">
+                            <input type="checkbox" asp-for="isCaseCompletion" style="font-size:14px" />
+                        </td>
+                        <td style="width:95%">
+                            <textarea class="form-control" asp-for="description" contenteditable="true"></textarea>
+                        </td>
+                    </tr>
+                </table>
+                <div class="text-center" style="padding-top:20px">
+                    <button style="font-size:16px; " class="btn btn-outline-success mr-4" type="submit">Add</button>
+                    <button style="font-size:16px; " class="btn btn-outline-success" type="reset">Clear</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div style="padding-top:50px">
+        <table class="p-2" style="width:100%">
+            <thead>
+                <tr class="border-bottom">
+                    <th style="text-align:center; width:10%;">Complite</th>
+                    <th style="text-align:center; width:90%;">Description</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var item in Service.GetAll())
+                {
+                    <tr class="border-bottom">
+                        <td style="text-align:center">@item.IsCaseCompletion</td>
+                        <td style="text-align:center">@item.Description</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+</body>

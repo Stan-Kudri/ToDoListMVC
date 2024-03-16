@@ -1,0 +1,38 @@
+﻿@model List<ToDoList.Models.Affairs>
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<head>
+    <meta  name="viewport", content="width=device=width"/>
+    <title>ViewToDo</title>
+    <link rel="stylesheet" href ="~/lib/bootstrap/dist/css/bootstrap.css"/>
+</head>
+
+<body>
+    <div>
+        <div class="panel-heading text-center">
+            <h3>ToDoList</h3>
+        </div>
+        <div>
+            <table class="p-2" style="width:100%">
+                <thead>
+                    <tr class="border-bottom">
+                        <th style="text-align:center; width:10%;">Complite</th>
+                        <th style="text-align:center; width:90%;">Description</th>
+                    </tr>
+                </thead>
+
+                <tbody >
+                    @foreach (var item in Model) {
+                        <tr class="border-bottom">
+                            <td style="text-align:center">@item.IsCaseCompletion</td>
+                            <td style="text-align:left">@item.Description</td>
+                        </tr>
+                    }                    
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
