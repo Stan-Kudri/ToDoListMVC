@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace ToDoList.Models
+namespace ToDoList.Core.Models
 {
     public class Affairs : Entity
     {
@@ -43,6 +43,5 @@ namespace ToDoList.Models
 
         public override int GetHashCode()
             => HashCode.Combine(Id, Description, DateCreate, DateCompletion);
-
     }
 }

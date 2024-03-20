@@ -1,5 +1,5 @@
 ﻿using ToDoList.Core.DBContext;
-using ToDoList.Models;
+using ToDoList.Core.Models;
 
 namespace ToDoList.Core.Repository
 {
@@ -56,11 +56,68 @@ namespace ToDoList.Core.Repository
             _dbContext.SaveChanges();
         }
 
-        public List<Affairs> GetAll()
+        public void Remove(Affairs item)
         {
-            return _dbContext.Affairs.Count() > 0
+            _dbContext.Affairs.Remove(item);
+            _dbContext.SaveChanges();
+        }
+
+        public void UpdateItemCoplite(Guid? id)
+        {
+            var item = _dbContext.Affairs.FirstOrDefault(e => e.Id == id);
+
+            if (item == null)
+            {
+                return;
+            }
+
+            if (item.IsCaseCompletion)
+            {
+                item.IsCaseCompletion = false;
+                item.DateCompletion = null;
+            }
+            else
+            {
+                item.IsCaseCompletion = true;
+                item.DateCompletion = DateTime.Now;
+            }
+
+            _dbContext.SaveChanges();
+        }
+
+        public bool TrySearchItem(Guid? id, out Affairs item)
+        {
+            item = _dbContext.Affairs.FirstOrDefault(e => e.Id == id);
+
+            if (item == null)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        public List<Affairs> GetAll()
+            => _dbContext.Affairs.Count() > 0
                     ? _dbContext.Affairs.ToList()
                     : new List<Affairs>();
+
+        public List<Affairs> GetCompliteTask()
+        {
+            var query = _dbContext.Affairs.Where(e => e.IsCaseCompletion);
+
+            return query.Count() > 0
+                   ? query.ToList()
+                   : new List<Affairs>();
+        }
+
+        public List<Affairs> GetNotCompliteTask()
+        {
+            var query = _dbContext.Affairs.Where(e => !e.IsCaseCompletion);
+
+            return query.Count() > 0
+                   ? query.ToList()
+                   : new List<Affairs>();
         }
     }
 }

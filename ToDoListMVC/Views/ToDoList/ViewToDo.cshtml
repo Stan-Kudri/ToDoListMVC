@@ -1,4 +1,5 @@
 ﻿@using ToDoList.Core.Repository
+
 @model ToDoList.Models.AffairsModel
 
 @{
@@ -19,7 +20,7 @@
             <h2>Affairs</h2>
         </div>
         <div class="panel-body">
-            <form class="p-2" asp-action="ToDoListView" method="post">
+            <form class="p-2" asp-action="ViewToDo" method="post">
                 <table class="form-group" style="width:100%">
                     <tr >
                         <td style="width:5%">
@@ -39,8 +40,21 @@
     </div>
 
     <div style="padding-top:50px">
+        <div class="panel-heading text-center">
+            <h3>Not Complite</h3>
+        </div>
         @{
-            Html.RenderPartial("Table");
+            Html.RenderPartial("Table", Service.GetNotCompliteTask());
+        }
+    </div>
+
+    <div style="padding-top:50px; padding-bottom:50px">
+        <div class="panel-heading text-center">
+            <h3>Complite</h3>
+        </div>
+        @{
+            Html.RenderPartial("Table", Service.GetCompliteTask());
         }    
     </div>
+
 </body>

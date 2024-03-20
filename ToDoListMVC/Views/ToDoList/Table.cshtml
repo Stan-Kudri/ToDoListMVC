@@ -1,5 +1,7 @@
 ﻿@using ToDoList.Core.Repository
 
+@model List<ToDoList.Core.Models.Affairs>
+
 @{
     ViewData["Title"] = "Home Page";
 }
@@ -15,21 +17,38 @@
 <body>
     <div>
         <div>
-            <table class="p-2" style="width:100%">
+            <table class="p-2 table table-condensed table-striped" style="width:100%">
                 <thead>
                     <tr class="border-bottom">
                         <th style="text-align:center; width:10%;">Complite</th>
-                        <th style="text-align:center; width:90%;">Description</th>
+                        <th style="text-align:center; width:80%;">Description</th>
+                        <th style="text-align:center; width:10%;"></th>
                     </tr>
                 </thead>
                 <tbody >
-                    @foreach (var item in Service.GetAll())
+                    @foreach (var item in Model)
                     {
                         <tr class="border-bottom">
-                            <td style="text-align:center">@item.IsCaseCompletion</td>
-                            <td style="text-align:left">@item.Description</td>
+                            <td style="text-align:center">
+                                <form asp-controller="ToDoList" asp-action="ChangeExecution" method="post" asp-route-id="@item.Id" class="styled">
+                                    <input type="checkbox" value="@item.IsCaseCompletion" checked="@item.IsCaseCompletion" />
+                                </form>
+                            </td>
+                            @if (item.IsCaseCompletion)
+                            {
+                                <td style="text-align:left;text-decoration:line-through">@item.Description</td>                                
+                            }
+                            else 
+                            {
+                                <td style="text-align:left;">@item.Description</td>
+                            }
+                            <td style="text-align:center">
+                                <form asp-controller="ToDoList" asp-action="Delete" method="post" asp-route-id="@item.Id">
+                                    <input type="submit" value="Delete" />
+                                </form>
+                            </td>
                         </tr>
-                    }                    
+                    }
                 </tbody>
             </table>
         </div>
