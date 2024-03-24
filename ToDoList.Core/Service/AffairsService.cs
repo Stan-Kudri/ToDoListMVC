@@ -21,7 +21,7 @@ namespace ToDoList.Core.Repository
             _dbContext.SaveChanges();
         }
 
-        public void Update(Affairs item)
+        public void Update(Affairs? item)
         {
             if (item == null)
             {
@@ -62,7 +62,7 @@ namespace ToDoList.Core.Repository
             _dbContext.SaveChanges();
         }
 
-        public void UpdateItemCoplite(Guid? id)
+        public void MarkCompleted(Guid? id)
         {
             var item = _dbContext.Affairs.FirstOrDefault(e => e.Id == id);
 

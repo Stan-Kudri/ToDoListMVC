@@ -48,6 +48,7 @@ namespace ToDoListMVC.Controllers
 
                 return RedirectToAction("ViewToDo");
             }
+
             return NotFound();
         }
 
@@ -56,9 +57,10 @@ namespace ToDoListMVC.Controllers
         {
             if (id != null)
             {
-                _affairsService.UpdateItemCoplite(id);
+                _affairsService.MarkCompleted(id);
                 return RedirectToAction("ViewToDo");
             }
+
             return NotFound();
         }
 
