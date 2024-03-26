@@ -85,6 +85,24 @@ namespace ToDoList.Core.Repository
             _dbContext.SaveChanges();
         }
 
+        public void UpdateDescription(Guid? id, string description)
+        {
+            var item = _dbContext.Affairs.FirstOrDefault(e => e.Id == id);
+
+            if (item == null)
+            {
+                return;
+            }
+
+            if (item.Description == description)
+            {
+                return;
+            }
+
+            item.Description = description;
+            _dbContext.SaveChanges();
+        }
+
         public bool TrySearchItem(Guid? id, out Affairs item)
         {
             item = _dbContext.Affairs.FirstOrDefault(e => e.Id == id);

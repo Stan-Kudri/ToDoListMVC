@@ -40,21 +40,18 @@
     </div>
 
     <div style="padding-top:50px">
-        <div class="panel-heading text-center">
-            <h3>Not Complite</h3>
-        </div>
         @{
             Html.RenderPartial("Table", Service.GetNotCompliteTask());
         }
     </div>
 
-    <div style="padding-top:50px; padding-bottom:50px">
-        <div class="panel-heading text-center">
-            <h3>Complite</h3>
-        </div>
+    <hr />
+
+    <div style="padding-top:10px; padding-bottom:50px">
         @{
             Html.RenderPartial("Table", Service.GetCompliteTask());
         }    
     </div>
 
 </body>
+

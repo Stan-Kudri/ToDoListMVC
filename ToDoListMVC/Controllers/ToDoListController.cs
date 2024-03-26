@@ -64,6 +64,18 @@ namespace ToDoListMVC.Controllers
             return NotFound();
         }
 
+        [HttpPost]
+        public IActionResult ChangeDescription(Guid? id, string description)
+        {
+            if (id != null)
+            {
+                _affairsService.UpdateDescription(id, description);
+                return RedirectToAction("ViewToDo");
+            }
+
+            return NotFound();
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

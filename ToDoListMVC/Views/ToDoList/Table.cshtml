@@ -17,47 +17,55 @@
 
 <body>
     <div>
-        <div>
-            <table class="p-2 table table-condensed table-striped" style="width:100%">
-                <thead>
+        <table class="p-1 table table-condensed table-striped" style="width:100%">
+            <thead>
+                <tr class="border-bottom">
+                    <th style="text-align:center; width:10%;"></th>
+                    <th style="text-align:center; width:80%;"></th>
+                    <th style="text-align:center; width:10%;"></th>
+                </tr>
+            </thead>
+            <tbody >
+                @foreach (var item in Model)
+                {
                     <tr class="border-bottom">
-                        <th style="text-align:center; width:10%;">Complite</th>
-                        <th style="text-align:center; width:80%;">Description</th>
-                        <th style="text-align:center; width:10%;"></th>
+
+                        <td style="text-align:center">
+                            <form asp-controller="ToDoList" asp-action="ChangeExecution" method="post" asp-route-id="@item.Id" class="styled" name="changeItem">
+                                <input type="checkbox" value="@item.IsCaseCompletion" checked="@item.IsCaseCompletion" name="checkbox" onclick="this.form.submit()"/>
+                            </form>
+                        </td>
+
+                        @if (item.IsCaseCompletion)
+                        {
+                            <td style="text-align:center">
+                                <form asp-controller="ToDoList" asp-action="ChangeDescription" asp-route-id="@item.Id" asp-route-description=@item.Description method="post">
+                                    <input type="text" value="@item.Description" id="input-id" name="comment" onchange="this.form.submit()" style="text-align:left;text-decoration:line-through;" />
+                                </form>
+                            </td>
+                        }
+                        else
+                        {
+                            <td style="text-align:center">
+                                <form asp-controller="ToDoList" asp-action="ChangeDescription" asp-route-id="@item.Id" asp-route-description=@item.Description method="post">
+                                    <input type="hidden" />
+                                    <input type="text" value="@item.Description" id="input-id" name="comment" onchange="this.form.submit()" style="text-align:left;" />
+                                </form>
+                            </td>
+                        }
+
+                        <td style="text-align:center">
+
+                            <form asp-controller="ToDoList" asp-action="Delete" method="post" asp-route-id="@item.Id">
+                                <input type="submit" value="Delete"/>
+                            </form>
+
+                        </td>
+
                     </tr>
-                </thead>
-                <tbody >
-                    @foreach (var item in Model)
-                    {
-                        <tr class="border-bottom">
-
-                            <td style="text-align:center">
-                                <form asp-controller="ToDoList" asp-action="ChangeExecution" method="post" asp-route-id="@item.Id" class="styled" name="changeItem">
-                                    <input type="checkbox" value="@item.IsCaseCompletion" checked="@item.IsCaseCompletion" name="checkbox" onclick="this.form.submit()" />
-                                </form>
-                            </td>
-
-                            @if (item.IsCaseCompletion)
-                            {
-                                <td style="text-align:left;text-decoration:line-through">@item.Description</td>                                
-                            }
-                            else 
-                            {
-                                <td style="text-align:left;">@item.Description</td>
-                            }
-
-                            <td style="text-align:center">
-
-                                <form asp-controller="ToDoList" asp-action="Delete" method="post" asp-route-id="@item.Id">
-                                    <input type="submit" value="Delete"/>
-                                </form>
-                            </td>
-
-                        </tr>
-                    }
-                </tbody>
-            </table>
-        </div>
+                }
+            </tbody>
+        </table>
     </div>
 
 </body>
