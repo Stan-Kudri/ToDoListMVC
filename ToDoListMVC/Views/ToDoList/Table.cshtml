@@ -40,7 +40,7 @@
                         {
                             <td style="text-align:center">
                                 <form asp-controller="ToDoList" asp-action="ChangeDescription" asp-route-id="@item.Id" asp-route-description=@item.Description method="post">
-                                    <input type="text" value="@item.Description" id="input-id" name="comment" onchange="this.form.submit()" style="text-align:left;text-decoration:line-through;" />
+                                    <input type="text" value="@item.Description" onchange="this.form.submit()" style="text-align:left;text-decoration:line-through;" />
                                 </form>
                             </td>
                         }
@@ -48,8 +48,7 @@
                         {
                             <td style="text-align:center">
                                 <form asp-controller="ToDoList" asp-action="ChangeDescription" asp-route-id="@item.Id" asp-route-description=@item.Description method="post">
-                                    <input type="hidden" />
-                                    <input type="text" value="@item.Description" id="input-id" name="comment" onchange="this.form.submit()" style="text-align:left;" />
+                                    <input type="text" value="@item.Description" onchange="this.form.submit()" style="text-align:left;" />
                                 </form>
                             </td>
                         }
