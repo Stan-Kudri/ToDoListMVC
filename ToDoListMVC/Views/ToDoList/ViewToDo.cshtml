@@ -39,7 +39,7 @@
         </div>
     </div>
 
-    <div style="padding-top:50px">
+    <div style="padding-top:10px">
         @{
             Html.RenderPartial("Table", Service.GetNotCompliteTask());
         }
@@ -47,10 +47,19 @@
 
     <hr />
 
-    <div style="padding-top:10px; padding-bottom:50px">
-        @{
-            Html.RenderPartial("Table", Service.GetCompliteTask());
-        }    
+    <div class="accordion" id="accordionExample" style="padding-bottom:50px">
+        <div class="accordion-item">
+            <h3 class="accordion-header">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" style="background-color:antiquewhite; color:darkgreen">
+                    Completed items on the list
+                </button>
+            </h3>
+            <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
+                @{
+                    Html.RenderPartial("Table", Service.GetCompliteTask());
+                }
+            </div>
+        </div>
     </div>
 
 </body>

@@ -16,7 +16,7 @@
 </head>
 
 <body>
-    <div>
+    <div class="accordion-body">
         <table class="p-1 table table-condensed table-striped" style="width:100%">
             <thead>
                 <tr class="border-bottom">
@@ -25,14 +25,14 @@
                     <th style="text-align:center; width:10%;"></th>
                 </tr>
             </thead>
-            <tbody >
+            <tbody>
                 @foreach (var item in Model)
                 {
                     <tr class="border-bottom">
 
                         <td style="text-align:center">
                             <form asp-controller="ToDoList" asp-action="ChangeExecution" method="post" asp-route-id="@item.Id" class="styled" name="changeItem">
-                                <input type="checkbox" value="@item.IsCaseCompletion" checked="@item.IsCaseCompletion" name="checkbox" onclick="this.form.submit()"/>
+                                <input type="checkbox" value="@item.IsCaseCompletion" checked="@item.IsCaseCompletion" name="checkbox" onclick="this.form.submit()" />
                             </form>
                         </td>
 
@@ -40,7 +40,7 @@
                         {
                             <td style="text-align:center">
                                 <form asp-controller="ToDoList" asp-action="ChangeDescription" asp-route-id="@item.Id" asp-route-description=@item.Description method="post">
-                                    <input type="text" value="@item.Description" onchange="this.form.submit()" style="text-align:left;text-decoration:line-through;" />
+                                    <input type="text" asp-for="@item.Description" onchange="this.form.submit()" style="text-align:left;text-decoration:line-through;" />
                                 </form>
                             </td>
                         }
@@ -48,7 +48,7 @@
                         {
                             <td style="text-align:center">
                                 <form asp-controller="ToDoList" asp-action="ChangeDescription" asp-route-id="@item.Id" asp-route-description=@item.Description method="post">
-                                    <input type="text" value="@item.Description" onchange="this.form.submit()" style="text-align:left;" />
+                                    <input type="text" asp-for="@item.Description" onchange="this.form.submit()" style="text-align:left;" />
                                 </form>
                             </td>
                         }
@@ -56,7 +56,7 @@
                         <td style="text-align:center">
 
                             <form asp-controller="ToDoList" asp-action="Delete" method="post" asp-route-id="@item.Id">
-                                <input type="submit" value="Delete"/>
+                                <input type="submit" value="Delete" />
                             </form>
 
                         </td>
