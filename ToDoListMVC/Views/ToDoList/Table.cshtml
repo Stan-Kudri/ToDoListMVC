@@ -38,21 +38,29 @@
 
                         @if (item.IsCaseCompletion)
                         {
-                            <td style="text-align:center">
+                            <td style="text-align:left">
                                 @using (Html.BeginForm("ChangeDescription", "ToDoList", FormMethod.Post))
                                 {
                                     @Html.Hidden("Id", item.Id)
-                                    @Html.TextBox("Description", @item.Description, new { type = "text", @style = "text-align:left;text-decoration:line-through;", @onchange="this.form.submit()"})
+                                    @Html.TextBox("Description", @item.Description, new {
+                                        type = "text", 
+                                        @style = "text-align:left;text-decoration:line-through; width:100%; resize: none;background-color: rgba(0, 0, 0, 0); border-color: rgba(0, 0, 0, 0)",
+                                        @onchange = "this.form.submit()" 
+                                    })
                                 }
                             </td>
                         }
                         else
                         {
-                            <td style="text-align:center">
+                            <td style="text-align:left">
                                 @using (Html.BeginForm("ChangeDescription", "ToDoList", FormMethod.Post))
                                 {
                                     @Html.Hidden("Id", item.Id)
-                                    @Html.TextBox("Description", @item.Description, new { type = "text", @style = "text-align:left;", @onchange = "this.form.submit()" })
+                                    @Html.TextBox("Description", @item.Description, new { 
+                                        type = "text", 
+                                        @style = "text-align:left; width:100%; resize: none;background-color: rgba(0, 0, 0, 0); border-color: rgba(0, 0, 0, 0)", 
+                                        @onchange = "this.form.submit()" 
+                                    })
                                 }
                             </td>
                         }
