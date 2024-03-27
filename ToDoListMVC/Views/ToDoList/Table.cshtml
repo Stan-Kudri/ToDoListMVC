@@ -42,11 +42,14 @@
                                 @using (Html.BeginForm("ChangeDescription", "ToDoList", FormMethod.Post))
                                 {
                                     @Html.Hidden("Id", item.Id)
-                                    @Html.TextBox("Description", @item.Description, new {
-                                        type = "text", 
-                                        @style = "text-align:left;text-decoration:line-through; width:100%; resize: none;background-color: rgba(0, 0, 0, 0); border-color: rgba(0, 0, 0, 0)",
-                                        @onchange = "this.form.submit()" 
-                                    })
+                                    @Html.TextArea("Description", @item.Description, new 
+                                        {
+                                            type = "text",
+                                            @style = "text-align:left;text-decoration:line-through; width:100%; resize: horizontal;background-color: rgba(0, 0, 0, 0); border-color: rgba(0, 0, 0, 0)",
+                                            @onchange = "this.form.submit()",
+                                            @onkeyup = "textAreaAdjust(this)" 
+                                        }
+                                    )
                                 }
                             </td>
                         }
@@ -56,11 +59,14 @@
                                 @using (Html.BeginForm("ChangeDescription", "ToDoList", FormMethod.Post))
                                 {
                                     @Html.Hidden("Id", item.Id)
-                                    @Html.TextBox("Description", @item.Description, new { 
-                                        type = "text", 
-                                        @style = "text-align:left; width:100%; resize: none;background-color: rgba(0, 0, 0, 0); border-color: rgba(0, 0, 0, 0)", 
-                                        @onchange = "this.form.submit()" 
-                                    })
+                                    @Html.TextArea("Description", @item.Description, new 
+                                        { 
+                                            type = "text",
+                                            @style = "text-align:left; width:100%; resize: horizontal;background-color: rgba(0, 0, 0, 0); border-color: rgba(0, 0, 0, 0)",
+                                            @onchange = "this.form.submit()",
+                                            @onkeyup = "textAreaAdjust(this)"
+                                        }
+                                    )
                                 }
                             </td>
                         }
@@ -80,3 +86,10 @@
     </div>
 
 </body>
+
+<script>
+    function textAreaAdjust(element) {
+        element.style.height = "1px";
+        element.style.height = (50 + element.scrollHeight) + "px";
+    }
+</script>
