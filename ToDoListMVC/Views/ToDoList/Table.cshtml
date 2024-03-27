@@ -39,17 +39,21 @@
                         @if (item.IsCaseCompletion)
                         {
                             <td style="text-align:center">
-                                <form asp-controller="ToDoList" asp-action="ChangeDescription" asp-route-id="@item.Id" asp-route-description=@item.Description method="post">
-                                    <input type="text" asp-for="@item.Description" onchange="this.form.submit()" style="text-align:left;text-decoration:line-through;" />
-                                </form>
+                                @using (Html.BeginForm("ChangeDescription", "ToDoList", FormMethod.Post))
+                                {
+                                    @Html.Hidden("Id", item.Id)
+                                    @Html.TextBox("Description", @item.Description, new { type = "text", @style = "text-align:left;text-decoration:line-through;", @onchange="this.form.submit()"})
+                                }
                             </td>
                         }
                         else
                         {
                             <td style="text-align:center">
-                                <form asp-controller="ToDoList" asp-action="ChangeDescription" asp-route-id="@item.Id" asp-route-description=@item.Description method="post">
-                                    <input type="text" asp-for="@item.Description" onchange="this.form.submit()" style="text-align:left;" />
-                                </form>
+                                @using (Html.BeginForm("ChangeDescription", "ToDoList", FormMethod.Post))
+                                {
+                                    @Html.Hidden("Id", item.Id)
+                                    @Html.TextBox("Description", @item.Description, new { type = "text", @style = "text-align:left;", @onchange = "this.form.submit()" })
+                                }
                             </td>
                         }
 
