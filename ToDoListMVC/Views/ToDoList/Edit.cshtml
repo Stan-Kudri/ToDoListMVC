@@ -1,0 +1,113 @@
+﻿@using ToDoList.Core.Enums
+@using ToDoList.Core.Repository
+
+@model ToDoList.Core.Models.Affairs
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+@inject AffairsService Service
+
+<head>
+    <meta name="viewport" , content="width=device=width" />
+    <title>EditItem</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+</head>
+
+<body>
+    <div class="p-3 ">
+        <div class="panel-heading text-left">
+            <h2>Edit</h2>
+        </div>
+        
+        <form asp-action="Edit" method="post">
+            
+            <input type="hidden" asp-for="Id" />
+
+            <div class="col-auto form-group row" style=" margin-top: 20px">
+                <label asp-for="Description">Description:</label>
+                <textarea asp-for='Description' class="form-control description-txt m-md-2" name="Description" onclick="autoExpand(this)" rows="1"></textarea>
+            </div>
+
+            <div class="form-group" style=" margin-top: 20px">
+                <label asp-for="IsCaseCompletion">Complite task:</label>
+                <select name="IsCaseCompletion" asp-for="IsCaseCompletion" onchange="onHidden()" id="IsCaseComplite">
+                    <option value=@true>Yes</option>
+                    <option value=@false>No</option>
+                </select>
+            </div>
+
+            <div class="form-group" style=" margin-top: 20px">
+                <label asp-for="DateCreate">Date Create:</label>
+                <input type="date" max="@DateTime.Now.ToString("yyyy-MM-dd")" asp-for="DateCreate" />
+            </div>
+
+
+            <div class="form-group" style=" margin-top: 20px;" id="DisplayDateComplite">
+                <label asp-for="DateCompletion">Date Complite:</label>
+                <input type="date" max="@DateTime.Now.ToString("yyyy-MM-dd")" min="@Model.DateCreate.ToString("yyyy-MM-dd")" asp-for="DateCompletion" id="DateComplition" />
+            </div>
+
+            <div class="text-left" style=" margin-top: 20px;">
+                <button style="font-size:16px;" class="btn btn-outline-success" type="submit">Save</button>
+            </div>
+
+        </form>
+
+    </div>
+
+    <script>
+        function autoExpand(element) {
+            element.style.height = 'auto';
+            element.style.height = (element.scrollHeight) + 'px';
+        }
+    </script>
+
+    <script>
+        function onHidden() {
+            var isComplite = document.getElementById("IsCaseComplite");
+            var divDateComplite = document.getElementById("DisplayDateComplite");
+            var itemDateComplite = document.getElementById("DateComplition");
+
+            if(isComplite.value == 'False'){
+                divDateComplite.hidden = true;
+            }
+            else
+            {
+                divDateComplite.hidden = false;
+                itemDateComplite.value = "@DateTime.Now.ToString("yyyy-MM-dd")";
+            }
+        }
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            $("textarea").each(function () {
+                autoExpand(this);
+            });
+        });
+
+        $(document).ready(function () {
+            var divDateComplite = document.getElementById("DisplayDateComplite");
+            var isCaseComplite = document.getElementById("IsCaseComplite");
+            var itemDateComplite = document.getElementById("DateComplition");
+
+            if (isCaseComplite.value == 'False') {
+                divDateComplite.hidden = true;
+                itemDateComplite.value = null;
+            }
+            else {
+                divDateComplite.hidden = false;
+            }
+        })
+
+        window.onresize = function () {
+            $("textarea").each(function () {
+                autoExpand(this);
+            });
+        }
+    </script>
+
+</body>

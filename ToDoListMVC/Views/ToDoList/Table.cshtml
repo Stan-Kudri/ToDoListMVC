@@ -13,16 +13,18 @@
     <meta  name="viewport", content="width=device=width"/>
     <title>ViewToDo</title>
     <link rel="stylesheet" href ="~/lib/bootstrap/dist/css/bootstrap.css"/>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
 </head>
 
-<body>
+<body >
     <div class="accordion-body">
         <table class="p-1 table table-condensed table-striped" style="width:100%">
             <thead>
                 <tr class="border-bottom">
                     <th style="text-align:center; width:10%;"></th>
-                    <th style="text-align:center; width:80%;"></th>
-                    <th style="text-align:center; width:10%;"></th>
+                    <th style="text-align:center; width:86%;"></th>
+                    <th style="text-align:center; width:7%;"></th>
+                    <th style="text-align:center; width:7%;"></th>
                 </tr>
             </thead>
             <tbody>
@@ -32,41 +34,27 @@
 
                         <td style="text-align:center">
                             <form asp-controller="ToDoList" asp-action="ChangeExecution" method="post" asp-route-id="@item.Id" class="styled" name="changeItem">
-                                <input type="checkbox" value="@item.IsCaseCompletion" checked="@item.IsCaseCompletion" name="checkbox" onclick="this.form.submit()" />
+                                <input type="checkbox" value="@item.IsCaseCompletion" checked="@item.IsCaseCompletion" name="checkbox" onclick="this.form.submit()"/>
                             </form>
                         </td>
 
                         @if (item.IsCaseCompletion)
                         {
-                            <td style="text-align:left">
+                            <td>
                                 @using (Html.BeginForm("ChangeDescription", "ToDoList", FormMethod.Post))
                                 {
                                     @Html.Hidden("Id", item.Id)
-                                    @Html.TextArea("Description", @item.Description, new 
-                                        {
-                                            type = "text",
-                                            @style = "text-align:left;text-decoration:line-through; width:100%; resize: horizontal;background-color: rgba(0, 0, 0, 0); border-color: rgba(0, 0, 0, 0)",
-                                            @onchange = "this.form.submit()",
-                                            @onkeyup = "textAreaAdjust(this)" 
-                                        }
-                                    )
+                                    <textarea asp-for='@item.Description' class="form-control description-txt strikethroughText" name="Description" onchange="this.form.submit()" onclick="autoExpand(this)" rows="1"></textarea>
                                 }
                             </td>
                         }
                         else
                         {
-                            <td style="text-align:left">
+                            <td>
                                 @using (Html.BeginForm("ChangeDescription", "ToDoList", FormMethod.Post))
                                 {
                                     @Html.Hidden("Id", item.Id)
-                                    @Html.TextArea("Description", @item.Description, new 
-                                        { 
-                                            type = "text",
-                                            @style = "text-align:left; width:100%; resize: horizontal;background-color: rgba(0, 0, 0, 0); border-color: rgba(0, 0, 0, 0)",
-                                            @onchange = "this.form.submit()",
-                                            @onkeyup = "textAreaAdjust(this)"
-                                        }
-                                    )
+                                    <textarea asp-for='@item.Description' class="form-control description-txt" name="Description" onchange="this.form.submit()" onclick="autoExpand(this)" rows="1"></textarea>
                                 }
                             </td>
                         }
@@ -74,7 +62,15 @@
                         <td style="text-align:center">
 
                             <form asp-controller="ToDoList" asp-action="Delete" method="post" asp-route-id="@item.Id">
-                                <input type="submit" value="Delete" />
+                                <input type="submit" value="Delete" class="c-button" />
+                            </form>
+
+                        </td>
+
+                        <td style="text-align:center">
+
+                            <form asp-controller="ToDoList" asp-action="Edit" method="get" asp-route-id="@item.Id">
+                                <input type="submit" value="Edit" class="c-button" />
                             </form>
 
                         </td>
@@ -83,13 +79,39 @@
                 }
             </tbody>
         </table>
-    </div>
+    </div> 
+
+    <script>
+        function autoExpand(element) {
+            element.style.height = 'auto';
+            element.style.height = (element.scrollHeight) + 'px';
+        }
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            $("textarea, .description").each(function () {
+                autoExpand(this);
+            });
+        });
+
+        window.onresize = function () {
+            $("textarea, .description").each(function () {
+                autoExpand(this);
+            });
+        }
+    </script>
+
+    <style>
+        .description-txt {
+            text-align: left;
+            background-color: rgba(0, 0, 0, 0);
+            border-color: rgba(0, 0, 0, 0);
+        }
+
+        .strikethroughText {
+            text-decoration: line-through;
+        }
+    </style>
 
 </body>
-
-<script>
-    function textAreaAdjust(element) {
-        element.style.height = "1px";
-        element.style.height = (50 + element.scrollHeight) + "px";
-    }
-</script>

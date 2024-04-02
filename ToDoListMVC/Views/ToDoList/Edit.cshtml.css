@@ -1,0 +1,10 @@
+﻿.description {
+    text-align: left;
+    background-color: rgba(0, 0, 0, 0);
+    border-color: rgba(0, 0, 0, 0);
+}
+
+.datePicker{
+    width:120px;
+    height:30px;
+}

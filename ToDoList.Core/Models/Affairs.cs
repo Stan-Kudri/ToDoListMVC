@@ -4,6 +4,10 @@ namespace ToDoList.Core.Models
 {
     public class Affairs : Entity
     {
+        public Affairs()
+        {
+        }
+
         public Affairs(string description, DateTime dateCreate, bool isCaseCompletion, DateTime? dateCompletion)
         {
             Id = Guid.NewGuid();
@@ -17,7 +21,7 @@ namespace ToDoList.Core.Models
         public string Description { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "Error in creation date.")]
-        public DateTime DateCreate { get; set; }
+        public DateTime DateCreate { get; set; } = DateTime.Now;
 
         [Required]
         public bool IsCaseCompletion { get; set; } = false;

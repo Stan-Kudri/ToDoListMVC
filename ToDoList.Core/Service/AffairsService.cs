@@ -30,7 +30,7 @@ namespace ToDoList.Core.Repository
 
             var oldItem = _dbContext.Affairs.FirstOrDefault(e => e.Id == item.Id);
 
-            if (oldItem == null || !oldItem.Equals(item))
+            if (oldItem == null || oldItem.Equals(item))
             {
                 return;
             }
@@ -113,6 +113,18 @@ namespace ToDoList.Core.Repository
             }
 
             return true;
+        }
+
+        public Affairs GetItem(Guid? id)
+        {
+            var item = _dbContext.Affairs.FirstOrDefault(e => e.Id == id);
+
+            if (item == null)
+            {
+                throw new ArgumentException("ID does not exist.");
+            }
+
+            return item;
         }
 
         public List<Affairs> GetAll()
