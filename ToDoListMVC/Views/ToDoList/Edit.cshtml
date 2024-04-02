@@ -12,11 +12,11 @@
     <meta name="viewport" , content="width=device=width" />
     <title>EditItem</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>    
 </head>
 
 <body>
-    <div class="p-3 ">
+    <div class="p-3 font-txt">
         <div class="panel-heading text-left">
             <h2>Edit</h2>
         </div>
@@ -25,37 +25,54 @@
             
             <input type="hidden" asp-for="Id" />
 
-            <div class="col-auto form-group row" style=" margin-top: 20px">
-                <label asp-for="Description">Description:</label>
-                <textarea asp-for='Description' class="form-control description-txt m-md-2" name="Description" onclick="autoExpand(this)" rows="1"></textarea>
+            <div class="col-auto form-group row div-class">
+                <label asp-for="Description" class="font-txt">Description:</label>
+                <textarea asp-for='Description' class="form-control description m-md-2" name="Description" onclick="autoExpand(this)" rows="1"></textarea>
             </div>
 
-            <div class="form-group" style=" margin-top: 20px">
-                <label asp-for="IsCaseCompletion">Complite task:</label>
+            <div class="form-group div-class">
+                <label asp-for="IsCaseCompletion" class="font-txt">Complite task:</label>
                 <select name="IsCaseCompletion" asp-for="IsCaseCompletion" onchange="onHidden()" id="IsCaseComplite">
                     <option value=@true>Yes</option>
                     <option value=@false>No</option>
                 </select>
             </div>
 
-            <div class="form-group" style=" margin-top: 20px">
-                <label asp-for="DateCreate">Date Create:</label>
+            <div class="form-group div-class">
+                <label asp-for="DateCreate" class="font-txt">Date Create:</label>
                 <input type="date" max="@DateTime.Now.ToString("yyyy-MM-dd")" asp-for="DateCreate" />
             </div>
 
 
-            <div class="form-group" style=" margin-top: 20px;" id="DisplayDateComplite">
-                <label asp-for="DateCompletion">Date Complite:</label>
+            <div class="form-group div-class" id="DisplayDateComplite">
+                <label asp-for="DateCompletion" class="font-txt">Date Complite:</label>
                 <input type="date" max="@DateTime.Now.ToString("yyyy-MM-dd")" min="@Model.DateCreate.ToString("yyyy-MM-dd")" asp-for="DateCompletion" id="DateComplition" />
             </div>
 
-            <div class="text-left" style=" margin-top: 20px;">
+            <div class="text-left div-class">
                 <button style="font-size:16px;" class="btn btn-outline-success" type="submit">Save</button>
             </div>
 
         </form>
 
     </div>
+
+    <style>
+        .description {
+            text-align: left;
+            overflow: hidden;
+            font-family: 'Times New Roman';
+        }
+
+        .font-txt{
+            font-family: 'Times New Roman';
+        }
+
+        .div-class{
+            margin-top: 10px;
+            font-family: 'Times New Roman';
+        }
+    </style>
 
     <script>
         function autoExpand(element) {
