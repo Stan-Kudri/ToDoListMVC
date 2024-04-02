@@ -52,6 +52,32 @@ namespace ToDoListMVC.Controllers
             return NotFound();
         }
 
+        [HttpGet]
+        public IActionResult Edit(Guid? id)
+        {
+            if (id != null)
+            {
+                if (_affairsService.TrySearchItem(id, out var item))
+                {
+                    return View("Edit", item);
+                }
+            }
+
+            return NotFound();
+        }
+
+        [HttpPost]
+        public IActionResult Edit(Affairs item)
+        {
+            if (item != null)
+            {
+                _affairsService.Update(item);
+                return RedirectToAction("ViewToDo");
+            }
+
+            return NotFound();
+        }
+
         [HttpPost]
         public IActionResult ChangeExecution(Guid? id)
         {
