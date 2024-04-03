@@ -8,10 +8,10 @@ namespace ToDoList.Core.DBContext
 
         public DbContextFactory(string path) => _connectionName = path;
 
-        public DbContextAffairs Create()
+        public AppDbContext Create()
         {
             var builder = new DbContextOptionsBuilder().UseSqlite($"Data Source={_connectionName}.db");
-            var appDbContext = new DbContextAffairs(builder.Options);
+            var appDbContext = new AppDbContext(builder.Options);
             appDbContext.Database.EnsureCreated();
             return appDbContext;
         }

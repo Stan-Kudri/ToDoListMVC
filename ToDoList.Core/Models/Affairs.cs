@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using ToDoList.Core.Models.Users;
 
 namespace ToDoList.Core.Models
 {
@@ -27,6 +28,10 @@ namespace ToDoList.Core.Models
         public bool IsCaseCompletion { get; set; } = false;
 
         public DateTime? DateCompletion { get; set; } = null;
+
+        public User User { get; set; }
+
+        public Guid UserId { get; set; }
 
         public bool Equals(Affairs? task)
         {

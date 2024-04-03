@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using ToDoList.Core.Models;
+using ToDoList.Core.Models.Users;
 using ToDoList.Core.Repository;
 using ToDoList.Models;
 
@@ -10,11 +11,13 @@ namespace ToDoListMVC.Controllers
     {
         private readonly ILogger<ToDoListController> _logger;
         private readonly AffairsService _affairsService;
+        private readonly User _user;
 
-        public ToDoListController(ILogger<ToDoListController> logger, AffairsService caseService)
+        public ToDoListController(ILogger<ToDoListController> logger, AffairsService caseService, User user)
         {
             _logger = logger;
             _affairsService = caseService;
+            _user = user;
         }
 
         [HttpGet]
