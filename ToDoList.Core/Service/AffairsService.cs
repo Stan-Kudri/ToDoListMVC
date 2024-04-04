@@ -5,9 +5,9 @@ namespace ToDoList.Core.Repository
 {
     public class AffairsService
     {
-        private readonly DbContextAffairs _dbContext;
+        private readonly AppDbContext _dbContext;
 
-        public AffairsService(DbContextAffairs dbContext)
+        public AffairsService(AppDbContext dbContext)
             => _dbContext = dbContext;
 
         public void Add(Affairs item)

@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using ToDoList.Core.Models.Users;
 
 namespace ToDoList.Core.Models
 {
@@ -8,13 +9,14 @@ namespace ToDoList.Core.Models
         {
         }
 
-        public Affairs(string description, DateTime dateCreate, bool isCaseCompletion, DateTime? dateCompletion)
+        public Affairs(string description, DateTime dateCreate, bool isCaseCompletion, DateTime? dateCompletion, Guid userId)
         {
             Id = Guid.NewGuid();
             Description = description;
             DateCreate = dateCreate;
             IsCaseCompletion = isCaseCompletion;
             DateCompletion = dateCompletion;
+            UserId = userId;
         }
 
         [Required(ErrorMessage = "Please enter description.")]
@@ -28,6 +30,10 @@ namespace ToDoList.Core.Models
 
         public DateTime? DateCompletion { get; set; } = null;
 
+        public User User { get; set; }
+
+        public Guid UserId { get; set; }
+
         public bool Equals(Affairs? task)
         {
             if (task == null)
@@ -39,7 +45,8 @@ namespace ToDoList.Core.Models
                    && task.IsCaseCompletion == IsCaseCompletion
                    && task.DateCompletion == DateCompletion
                    && task.DateCreate == DateCreate
-                   && task.Description == Description;
+                   && task.Description == Description
+                   && task.UserId == UserId;
         }
 
         public override bool Equals(object? obj)
