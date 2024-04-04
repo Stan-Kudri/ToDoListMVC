@@ -22,9 +22,7 @@ namespace ToDoListMVC.Controllers
 
         [HttpGet]
         public IActionResult ViewToDo()
-        {
-            return View();
-        }
+            => View();
 
         [HttpPost]
         public IActionResult ViewToDo(AffairsModel item)
@@ -33,7 +31,8 @@ namespace ToDoListMVC.Controllers
                                             item.description,
                                             DateTime.Now,
                                             item.isCaseCompletion,
-                                            item.isCaseCompletion == true ? DateTime.Now : null);
+                                            item.isCaseCompletion == true ? DateTime.Now : null,
+                                            item.userId);
 
             _affairsService.Add(affairsModel);
             return RedirectToAction();
@@ -107,8 +106,6 @@ namespace ToDoListMVC.Controllers
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
+            => View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
     }
 }

@@ -2,8 +2,6 @@ using ToDoList;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var res = BCrypt.Net.BCrypt.EnhancedHashPassword("qav2980542");
-
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.CreateDBContext();

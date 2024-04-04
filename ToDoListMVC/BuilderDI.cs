@@ -1,5 +1,4 @@
 ﻿using ToDoList.Core.DBContext;
-using ToDoList.Core.Models.Users;
 using ToDoList.Core.Repository;
 using ToDoList.Core.Service;
 
@@ -12,8 +11,8 @@ namespace ToDoList
             builder.Services.AddSingleton(e => new DbContextFactory(path));
             builder.Services.AddScoped(e => e.GetRequiredService<DbContextFactory>().Create());
             builder.Services.AddScoped<AffairsService>();
-            builder.Services.AddScoped<User>();
             builder.Services.AddScoped<UserService>();
+            builder.Services.AddScoped(e => e.GetRequiredService<UserService>().GetUser("Sergey", "$2a$11$YprQd7OL66HlKYHoMHAFVehR.oUJb0tjUnuxb/DsYwbU.y9asHEW."));
         }
     }
 }

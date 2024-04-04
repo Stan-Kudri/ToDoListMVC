@@ -9,13 +9,14 @@ namespace ToDoList.Core.Models
         {
         }
 
-        public Affairs(string description, DateTime dateCreate, bool isCaseCompletion, DateTime? dateCompletion)
+        public Affairs(string description, DateTime dateCreate, bool isCaseCompletion, DateTime? dateCompletion, Guid userId)
         {
             Id = Guid.NewGuid();
             Description = description;
             DateCreate = dateCreate;
             IsCaseCompletion = isCaseCompletion;
             DateCompletion = dateCompletion;
+            UserId = userId;
         }
 
         [Required(ErrorMessage = "Please enter description.")]
@@ -44,7 +45,8 @@ namespace ToDoList.Core.Models
                    && task.IsCaseCompletion == IsCaseCompletion
                    && task.DateCompletion == DateCompletion
                    && task.DateCreate == DateCreate
-                   && task.Description == Description;
+                   && task.Description == Description
+                   && task.UserId == UserId;
         }
 
         public override bool Equals(object? obj)

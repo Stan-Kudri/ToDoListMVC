@@ -29,10 +29,10 @@ namespace ToDoList.Core.DBContext
             configurationAffairs.ToTable("affairs");
             configurationAffairs.HasKey(e => e.Id);
             configurationAffairs.Property(e => e.Id).HasColumnName("id").ValueGeneratedOnAdd();
-            configurationAffairs.Property(e => e.Description).IsRequired().HasMaxLength(128).HasColumnName("casename");
+            configurationAffairs.Property(e => e.Description).IsRequired().HasMaxLength(128).HasColumnName("description");
             configurationAffairs.Property(e => e.DateCreate).IsRequired().HasDefaultValue(DateTime.Now).HasColumnName("datecreate");
             configurationAffairs.Property(e => e.DateCompletion).HasDefaultValue(null).HasColumnName("datacompletion");
-            configurationAffairs.Property(e => e.IsCaseCompletion).IsRequired().HasDefaultValue(false).HasColumnName("iscomletion");
+            configurationAffairs.Property(e => e.IsCaseCompletion).IsRequired().HasDefaultValue(false).HasColumnName("iscompletion").HasColumnType("BOOLEAN");
             configurationAffairs.HasOne(e => e.User).WithMany(e => e.Affairs).HasForeignKey(e => e.UserId).OnDelete(DeleteBehavior.Cascade);
         }
     }
