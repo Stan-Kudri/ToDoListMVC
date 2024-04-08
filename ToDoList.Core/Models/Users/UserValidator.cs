@@ -9,6 +9,12 @@
         {
             message = string.Empty;
 
+            if (string.IsNullOrEmpty(username))
+            {
+                message = "Please enter your username.";
+                return false;
+            }
+
             if (username.Length < MinLengthUsername)
             {
                 message = "The username is too short.";
@@ -34,9 +40,9 @@
         {
             message = string.Empty;
 
-            if (password == null)
+            if (string.IsNullOrEmpty(password))
             {
-                message = "Password should not be empty.";
+                message = "Please enter password.";
                 return false;
             }
 

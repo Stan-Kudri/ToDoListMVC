@@ -1,0 +1,57 @@
+﻿@using ToDoListMVC.Models
+
+@model UserModel
+
+<head>
+    <meta name="viewport" , content="width=device=width" />
+    <title>Registration</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/dist/jquery.validate.unobtrusive.js"></script>
+</head>
+
+<body class="font-txt">
+
+    <div style="align-content:center;max-width:600px; max-height:600px">
+        <h5 style="text-align:center;"><b>Registration</b></h5>
+        <h6 style="text-align:start">
+            Already have an account?
+            <a class="link-info" asp-controller="ToDoList" asp-action="ViewToDo">Sign In</a>
+        </h6>
+        <form class="row g-2 needs-validation" method="post">
+            <div>
+                <input type="text" class="form-control" placeholder="Username" aria-label="Username" asp-for="Username">
+                @Html.ValidationMessageFor(model => model.Username)
+                <span asp-validation-for="Username" accesskey="username" style="color:red"></span>
+            </div>
+
+            <div>
+                <input type="text" class="form-control" placeholder="Password" aria-label="Password" asp-for="Password">
+                @Html.ValidationMessageFor(model => model.Password)
+                <span asp-validation-for="Password" accesskey="password" style="color:red"></span>
+            </div>
+
+            <div class="text-center" style="padding-top:20px">
+                <button type="submit" style="width: 100px; height: 40px;" class="btn btn-outline-success">Save</button>
+                <button type="reset" style="width: 100px; height: 40px;" class="btn btn-outline-warning">Clear</button>
+            </div>
+        </form>
+
+    </div>
+
+    <style>
+        .font-txt {
+            font-family: 'Times New Roman';
+        }
+
+        .field-validation-error {
+            color: red;
+            font-weight: lighter;
+        }
+
+        input.input-validation-error {
+            border: 1px solid #b94a48;
+        }
+    </style>
+</body>
