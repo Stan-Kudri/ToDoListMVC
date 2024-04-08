@@ -15,6 +15,30 @@ namespace ToDoListMVC.Models
             _userService = userService;
         }
 
+        public IActionResult SignIn(UserModel userModel)
+        {
+            if (!_userValidator.ValidFormatUsername(userModel.Username) || !_userValidator.ValidFormatPassword(userModel.Password))
+            {
+                ModelState.AddModelError("", "The data was entered incorrectly.");
+                return View();
+            }
+
+            var user = userModel.ToUser();
+
+            if (_userService.IsFreeUsername(userModel.Username) || !_userService.IsUserData(user))
+            {
+                ModelState.AddModelError("", "The login or password was entered incorrectly.");
+            }
+
+            if (ModelState.Count() > 0)
+            {
+                return View();
+            }
+
+            _userService.Add(user);
+            return RedirectToAction("ViewToDo", "ToDoList");
+        }
+
         public IActionResult Registration(UserModel userModel)
         {
             if (!_userValidator.ValidFormatUsername(userModel.Username, out var validUsernameMessage))
