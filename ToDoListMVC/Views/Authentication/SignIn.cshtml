@@ -13,7 +13,8 @@
 
 <body class="font-txt">
 
-    <div style="align-content:center;max-width:600px; max-height:600px">
+    <div style="align-content:center;max-width:600px; max-height:600px; position:fixed;">
+
         <h5 style="text-align:center;"><b>Sign In</b></h5>
         <h6 style="text-align:start">
             Already have an account?
@@ -22,12 +23,10 @@
         <form class="row g-2 needs-validation" method="post">
             <div>
                 <input type="text" class="form-control" placeholder="Username" aria-label="Username" asp-for="Username">
-                @Html.ValidationMessageFor(model => model.Username)
             </div>
 
             <div>
                 <input type="text" class="form-control" placeholder="Password" aria-label="Password" asp-for="Password">
-                @Html.ValidationMessageFor(model => model.Password)
             </div>
 
             <div class="validation" asp-validation-summary="All" style="color:red"></div>

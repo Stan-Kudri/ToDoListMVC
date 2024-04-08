@@ -22,13 +22,11 @@
         <form class="row g-2 needs-validation" method="post">
             <div>
                 <input type="text" class="form-control" placeholder="Username" aria-label="Username" asp-for="Username">
-                @Html.ValidationMessageFor(model => model.Username)
                 <span asp-validation-for="Username" accesskey="username" style="color:red"></span>
             </div>
 
             <div>
                 <input type="text" class="form-control" placeholder="Password" aria-label="Password" asp-for="Password">
-                @Html.ValidationMessageFor(model => model.Password)
                 <span asp-validation-for="Password" accesskey="password" style="color:red"></span>
             </div>
 
