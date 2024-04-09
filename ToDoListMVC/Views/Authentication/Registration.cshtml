@@ -13,28 +13,33 @@
 
 <body class="font-txt">
 
-    <div style="align-content:center;max-width:600px; max-height:600px">
-        <h5 style="text-align:center;"><b>Registration</b></h5>
-        <h6 style="text-align:start">
-            Already have an account?
-            <a class="link-info" asp-controller="Authentication" asp-action="SignIn">Sign In</a>
-        </h6>
-        <form class="row g-2 needs-validation" method="get">
-            <div>
-                <input type="text" class="form-control" placeholder="Username" aria-label="Username" asp-for="Username">
-                <span asp-validation-for="Username" accesskey="username" style="color:red"></span>
-            </div>
+    <div class="page">
+        <div style="max-width:600px; max-height:600px">
 
-            <div>
-                <input type="text" class="form-control" placeholder="Password" aria-label="Password" asp-for="Password">
-                <span asp-validation-for="Password" accesskey="password" style="color:red"></span>
-            </div>
+            <h5 style="text-align:center;"><b>Registration</b></h5>
+            <h6 style="text-align:start">
+                Already have an account?
+                <a class="link-info" asp-controller="Authentication" asp-action="SignIn">Sign In</a>
+            </h6>
+            <form class="row g-2 needs-validation" method="get">
+                <div>
+                    <input type="text" class="form-control" placeholder="Username" aria-label="Username" asp-for="Username">
+                    <span asp-validation-for="Username" accesskey="username" style="color:red"></span>
+                </div>
 
-            <div class="text-center" style="padding-top:20px">
-                <button type="submit" style="width: 100px; height: 40px;" class="btn btn-outline-secondary">Save</button>
-                <button type="submit" asp-action="ClearFieldRegistration" style="width: 100px; height: 40px;" class="btn btn-outline-secondary">Clear</button>
-            </div>
-        </form>
+                <div>
+                    <input type="text" class="form-control" placeholder="Password" aria-label="Password" asp-for="Password">
+                    <span asp-validation-for="Password" accesskey="password" style="color:red"></span>
+                </div>
+
+                <div class="text-center" style="padding-top:20px">
+                    <button type="submit" style="width: 100px; height: 40px;" class="btn btn-outline-secondary">Save</button>
+                    <button type="submit" asp-action="ClearFieldRegistration" style="width: 100px; height: 40px;" class="btn btn-outline-secondary">Clear</button>
+                </div>
+            </form>
+
+        </div>
+    </div>
 
     </div>
 
@@ -50,6 +55,12 @@
 
         input.input-validation-error {
             border: 1px solid #b94a48;
+        }
+
+        .page {
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
     </style>
 </body>
