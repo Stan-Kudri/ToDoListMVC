@@ -15,6 +15,21 @@ namespace ToDoListMVC.Models
             _userService = userService;
         }
 
+        [HttpGet]
+        public IActionResult ClearFieldRegistration()
+        {
+            ModelState.Clear();
+            return RedirectToAction("Registration", "Authentication");
+        }
+
+        [HttpGet]
+        public IActionResult ClearFieldSignIn()
+        {
+            ModelState.Clear();
+            return RedirectToAction("SignIn", "Authentication");
+        }
+
+        [HttpGet]
         public IActionResult SignIn(UserModel userModel)
         {
             if (!_userValidator.ValidFormatUsername(userModel.Username) || !_userValidator.ValidFormatPassword(userModel.Password))
@@ -39,6 +54,7 @@ namespace ToDoListMVC.Models
             return RedirectToAction("ViewToDo", "ToDoList");
         }
 
+        [HttpGet]
         public IActionResult Registration(UserModel userModel)
         {
             if (!_userValidator.ValidFormatUsername(userModel.Username, out var validUsernameMessage))
@@ -64,11 +80,6 @@ namespace ToDoListMVC.Models
             var user = userModel.ToUser();
             _userService.Add(user);
             return RedirectToAction("ViewToDo", "ToDoList");
-        }
-
-        public IActionResult LogIn()
-        {
-            return View();
         }
     }
 }
