@@ -9,6 +9,12 @@
         {
             message = string.Empty;
 
+            if (string.IsNullOrEmpty(username))
+            {
+                message = "Please enter your username.";
+                return false;
+            }
+
             if (username.Length < MinLengthUsername)
             {
                 message = "The username is too short.";
@@ -30,13 +36,19 @@
             return true;
         }
 
+        public bool ValidFormatUsername(string username)
+            => !string.IsNullOrEmpty(username)
+                    && username.Length >= MinLengthUsername
+                    && char.IsLetter(username[0])
+                    && username.All(char.IsLetterOrDigit);
+
         public bool ValidFormatPassword(string password, out string message)
         {
             message = string.Empty;
 
-            if (password == null)
+            if (string.IsNullOrEmpty(password))
             {
-                message = "Password should not be empty.";
+                message = "Please enter password.";
                 return false;
             }
 
@@ -54,5 +66,10 @@
 
             return true;
         }
+
+        public bool ValidFormatPassword(string password)
+            => !string.IsNullOrEmpty(password)
+                    && password.Length >= MinLengthPassword
+                    && password.All(char.IsLetterOrDigit);
     }
 }

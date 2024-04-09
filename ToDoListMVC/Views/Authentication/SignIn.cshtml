@@ -1,0 +1,65 @@
+﻿@using ToDoListMVC.Models
+
+@model UserModel
+
+<head>
+    <meta name="viewport" , content="width=device=width" />
+    <title>SignIn</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/dist/jquery.validate.unobtrusive.js"></script>
+</head>
+
+<body class="font-txt">
+
+    <div class="page">
+        <div style="max-width:600px; max-height:600px">
+
+            <h5 style="text-align:center;"><b>Sign In</b></h5>
+            <h6 style="text-align:start">
+                Do you not have an account?
+                <a class="link-info" asp-controller="Authentication" asp-action="Registration">Registration</a>
+            </h6>
+            <form class="row g-2 needs-validation" method="get">
+                <div>
+                    <input type="text" class="form-control" placeholder="Username" aria-label="Username" asp-for="Username">
+                </div>
+
+                <div>
+                    <input type="text" class="form-control" placeholder="Password" aria-label="Password" asp-for="Password">
+                </div>
+
+                <div class="validation" asp-validation-summary="All" style="color:red"></div>
+
+                <div class="text-center" style="padding-top:20px">
+                    <button type="submit" style="width: 100px; height: 40px;" class="btn btn-outline-secondary">Login</button>
+                    <button type="submit" asp-action="ClearFieldSignIn" style="width: 100px; height: 40px;" class="btn btn-outline-secondary">Clear</button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+    
+
+    <style>
+        .font-txt {
+            font-family: 'Times New Roman';
+        }
+
+        .field-validation-error {
+            color: red;
+            font-weight: lighter;
+        }
+
+        input.input-validation-error {
+            border: 1px solid #b94a48;
+        }
+
+        .page {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
+</body>
