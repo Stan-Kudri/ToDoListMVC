@@ -17,9 +17,4 @@
     <ProjectReference Include="..\ToDoList.Core\ToDoList.Core.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Infrastructure\" />
-    <Folder Include="Views\DialogBox\" />
-  </ItemGroup>
-
 </Project>

@@ -1,8 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ToDoList.Core.Models.Users;
 using ToDoList.Core.Service;
+using ToDoListMVC.Models;
 
-namespace ToDoListMVC.Models
+namespace ToDoListMVC.Controllers
 {
     public class AuthenticationController : Controller
     {
@@ -38,20 +39,18 @@ namespace ToDoListMVC.Models
                 return View();
             }
 
-            var user = userModel.ToUser();
-
-            if (_userService.IsFreeUsername(userModel.Username) || !_userService.IsUserData(user))
+            if (_userService.IsFreeUsername(userModel.Username) || !_userService.IsUserModelData(userModel))
             {
                 ModelState.AddModelError("", "The login or password was entered incorrectly.");
             }
 
-            if (ModelState.Count() > 0)
+            if (ModelState.Any(e => e.Value?.ValidationState
+                                    == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid))
             {
                 return View();
             }
 
-            _userService.Add(user);
-            return RedirectToAction("ViewToDo", "ToDoList");
+            return RedirectToAction("HomePage", "Home");
         }
 
         [HttpGet]
@@ -72,7 +71,8 @@ namespace ToDoListMVC.Models
                 ModelState.AddModelError("username", "This username is taken ");
             }
 
-            if (ModelState.Count() > 0)
+            if (ModelState.Any(e => e.Value?.ValidationState
+                                    == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid))
             {
                 return View();
             }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using ToDoList.Core.Extension;
 using ToDoList.Core.Models;
 using ToDoList.Core.Models.Users;
 
@@ -24,6 +25,7 @@ namespace ToDoList.Core.DBContext
             configurationUser.HasIndex(e => e.Username).IsUnique();
             configurationUser.Property(e => e.Username).IsRequired().HasColumnName("username").HasMaxLength(128);
             configurationUser.Property(e => e.PasswordHash).IsRequired().HasColumnName("passwordHash").HasMaxLength(128);
+            configurationUser.Property(e => e.UserRole).IsRequired().HasColumnName("role").HasDefaultValue(UserRole.User).SmartEnumConversion();
 
             var configurationAffairs = modelBuilder.Entity<Affairs>();
             configurationAffairs.ToTable("affairs");

@@ -1,5 +1,6 @@
 ﻿using ToDoList.Core.DBContext;
 using ToDoList.Core.Models.Users;
+using ToDoListMVC.Models;
 
 namespace ToDoList.Core.Service
 {
@@ -28,8 +29,16 @@ namespace ToDoList.Core.Service
         public bool IsFreeUsername(string username) =>
             _dbContext.Users.FirstOrDefault(e => e.Username == username) == null;
 
+        /*
         public bool IsUserData(User user) =>
-            _dbContext.Users.FirstOrDefault(e => e.Username == user.Username && e.PasswordHash == user.PasswordHash) != null;
+            _dbContext.Users.FirstOrDefault(e => e.Username == user.Username && e.PasswordHash == user.PasswordHash) != null;     */
+
+        public bool IsUserModelData(UserModel user)
+        {
+            var userSelect = _dbContext.Users.FirstOrDefault(e => e.Username == user.Username);
+            return userSelect == null ? false : userSelect.IsVerificationPassword(user.Password);
+        }
+
 
         public User? GetUser(string username, string passwordHash)
             => _dbContext.Users.FirstOrDefault(e => e.Username == username && e.PasswordHash == passwordHash);
