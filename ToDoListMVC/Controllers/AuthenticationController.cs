@@ -44,13 +44,10 @@ namespace ToDoListMVC.Controllers
                 ModelState.AddModelError("", "The login or password was entered incorrectly.");
             }
 
-            if (ModelState.Any(e => e.Value?.ValidationState
-                                    == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid))
-            {
-                return View();
-            }
-
-            return RedirectToAction("HomePage", "Home");
+            return ModelState.Any(e => e.Value?.ValidationState
+                                    == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid)
+                    ? View()
+                    : RedirectToAction("HomePage", "Home");
         }
 
         [HttpGet]
@@ -77,8 +74,7 @@ namespace ToDoListMVC.Controllers
                 return View();
             }
 
-            var user = userModel.ToUser();
-            _userService.Add(user);
+            _userService.Add(userModel.ToUser());
             return RedirectToAction("ViewToDo", "ToDoList");
         }
     }

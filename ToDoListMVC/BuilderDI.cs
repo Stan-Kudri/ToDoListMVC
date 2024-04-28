@@ -12,7 +12,7 @@ namespace ToDoList
             builder.Services.AddScoped(e => e.GetRequiredService<DbContextFactory>().Create());
             builder.Services.AddScoped<AffairsService>();
             builder.Services.AddScoped<UserService>();
-            builder.Services.AddScoped(e => e.GetRequiredService<UserService>().GetUser("Sergey", "$2a$11$YprQd7OL66HlKYHoMHAFVehR.oUJb0tjUnuxb/DsYwbU.y9asHEW."));
+            builder.Services.AddScoped(e => e.GetRequiredService<UserService>().GetUser("StanKudri", "$2a$11$/JFnSuwAVPjEeuin1DQveuF2AdXa/NNSfzMJq35/mCbk9ROLM.laS"));
         }
     }
 }

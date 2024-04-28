@@ -29,10 +29,6 @@ namespace ToDoList.Core.Service
         public bool IsFreeUsername(string username) =>
             _dbContext.Users.FirstOrDefault(e => e.Username == username) == null;
 
-        /*
-        public bool IsUserData(User user) =>
-            _dbContext.Users.FirstOrDefault(e => e.Username == user.Username && e.PasswordHash == user.PasswordHash) != null;     */
-
         public bool IsUserModelData(UserModel user)
         {
             var userSelect = _dbContext.Users.FirstOrDefault(e => e.Username == user.Username);
