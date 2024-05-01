@@ -2,6 +2,7 @@
 using ToDoList.Core.DBContext;
 using ToDoList.Core.Repository;
 using ToDoList.Core.Service;
+using ToDoListMVC.Controllers;
 using ToDoListMVC.Extension.ConfigJWTAuth;
 
 namespace ToDoList
@@ -16,7 +17,7 @@ namespace ToDoList
             builder.Services.AddScoped<UserService>();
             builder.Services.AddScoped<JwtTokenHelper>();
             builder.Services.AddScoped(e => e.GetRequiredService<UserService>().GetUser("StanKudri", "$2a$11$/JFnSuwAVPjEeuin1DQveuF2AdXa/NNSfzMJq35/mCbk9ROLM.laS"));
-            //builder.Services.AddAuthentication("Bearer").AddJwtBearer();
+            builder.Services.AddScoped<AuthenticationController>();
         }
 
         public static void AddConfigureService(this WebApplicationBuilder builder)

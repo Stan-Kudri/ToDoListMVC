@@ -14,10 +14,10 @@ namespace ToDoListMVC.Controllers
         private readonly UserService _userService;
         private readonly JwtTokenHelper _tokenHelper;
 
-        public AuthenticationController(IServiceProvider service)
+        public AuthenticationController(UserService userService, JwtTokenHelper tokenHelper)
         {
-            _userService = service.GetRequiredService<UserService>();
-            _tokenHelper = service.GetRequiredService<JwtTokenHelper>();
+            _userService = userService;
+            _tokenHelper = tokenHelper;
         }
 
         [HttpGet]
@@ -31,6 +31,7 @@ namespace ToDoListMVC.Controllers
         public IActionResult ClearFieldSignIn()
         {
             ModelState.Clear();
+            HttpContext.Response.Cookies.Delete(AuthJWTToken.GetTokenKey);
             return RedirectToAction("SignIn", "Authentication");
         }
 
@@ -58,7 +59,7 @@ namespace ToDoListMVC.Controllers
             {
                 var token = _tokenHelper.GenerateTokenJWT(user);
 
-                HttpContext.Response.Cookies.Append("JWTBearer", token.ToString());
+                HttpContext.Response.Cookies.Append(AuthJWTToken.GetTokenKey, token.ToString());
 
                 return RedirectToAction("HomePage", "Home");
             }

@@ -5,6 +5,7 @@ namespace ToDoListMVC.Extension.ConfigJWTAuth
 {
     public static class AddAuthenticationExtension
     {
+
         public static void AddJWTBearerExtension(this IServiceCollection service, IConfiguration configure)
         {
             var section = configure.GetSection("Auth");
