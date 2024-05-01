@@ -31,7 +31,7 @@ namespace ToDoListMVC.Controllers
         public IActionResult ClearFieldSignIn()
         {
             ModelState.Clear();
-            HttpContext.Response.Cookies.Delete(AuthJWTToken.GetTokenKey);
+            HttpContext.Response.Cookies.Delete(LoginConst.GetTokenKey);
             return RedirectToAction("SignIn", "Authentication");
         }
 
@@ -59,7 +59,12 @@ namespace ToDoListMVC.Controllers
             {
                 var token = _tokenHelper.GenerateTokenJWT(user);
 
-                HttpContext.Response.Cookies.Append(AuthJWTToken.GetTokenKey, token.ToString());
+                HttpContext.Response.Cookies.Append(LoginConst.GetTokenKey, token.Encrypt());
+                if (HttpContext.Request.Cookies.TryGetValue(LoginConst.GetTokenKey, out var str))
+                {
+                    HttpContext.Response.Cookies.Append("NewTokenEncrypt", str);
+                    HttpContext.Response.Cookies.Append("NewTokenDecrypt", str.Decrypt());
+                }
 
                 return RedirectToAction("HomePage", "Home");
             }
