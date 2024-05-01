@@ -1,9 +1,12 @@
+using Microsoft.AspNetCore.Hosting.StaticWebAssets;
 using ToDoList;
 
 var builder = WebApplication.CreateBuilder(args);
+StaticWebAssetsLoader.UseStaticWebAssets(builder.Environment, builder.Configuration);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.AddConfigureService();
 builder.CreateDBContext();
 
 var app = builder.Build();

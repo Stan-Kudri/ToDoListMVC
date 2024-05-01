@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using ToDoList.Core.Authentication;
 using ToDoList.Core.Models.Users;
 using ToDoList.Core.Service;
 using ToDoListMVC.Models;
@@ -10,10 +12,12 @@ namespace ToDoListMVC.Controllers
         private readonly static UserValidator _userValidator = new UserValidator();
 
         private readonly UserService _userService;
+        private readonly JwtTokenHelper _tokenHelper;
 
-        public AuthenticationController(UserService userService)
+        public AuthenticationController(IServiceProvider service)
         {
-            _userService = userService;
+            _userService = service.GetRequiredService<UserService>();
+            _tokenHelper = service.GetRequiredService<JwtTokenHelper>();
         }
 
         [HttpGet]
@@ -30,6 +34,7 @@ namespace ToDoListMVC.Controllers
             return RedirectToAction("SignIn", "Authentication");
         }
 
+        [AllowAnonymous]
         [HttpGet]
         public IActionResult SignIn(UserModel userModel)
         {
@@ -39,17 +44,27 @@ namespace ToDoListMVC.Controllers
                 return View();
             }
 
-            if (_userService.IsFreeUsername(userModel.Username) || !_userService.IsUserModelData(userModel))
+            if (!_userService.IsUserModelData(userModel, out var user))
             {
                 ModelState.AddModelError("", "The login or password was entered incorrectly.");
             }
 
-            return ModelState.Any(e => e.Value?.ValidationState
-                                    == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid)
-                    ? View()
-                    : RedirectToAction("HomePage", "Home");
+            if (ModelState.Any(e => e.Value?.ValidationState
+                                    == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid))
+            {
+                return View(Results.Unauthorized());
+            }
+            else
+            {
+                var token = _tokenHelper.GenerateTokenJWT(user);
+
+                HttpContext.Response.Cookies.Append("JWTBearer", token.ToString());
+
+                return RedirectToAction("HomePage", "Home");
+            }
         }
 
+        [AllowAnonymous]
         [HttpGet]
         public IActionResult Registration(UserModel userModel)
         {

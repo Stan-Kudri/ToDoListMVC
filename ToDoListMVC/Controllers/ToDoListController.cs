@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using ToDoList.Core.Models;
 using ToDoList.Core.Models.Users;
@@ -7,6 +8,7 @@ using ToDoList.Models;
 
 namespace ToDoListMVC.Controllers
 {
+    [Authorize(Roles = "User")]
     public class ToDoListController : Controller
     {
         private readonly ILogger<ToDoListController> _logger;

@@ -36,11 +36,11 @@
 
         public string PasswordHash { get; private set; } = string.Empty;
 
+        public UserRole UserRole { get; set; } = UserRole.User;
+
         public List<Affairs>? Affairs { get; set; } = null;
 
         public bool IsVerificationPassword(string password)
             => _passwordHasher.Verification(password, PasswordHash);
-
-        public UserRole UserRole { get; set; } = UserRole.User;
     }
 }
