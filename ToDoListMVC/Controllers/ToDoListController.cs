@@ -8,7 +8,6 @@ using ToDoList.Models;
 
 namespace ToDoListMVC.Controllers
 {
-    [Authorize(Roles = "User")]
     public class ToDoListController : Controller
     {
         private readonly ILogger<ToDoListController> _logger;
@@ -22,10 +21,12 @@ namespace ToDoListMVC.Controllers
             _user = user;
         }
 
+        [Authorize(Roles = "User")]
         [HttpGet]
         public IActionResult ViewToDo()
             => View();
 
+        [Authorize(Roles = "User")]
         [HttpPost]
         public IActionResult ViewToDo(AffairsModel item)
         {
@@ -40,6 +41,7 @@ namespace ToDoListMVC.Controllers
             return RedirectToAction();
         }
 
+        [Authorize(Roles = "User")]
         [HttpPost]
         public IActionResult Delete(Guid? id)
         {
@@ -56,6 +58,7 @@ namespace ToDoListMVC.Controllers
             return NotFound();
         }
 
+        [Authorize(Roles = "User")]
         [HttpGet]
         public IActionResult Edit(Guid? id)
         {
@@ -70,6 +73,7 @@ namespace ToDoListMVC.Controllers
             return NotFound();
         }
 
+        [Authorize(Roles = "User")]
         [HttpPost]
         public IActionResult Edit(Affairs item)
         {
@@ -82,6 +86,7 @@ namespace ToDoListMVC.Controllers
             return NotFound();
         }
 
+        [Authorize(Roles = "User")]
         [HttpPost]
         public IActionResult ChangeExecution(Guid? id)
         {
@@ -94,6 +99,7 @@ namespace ToDoListMVC.Controllers
             return NotFound();
         }
 
+        [Authorize(Roles = "User")]
         [HttpPost]
         public IActionResult ChangeDescription(Guid? id, string description)
         {

@@ -20,21 +20,22 @@ namespace ToDoList.Core.Authentication
             var securityKey = authOptions.GetSymmetricSecurityKey();
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
-            var clainms = new List<Claim>()
+            var clainms = new List<Claim>
             {
                 new Claim(JwtRegisteredClaimNames.UniqueName, user.Username),
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                new Claim(ClaimTypes.Role, user.UserRole.ToString(), ClaimValueTypes.String)
+                new Claim("role", user.UserRole.ToString())
             };
 
             var token = new JwtSecurityToken(
-                            authOptions.Issuer,
-                            authOptions.Audience,
-                            clainms,
+                            issuer: authOptions.Issuer,
+                            audience: authOptions.Audience,
+                            claims: clainms,
                             expires: DateTime.Now.AddHours(authOptions.TokenLifeTime),
                             signingCredentials: credentials);
+            var tokenValue = new JwtSecurityTokenHandler().WriteToken(token);
 
-            return new JwtSecurityTokenHandler().WriteToken(token);
+            return tokenValue;
         }
     }
 }

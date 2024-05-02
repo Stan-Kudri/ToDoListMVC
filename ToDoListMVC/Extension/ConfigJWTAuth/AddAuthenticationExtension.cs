@@ -12,6 +12,7 @@ namespace ToDoListMVC.Extension.ConfigJWTAuth
             service.Configure<AuthOptions>(section);
             var authOptions = section.Get<AuthOptions>();
 
+            // Disable BCC2008
             service.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
                 {
@@ -28,6 +29,15 @@ namespace ToDoListMVC.Extension.ConfigJWTAuth
                         //HS256
                         IssuerSigningKey = authOptions?.GetSymmetricSecurityKey(),
                         ValidateIssuerSigningKey = true,
+                    };
+
+                    options.Events = new JwtBearerEvents
+                    {
+                        OnMessageReceived = context =>
+                        {
+                            context.Token = context.Request.Cookies[LoginConst.GetTokenKey];
+                            return Task.CompletedTask;
+                        }
                     };
                 });
         }

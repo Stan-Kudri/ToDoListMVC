@@ -59,12 +59,7 @@ namespace ToDoListMVC.Controllers
             {
                 var token = _tokenHelper.GenerateTokenJWT(user);
 
-                HttpContext.Response.Cookies.Append(LoginConst.GetTokenKey, token.Encrypt());
-                if (HttpContext.Request.Cookies.TryGetValue(LoginConst.GetTokenKey, out var str))
-                {
-                    HttpContext.Response.Cookies.Append("NewTokenEncrypt", str);
-                    HttpContext.Response.Cookies.Append("NewTokenDecrypt", str.Decrypt());
-                }
+                HttpContext.Response.Cookies.Append(LoginConst.GetTokenKey, token);
 
                 return RedirectToAction("HomePage", "Home");
             }
