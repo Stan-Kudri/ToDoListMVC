@@ -5,7 +5,6 @@ namespace ToDoListMVC.Extension.ConfigJWTAuth
 {
     public static class AddAuthenticationExtension
     {
-
         public static void AddJWTBearerExtension(this IServiceCollection service, IConfiguration configure)
         {
             var section = configure.GetSection("Auth");
@@ -35,7 +34,8 @@ namespace ToDoListMVC.Extension.ConfigJWTAuth
                     {
                         OnMessageReceived = context =>
                         {
-                            context.Token = context.Request.Cookies[LoginConst.GetTokenKey];
+                            var token = context.Request.Cookies[LoginConst.GetTokenKey];
+                            context.Token = token;
                             return Task.CompletedTask;
                         }
                     };

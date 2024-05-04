@@ -1,32 +1,33 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using ToDoList.Core.Authentication;
 using ToDoList.Core.Models;
-using ToDoList.Core.Models.Users;
 using ToDoList.Core.Repository;
 using ToDoList.Models;
 
 namespace ToDoListMVC.Controllers
 {
+    [Authorize(Roles = "User")]
     public class ToDoListController : Controller
     {
         private readonly ILogger<ToDoListController> _logger;
         private readonly AffairsService _affairsService;
-        private readonly User _user;
+        private readonly JwtTokenHelper _jwtTokenHelper;
+        private readonly Guid? _userId;
 
-        public ToDoListController(ILogger<ToDoListController> logger, AffairsService caseService, User user)
+        public ToDoListController(ILogger<ToDoListController> logger, AffairsService caseService, JwtTokenHelper jwtTokenHelper)
         {
             _logger = logger;
             _affairsService = caseService;
-            _user = user;
+            _jwtTokenHelper = jwtTokenHelper;
         }
 
-        [Authorize(Roles = "User")]
         [HttpGet]
         public IActionResult ViewToDo()
-            => View();
+            => !IsInitializeIdUserByToken() ? RedirectToAction("SignIn", "Authentication") : View();
 
-        [Authorize(Roles = "User")]
+
         [HttpPost]
         public IActionResult ViewToDo(AffairsModel item)
         {
@@ -41,7 +42,6 @@ namespace ToDoListMVC.Controllers
             return RedirectToAction();
         }
 
-        [Authorize(Roles = "User")]
         [HttpPost]
         public IActionResult Delete(Guid? id)
         {
@@ -58,7 +58,6 @@ namespace ToDoListMVC.Controllers
             return NotFound();
         }
 
-        [Authorize(Roles = "User")]
         [HttpGet]
         public IActionResult Edit(Guid? id)
         {
@@ -73,7 +72,6 @@ namespace ToDoListMVC.Controllers
             return NotFound();
         }
 
-        [Authorize(Roles = "User")]
         [HttpPost]
         public IActionResult Edit(Affairs item)
         {
@@ -86,7 +84,6 @@ namespace ToDoListMVC.Controllers
             return NotFound();
         }
 
-        [Authorize(Roles = "User")]
         [HttpPost]
         public IActionResult ChangeExecution(Guid? id)
         {
@@ -99,7 +96,6 @@ namespace ToDoListMVC.Controllers
             return NotFound();
         }
 
-        [Authorize(Roles = "User")]
         [HttpPost]
         public IActionResult ChangeDescription(Guid? id, string description)
         {
@@ -115,5 +111,15 @@ namespace ToDoListMVC.Controllers
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
             => View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+
+        private bool IsInitializeIdUserByToken()
+        {
+            if (!HttpContext.Request.Cookies.TryGetValue(LoginConst.GetTokenKey, out var token))
+            {
+                return false;
+            }
+
+            return _jwtTokenHelper.IsUserIdGetByToken(token);
+        }
     }
 }

@@ -1,5 +1,7 @@
 ﻿using ToDoList.Core.Authentication;
 using ToDoList.Core.DBContext;
+using ToDoList.Core.Models;
+using ToDoList.Core.Models.Users;
 using ToDoList.Core.Repository;
 using ToDoList.Core.Service;
 using ToDoListMVC.Controllers;
@@ -16,8 +18,11 @@ namespace ToDoList
             builder.Services.AddScoped<AffairsService>();
             builder.Services.AddScoped<UserService>();
             builder.Services.AddScoped<JwtTokenHelper>();
-            builder.Services.AddScoped(e => e.GetRequiredService<UserService>().GetUser("StanKudri", "$2a$11$/JFnSuwAVPjEeuin1DQveuF2AdXa/NNSfzMJq35/mCbk9ROLM.laS"));
+            builder.Services.AddScoped<ICurrentUserAccessor>(e => e.GetRequiredService<JwtTokenHelper>());
+            //builder.Services.AddScoped(e => e.GetRequiredService<UserService>().GetUser("StanKudri", "$2a$11$/JFnSuwAVPjEeuin1DQveuF2AdXa/NNSfzMJq35/mCbk9ROLM.laS"));
+            builder.Services.AddScoped(e => new User());
             builder.Services.AddScoped<AuthenticationController>();
+            builder.Services.AddScoped<ToDoListController>();
         }
 
         public static void AddConfigureService(this WebApplicationBuilder builder)
