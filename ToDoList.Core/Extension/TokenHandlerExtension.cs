@@ -6,26 +6,34 @@ namespace ToDoList.Core.Extension
 {
     public static class TokenHandlerExtension
     {
-        public static JwtSecurityTokenHandler GetTokenHandler(this string token, AuthOptions authOptions)
+        public static JwtSecurityTokenHandler? GetTokenHandler(this string token, AuthOptions authOptions)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
 
-            tokenHandler.ValidateToken(token, new TokenValidationParameters
+            try
             {
-                ValidateIssuer = true,
-                ValidIssuer = authOptions?.Issuer,
+                tokenHandler.ValidateToken(token, new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidIssuer = authOptions?.Issuer,
 
-                ValidateAudience = true,
-                ValidAudience = authOptions?.Audience,
+                    ValidateAudience = true,
+                    ValidAudience = authOptions?.Audience,
 
-                ValidateLifetime = true,
+                    ValidateLifetime = true,
 
-                //HS256
-                IssuerSigningKey = authOptions?.GetSymmetricSecurityKey(),
-                ValidateIssuerSigningKey = true,
-            }, out SecurityToken validatedToken);
+                    //HS256
+                    IssuerSigningKey = authOptions?.GetSymmetricSecurityKey(),
+                    ValidateIssuerSigningKey = true,
+                }, out SecurityToken validatedToken);
 
-            return tokenHandler;
+
+                return tokenHandler;
+            }
+            catch
+            {
+                return null;
+            }
         }
     }
 }

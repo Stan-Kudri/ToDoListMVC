@@ -14,7 +14,6 @@ namespace ToDoListMVC.Controllers
         private readonly ILogger<ToDoListController> _logger;
         private readonly AffairsService _affairsService;
         private readonly JwtTokenHelper _jwtTokenHelper;
-        private readonly Guid? _userId;
 
         public ToDoListController(ILogger<ToDoListController> logger, AffairsService caseService, JwtTokenHelper jwtTokenHelper)
         {

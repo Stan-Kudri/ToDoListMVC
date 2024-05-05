@@ -42,7 +42,7 @@ namespace ToDoList.Core.Authentication
         public bool IsUserIdGetByToken(string token)
         {
             var tokenHandler = token.GetTokenHandler(_authOptions);
-            if (tokenHandler.ReadToken(token) is JwtSecurityToken securityToken)
+            if (tokenHandler != null && tokenHandler.ReadToken(token) is JwtSecurityToken securityToken)
             {
                 var claims = securityToken.Claims.ToList();
                 var strId = claims.FirstOrDefault(e => e.Type == ClaimTypes.NameIdentifier)?.Value;

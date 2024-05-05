@@ -39,6 +39,11 @@ namespace ToDoListMVC.Controllers
         [HttpGet]
         public IActionResult SignIn(UserModel userModel)
         {
+            if (HttpContext.Request.Cookies.TryGetValue(LoginConst.GetTokenKey, out var usingToken) && _tokenHelper.IsUserIdGetByToken(usingToken))
+            {
+                return RedirectToAction("HomePage", "Home");
+            }
+
             if (!_userValidator.ValidFormatUsername(userModel.Username) || !_userValidator.ValidFormatPassword(userModel.Password))
             {
                 ModelState.AddModelError("", "The data was entered incorrectly.");
@@ -69,6 +74,11 @@ namespace ToDoListMVC.Controllers
         [HttpGet]
         public IActionResult Registration(UserModel userModel)
         {
+            if (HttpContext.Request.Cookies.TryGetValue(LoginConst.GetTokenKey, out var usingToken) && _tokenHelper.IsUserIdGetByToken(usingToken))
+            {
+                return RedirectToAction("HomePage", "Home");
+            }
+
             if (!_userValidator.ValidFormatUsername(userModel.Username, out var validUsernameMessage))
             {
                 ModelState.AddModelError("username", validUsernameMessage);
