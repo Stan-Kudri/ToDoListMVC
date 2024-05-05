@@ -22,6 +22,7 @@ namespace ToDoListMVC.Controllers
             _jwtTokenHelper = jwtTokenHelper;
         }
 
+        [AllowAnonymous]
         [HttpGet]
         public IActionResult ViewToDo()
             => !IsInitializeIdUserByToken() ? RedirectToAction("SignIn", "Authentication") : View();
