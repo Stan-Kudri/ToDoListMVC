@@ -1,4 +1,11 @@
-﻿<!DOCTYPE html>
+﻿@using ToDoList.Core.Models
+@using ToDoList.Core.Repository
+@using ToDoList.Core.Service
+
+@inject UserService UserService
+@inject ICurrentUserAccessor CurrentUser
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -31,6 +38,21 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Authentication" asp-action="SignIn">SignIn</a>
                         </li>
+                    </ul>
+                </div>
+                <div class="btn-group dropstart" style="align-content:end; margin-right: 2%;">
+                    @if (CurrentUser.UserId == null)
+                    {
+                        <a type="button" class="btn btn-primary" asp-area="" asp-controller="Authentication" asp-action="SignIn">SignIn</a>
+                    }
+                    else
+                    {
+                        <button type="button" class="btn btn-success dropdown-toggle"  data-bs-toggle="dropdown">@UserService.GetUser(CurrentUser.UserId).Username</button>
+                    }
+                    <ul class="dropdown-menu " style="width:70px">
+                        <li><a class="dropdown-item" href="#">Data</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="#">Output</a></li>
                     </ul>
                 </div>
             </div>

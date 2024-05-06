@@ -60,17 +60,9 @@ namespace ToDoListMVC.Controllers
 
         [HttpGet]
         public IActionResult Edit(Guid? id)
-        {
-            if (id != null)
-            {
-                if (_affairsService.TrySearchItem(id, out var item))
-                {
-                    return View("Edit", item);
-                }
-            }
-
-            return NotFound();
-        }
+            => id != null && _affairsService.TrySearchItem(id, out var item)
+                ? View("Edit", item)
+                : NotFound();
 
         [HttpPost]
         public IActionResult Edit(Affairs item)

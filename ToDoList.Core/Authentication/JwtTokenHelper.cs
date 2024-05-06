@@ -52,5 +52,16 @@ namespace ToDoList.Core.Authentication
 
             return false;
         }
+
+        public void AuthUserIdGetByToken(string token)
+        {
+            var tokenHandler = token.GetTokenHandler(_authOptions);
+            if (tokenHandler != null && tokenHandler.ReadToken(token) is JwtSecurityToken securityToken)
+            {
+                var claims = securityToken.Claims.ToList();
+                var strId = claims.FirstOrDefault(e => e.Type == ClaimTypes.NameIdentifier)?.Value;
+                UserId = !Guid.TryParse(strId, out var id) ? null : id;
+            }
+        }
     }
 }

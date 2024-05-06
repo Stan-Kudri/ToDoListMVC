@@ -66,7 +66,7 @@ namespace ToDoListMVC.Controllers
 
                 HttpContext.Response.Cookies.Append(LoginConst.GetTokenKey, token);
 
-                return RedirectToAction("HomePage", "Home");
+                return RedirectToAction("ViewToDo", "ToDoList");
             }
         }
 
