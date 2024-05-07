@@ -47,7 +47,7 @@ namespace ToDoListMVC.Controllers
 
         [HttpGet]
         public IActionResult Edit(Guid? id)
-            => id != null && _affairsService.TrySearchItem(id, out var item)
+            => id != null && _affairsService.TrySearchItem(id, out var item) && !string.IsNullOrEmpty(item.Description)
                 ? View("Edit", item)
                 : NoContent();
 
@@ -55,6 +55,11 @@ namespace ToDoListMVC.Controllers
         public IActionResult Edit(Affairs item)
         {
             if (item == null)
+            {
+                return NoContent();
+            }
+
+            if (string.IsNullOrEmpty(item.Description))
             {
                 return NoContent();
             }
@@ -72,19 +77,18 @@ namespace ToDoListMVC.Controllers
                 return RedirectToAction("ViewToDo");
             }
 
-            return NotFound();
+            return NoContent();
         }
 
         [HttpPost]
         public IActionResult ChangeDescription(Guid? id, string description)
         {
-            if (id != null)
+            if (id != null && !string.IsNullOrEmpty(description))
             {
                 _affairsService.UpdateDescription(id, description);
-                return RedirectToAction("ViewToDo");
             }
 
-            return NotFound();
+            return RedirectToAction("ViewToDo");
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
