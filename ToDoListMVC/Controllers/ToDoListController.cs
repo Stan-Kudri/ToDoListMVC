@@ -1,83 +1,66 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using ToDoList.Core.Models;
-using ToDoList.Core.Models.Users;
+using ToDoList.Core.Models.Affair;
 using ToDoList.Core.Repository;
 using ToDoList.Models;
 
 namespace ToDoListMVC.Controllers
 {
+    [Authorize(Roles = "User")]
     public class ToDoListController : Controller
     {
         private readonly ILogger<ToDoListController> _logger;
         private readonly AffairsService _affairsService;
-        private readonly User _user;
 
-        public ToDoListController(ILogger<ToDoListController> logger, AffairsService caseService, User user)
+        public ToDoListController(ILogger<ToDoListController> logger, AffairsService caseService)
         {
             _logger = logger;
             _affairsService = caseService;
-            _user = user;
         }
 
+        [AllowAnonymous]
         [HttpGet]
-        public IActionResult ViewToDo()
-            => View();
+        public IActionResult ViewToDo([FromServices] ICurrentUserAccessor currentUserAccessor)
+            => currentUserAccessor.UserId is null ? RedirectToAction("SignIn", "Authentication") : View();
+
 
         [HttpPost]
         public IActionResult ViewToDo(AffairsModel item)
         {
-            var affairsModel = new Affairs(
-                                            item.description,
-                                            DateTime.Now,
-                                            item.isCaseCompletion,
-                                            item.isCaseCompletion == true ? DateTime.Now : null,
-                                            item.userId);
-
-            _affairsService.Add(affairsModel);
+            _affairsService.Add(item);
             return RedirectToAction();
         }
 
         [HttpPost]
         public IActionResult Delete(Guid? id)
         {
-            if (id != null)
+            if (id == null)
             {
-                if (_affairsService.TrySearchItem(id, out var item))
-                {
-                    _affairsService.Remove(item);
-                }
-
-                return RedirectToAction("ViewToDo");
+                return NoContent();
             }
 
-            return NotFound();
+            _affairsService.Remove(id);
+            return RedirectToAction("ViewToDo");
         }
 
         [HttpGet]
         public IActionResult Edit(Guid? id)
-        {
-            if (id != null)
-            {
-                if (_affairsService.TrySearchItem(id, out var item))
-                {
-                    return View("Edit", item);
-                }
-            }
-
-            return NotFound();
-        }
+            => id != null && _affairsService.TrySearchItem(id, out var item)
+                ? View("Edit", item)
+                : NoContent();
 
         [HttpPost]
         public IActionResult Edit(Affairs item)
         {
-            if (item != null)
+            if (item == null)
             {
-                _affairsService.Update(item);
-                return RedirectToAction("ViewToDo");
+                return NoContent();
             }
 
-            return NotFound();
+            _affairsService.Update(item);
+            return RedirectToAction("ViewToDo");
         }
 
         [HttpPost]

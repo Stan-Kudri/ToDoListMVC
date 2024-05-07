@@ -1,9 +1,13 @@
+using Microsoft.AspNetCore.Hosting.StaticWebAssets;
 using ToDoList;
+using ToDoList.Core.Authentication;
 
 var builder = WebApplication.CreateBuilder(args);
+StaticWebAssetsLoader.UseStaticWebAssets(builder.Environment, builder.Configuration);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.AddConfigureService();
 builder.CreateDBContext();
 
 var app = builder.Build();
@@ -21,10 +25,25 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseCors();
+
+app.UseAuthentication();
 app.UseAuthorization();
+
+app.Use((context, func) =>
+{
+    if (!context.Request.Cookies.TryGetValue(LoginConst.GetTokenKey, out var usingToken))
+    {
+        return func();
+    }
+
+    var tokenHelper = context.RequestServices.GetRequiredService<JwtToken>();
+    tokenHelper.SetToken(usingToken);
+    return func();
+});
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=HomePage}/{id?}");
+    pattern: "{controller=ToDoList}/{action=ViewToDo}/{id?}");
 
 app.Run();

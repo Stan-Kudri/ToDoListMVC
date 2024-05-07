@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using ToDoList.Core.Models.Users;
 
-namespace ToDoList.Core.Models
+namespace ToDoList.Core.Models.Affair
 {
     public class Affairs : Entity
     {

@@ -1,4 +1,6 @@
-﻿namespace ToDoList.Core.Models.Users
+﻿using ToDoList.Core.Models.Affair;
+
+namespace ToDoList.Core.Models.Users
 {
     public class User : Entity
     {
@@ -36,6 +38,11 @@
 
         public string PasswordHash { get; private set; } = string.Empty;
 
+        public UserRole UserRole { get; set; } = UserRole.User;
+
         public List<Affairs>? Affairs { get; set; } = null;
+
+        public bool IsVerificationPassword(string password)
+            => _passwordHasher.Verification(password, PasswordHash);
     }
 }
