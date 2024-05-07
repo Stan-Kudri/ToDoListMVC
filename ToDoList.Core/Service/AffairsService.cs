@@ -27,6 +27,11 @@ namespace ToDoList.Core.Repository
                 throw new Exception("User authorization error.");
             }
 
+            if (string.IsNullOrEmpty(affairsModel.Description))
+            {
+                return;
+            }
+
             var item = new Affairs(
                                     affairsModel.Description,
                                     DateTime.Now,
