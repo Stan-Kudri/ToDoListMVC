@@ -40,20 +40,16 @@
                         </li>
                     </ul>
                 </div>
-                <div class="btn-group dropstart" style="align-content:end; margin-right: 2%;">
+                <div style="align-content:end; padding-left:20px">
                     @if (CurrentUser.UserId == null)
                     {
                         <a type="button" class="btn btn-primary" asp-area="" asp-controller="Authentication" asp-action="SignIn">SignIn</a>
                     }
                     else
                     {
-                        <button type="button" class="btn btn-success dropdown-toggle"  data-bs-toggle="dropdown">@UserService.GetUser(CurrentUser.UserId).Username</button>
+                        <button type="button" class="btn btn-success mr-4">@UserService.GetUser(CurrentUser.UserId).Username</button>
+                        <a type="button" class="btn btn-outline-danger ml-4" asp-area="" asp-controller="Authentication" asp-action="Output">Output</a>
                     }
-                    <ul class="dropdown-menu " style="width:70px">
-                        <li><a class="dropdown-item" href="#">Data</a></li>
-                        <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item" href="#">Output</a></li>
-                    </ul>
                 </div>
             </div>
         </nav>

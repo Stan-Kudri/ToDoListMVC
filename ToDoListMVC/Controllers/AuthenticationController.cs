@@ -31,7 +31,6 @@ namespace ToDoListMVC.Controllers
         public IActionResult ClearFieldSignIn()
         {
             ModelState.Clear();
-            HttpContext.Response.Cookies.Delete(LoginConst.GetTokenKey);
             return RedirectToAction("SignIn", "Authentication");
         }
 
@@ -102,6 +101,15 @@ namespace ToDoListMVC.Controllers
 
             _userService.Add(userModel.ToUser());
             return RedirectToAction("ViewToDo", "ToDoList");
+        }
+
+        [Authorize]
+        [HttpGet]
+        public IActionResult Output()
+        {
+            HttpContext.Response.Cookies.Delete(LoginConst.GetTokenKey);
+            _tokenHelper.UserId = null;
+            return RedirectToAction("HomePage", "Home");
         }
     }
 }
