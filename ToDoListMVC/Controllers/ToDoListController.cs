@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
-using ToDoList.Core.Authentication;
 using ToDoList.Core.Models;
+using ToDoList.Core.Models.Affair;
 using ToDoList.Core.Repository;
 using ToDoList.Models;
 
@@ -13,67 +13,54 @@ namespace ToDoListMVC.Controllers
     {
         private readonly ILogger<ToDoListController> _logger;
         private readonly AffairsService _affairsService;
-        private readonly JwtTokenHelper _jwtTokenHelper;
 
-        public ToDoListController(ILogger<ToDoListController> logger, AffairsService caseService, JwtTokenHelper jwtTokenHelper)
+        public ToDoListController(ILogger<ToDoListController> logger, AffairsService caseService)
         {
             _logger = logger;
             _affairsService = caseService;
-            _jwtTokenHelper = jwtTokenHelper;
         }
 
         [AllowAnonymous]
         [HttpGet]
-        public IActionResult ViewToDo()
-            => !IsInitializeIdUserByToken() ? RedirectToAction("SignIn", "Authentication") : View();
+        public IActionResult ViewToDo([FromServices] ICurrentUserAccessor currentUserAccessor)
+            => currentUserAccessor.UserId is null ? RedirectToAction("SignIn", "Authentication") : View();
 
 
         [HttpPost]
         public IActionResult ViewToDo(AffairsModel item)
         {
-            var affairsModel = new Affairs(
-                                            item.description,
-                                            DateTime.Now,
-                                            item.isCaseCompletion,
-                                            item.isCaseCompletion == true ? DateTime.Now : null,
-                                            item.userId);
-
-            _affairsService.Add(affairsModel);
+            _affairsService.Add(item);
             return RedirectToAction();
         }
 
         [HttpPost]
         public IActionResult Delete(Guid? id)
         {
-            if (id != null)
+            if (id == null)
             {
-                if (_affairsService.TrySearchItem(id, out var item))
-                {
-                    _affairsService.Remove(item);
-                }
-
-                return RedirectToAction("ViewToDo");
+                return NoContent();
             }
 
-            return NotFound();
+            _affairsService.Remove(id);
+            return RedirectToAction("ViewToDo");
         }
 
         [HttpGet]
         public IActionResult Edit(Guid? id)
             => id != null && _affairsService.TrySearchItem(id, out var item)
                 ? View("Edit", item)
-                : NotFound();
+                : NoContent();
 
         [HttpPost]
         public IActionResult Edit(Affairs item)
         {
-            if (item != null)
+            if (item == null)
             {
-                _affairsService.Update(item);
-                return RedirectToAction("ViewToDo");
+                return NoContent();
             }
 
-            return NotFound();
+            _affairsService.Update(item);
+            return RedirectToAction("ViewToDo");
         }
 
         [HttpPost]
@@ -103,15 +90,5 @@ namespace ToDoListMVC.Controllers
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
             => View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-
-        private bool IsInitializeIdUserByToken()
-        {
-            if (!HttpContext.Request.Cookies.TryGetValue(LoginConst.GetTokenKey, out var token))
-            {
-                return false;
-            }
-
-            return _jwtTokenHelper.IsUserIdGetByToken(token);
-        }
     }
 }

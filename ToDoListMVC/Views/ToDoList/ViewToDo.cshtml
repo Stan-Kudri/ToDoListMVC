@@ -1,7 +1,8 @@
-﻿@using ToDoList.Core.Models.Users
+﻿@using ToDoList.Core.Models.Affair
+@using ToDoList.Core.Models.Users
 @using ToDoList.Core.Repository
 
-@model ToDoList.Models.AffairsModel
+@model AffairsModel
 
 @{
     ViewData["Title"] = "Home Page";
@@ -23,14 +24,14 @@
         </div>
         <div class="panel-body">
             <form class="p-2" asp-action="ViewToDo" method="post">
-                <input type="hidden" asp-for="userId" value="@User.Id"/>
+                <input type="hidden" asp-for="UserId" value="@User.Id"/>
                 <table class="form-group" style="width:100%">
                     <tr >
                         <td style="width:5%">
-                            <input type="checkbox" asp-for="isCaseCompletion" style="font-size:14px;"/>
+                            <input type="checkbox" asp-for="IsCaseCompletion" style="font-size:14px;"/>
                         </td>
                         <td style="width:95%">
-                            <textarea class="form-control" asp-for="description" contenteditable="true"></textarea>
+                            <textarea class="form-control" asp-for="Description" contenteditable="true"></textarea>
                         </td>
                     </tr>
                 </table>

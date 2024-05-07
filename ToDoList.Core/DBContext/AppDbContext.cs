@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ToDoList.Core.Extension;
-using ToDoList.Core.Models;
+using ToDoList.Core.Models.Affair;
 using ToDoList.Core.Models.Users;
 
 namespace ToDoList.Core.DBContext

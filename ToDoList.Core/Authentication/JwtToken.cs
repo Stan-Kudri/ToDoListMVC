@@ -8,11 +8,11 @@ using ToDoList.Core.Models.Users;
 
 namespace ToDoList.Core.Authentication
 {
-    public class JwtTokenHelper : ICurrentUserAccessor
+    public class JwtToken : ICurrentUserAccessor
     {
         private readonly AuthOptions _authOptions;
 
-        public JwtTokenHelper(IOptions<AuthOptions> authOptions)
+        public JwtToken(IOptions<AuthOptions> authOptions)
             => _authOptions = authOptions.Value;
 
         public Guid? UserId { get; set; } = null;
@@ -39,29 +39,18 @@ namespace ToDoList.Core.Authentication
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
-        public bool IsUserIdGetByToken(string token)
+        public void SetToken(string token)
         {
             var tokenHandler = token.GetTokenHandler(_authOptions);
-            if (tokenHandler != null && tokenHandler.ReadToken(token) is JwtSecurityToken securityToken)
+            if (tokenHandler == null || tokenHandler.ReadToken(token) is not JwtSecurityToken securityToken)
             {
-                var claims = securityToken.Claims.ToList();
-                var strId = claims.FirstOrDefault(e => e.Type == ClaimTypes.NameIdentifier)?.Value;
-                UserId = !Guid.TryParse(strId, out var id) ? null : id;
-                return UserId != null;
+                return;
             }
 
-            return false;
-        }
-
-        public void AuthUserIdGetByToken(string token)
-        {
-            var tokenHandler = token.GetTokenHandler(_authOptions);
-            if (tokenHandler != null && tokenHandler.ReadToken(token) is JwtSecurityToken securityToken)
-            {
-                var claims = securityToken.Claims.ToList();
-                var strId = claims.FirstOrDefault(e => e.Type == ClaimTypes.NameIdentifier)?.Value;
-                UserId = !Guid.TryParse(strId, out var id) ? null : id;
-            }
+            UserId = securityToken.Claims
+                .Where(e => e.Type == ClaimTypes.NameIdentifier)
+                .Select(e => !Guid.TryParse(e.Value, out var id) ? (Guid?)null : id)
+                .FirstOrDefault();
         }
     }
 }

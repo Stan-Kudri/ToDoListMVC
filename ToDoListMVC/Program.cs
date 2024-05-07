@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Hosting.StaticWebAssets;
 using ToDoList;
+using ToDoList.Core.Authentication;
 
 var builder = WebApplication.CreateBuilder(args);
 StaticWebAssetsLoader.UseStaticWebAssets(builder.Environment, builder.Configuration);
@@ -28,6 +29,18 @@ app.UseCors();
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.Use((context, func) =>
+{
+    if (!context.Request.Cookies.TryGetValue(LoginConst.GetTokenKey, out var usingToken))
+    {
+        return func();
+    }
+
+    var tokenHelper = context.RequestServices.GetRequiredService<JwtToken>();
+    tokenHelper.SetToken(usingToken);
+    return func();
+});
 
 app.MapControllerRoute(
     name: "default",

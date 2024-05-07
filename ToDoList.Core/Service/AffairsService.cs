@@ -1,5 +1,6 @@
 ﻿using ToDoList.Core.DBContext;
 using ToDoList.Core.Models;
+using ToDoList.Core.Models.Affair;
 
 namespace ToDoList.Core.Repository
 {
@@ -14,12 +15,24 @@ namespace ToDoList.Core.Repository
             _currentUser = currentUserAccessor;
         }
 
-        public void Add(Affairs item)
+        public void Add(AffairsModel affairsModel)
         {
-            if (item == null)
+            if (affairsModel == null)
             {
-                throw new ArgumentNullException("Case item has a value of zero.", nameof(item));
+                throw new ArgumentNullException("Case item has a value of zero.", nameof(affairsModel));
             }
+
+            if (_currentUser.UserId == null)
+            {
+                throw new Exception("User authorization error.");
+            }
+
+            var item = new Affairs(
+                                    affairsModel.Description,
+                                    DateTime.Now,
+                                    affairsModel.IsCaseCompletion,
+                                    affairsModel.IsCaseCompletion == true ? DateTime.Now : null,
+                                    (Guid)_currentUser.UserId);
 
             _dbContext.Affairs.Add(item);
             _dbContext.SaveChanges();
@@ -47,7 +60,7 @@ namespace ToDoList.Core.Repository
             _dbContext.SaveChanges();
         }
 
-        public void Remove(Guid id)
+        public void Remove(Guid? id)
         {
             var item = _dbContext.Affairs.FirstOrDefault(e => e.Id == id);
 
@@ -56,12 +69,6 @@ namespace ToDoList.Core.Repository
                 return;
             }
 
-            _dbContext.Affairs.Remove(item);
-            _dbContext.SaveChanges();
-        }
-
-        public void Remove(Affairs item)
-        {
             _dbContext.Affairs.Remove(item);
             _dbContext.SaveChanges();
         }
@@ -118,23 +125,6 @@ namespace ToDoList.Core.Repository
 
             return true;
         }
-
-        public Affairs GetItem(Guid? id)
-        {
-            var item = _dbContext.Affairs.FirstOrDefault(e => e.Id == id);
-
-            if (item == null)
-            {
-                throw new ArgumentException("ID does not exist.");
-            }
-
-            return item;
-        }
-
-        public List<Affairs> GetAllTaskUser()
-            => _dbContext.Affairs.Where(e => e.UserId == _currentUser.UserId).Count() > 0
-                    ? _dbContext.Affairs.ToList()
-                    : new List<Affairs>();
 
         public List<Affairs> GetCompliteTask()
         {

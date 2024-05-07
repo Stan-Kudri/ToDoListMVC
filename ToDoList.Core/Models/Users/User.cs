@@ -1,4 +1,6 @@
-﻿namespace ToDoList.Core.Models.Users
+﻿using ToDoList.Core.Models.Affair;
+
+namespace ToDoList.Core.Models.Users
 {
     public class User : Entity
     {
