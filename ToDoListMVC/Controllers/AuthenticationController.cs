@@ -12,9 +12,9 @@ namespace ToDoListMVC.Controllers
         private readonly static UserValidator _userValidator = new UserValidator();
 
         private readonly UserService _userService;
-        private readonly JwtToken _tokenHelper;
+        private readonly TokenService _tokenHelper;
 
-        public AuthenticationController(UserService userService, JwtToken tokenHelper)
+        public AuthenticationController(UserService userService, TokenService tokenHelper)
         {
             _userService = userService;
             _tokenHelper = tokenHelper;
@@ -62,7 +62,6 @@ namespace ToDoListMVC.Controllers
             else
             {
                 var token = _tokenHelper.GenerateTokenJWT(user);
-
                 HttpContext.Response.Cookies.Append(LoginConst.GetTokenKey, token);
 
                 return RedirectToAction("ViewToDo", "ToDoList");
@@ -100,7 +99,7 @@ namespace ToDoListMVC.Controllers
             }
 
             _userService.Add(userModel.ToUser());
-            return RedirectToAction("ViewToDo", "ToDoList");
+            return RedirectToAction("SignIn", "Authentication");
         }
 
         [Authorize]

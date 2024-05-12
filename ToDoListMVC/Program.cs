@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting.StaticWebAssets;
 using ToDoList;
 using ToDoList.Core.Authentication;
@@ -27,23 +28,39 @@ app.UseRouting();
 
 app.UseCors();
 
-app.UseAuthentication();
-app.UseAuthorization();
-
 app.Use((context, func) =>
 {
     if (!context.Request.Cookies.TryGetValue(LoginConst.GetTokenKey, out var usingToken))
     {
-        return func();
+        return RedirectIfNeeded(context, func);
     }
 
-    var tokenHelper = context.RequestServices.GetRequiredService<JwtToken>();
+    var tokenHelper = context.RequestServices.GetRequiredService<TokenService>();
     tokenHelper.SetToken(usingToken);
-    return func();
+
+    return tokenHelper.UserId == null ? RedirectIfNeeded(context, func) : func();
 });
+
+app.UseAuthentication();
+app.UseAuthorization();
+
+
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=ToDoList}/{action=ViewToDo}/{id?}");
+    pattern: "{controller=Authentication}/{action=SignIn}/{id?}");
 
 app.Run();
+
+Task RedirectIfNeeded(HttpContext context, Func<Task> func)
+{
+    var endpoint = context.GetEndpoint();
+
+    if (endpoint != null && endpoint.Metadata.GetMetadata<AllowAnonymousAttribute>() != null)
+    {
+        return func();
+    }
+
+    context.Response.Redirect("/Authentication/SignIn");
+    return Task.CompletedTask;
+}

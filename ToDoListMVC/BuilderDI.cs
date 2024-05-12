@@ -17,8 +17,8 @@ namespace ToDoList
             builder.Services.AddScoped(e => e.GetRequiredService<DbContextFactory>().Create());
             builder.Services.AddScoped<AffairsService>();
             builder.Services.AddScoped<UserService>();
-            builder.Services.AddScoped<JwtToken>();
-            builder.Services.AddScoped<ICurrentUserAccessor>(e => e.GetRequiredService<JwtToken>());
+            builder.Services.AddScoped<TokenService>();
+            builder.Services.AddScoped<ICurrentUserAccessor>(e => e.GetRequiredService<TokenService>());
             builder.Services.AddScoped(e => new User());
             builder.Services.AddScoped<AuthenticationController>();
             builder.Services.AddScoped<ToDoListController>();

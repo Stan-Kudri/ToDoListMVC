@@ -8,11 +8,11 @@ using ToDoList.Core.Models.Users;
 
 namespace ToDoList.Core.Authentication
 {
-    public class JwtToken : ICurrentUserAccessor
+    public class TokenService : ICurrentUserAccessor
     {
         private readonly AuthOptions _authOptions;
 
-        public JwtToken(IOptions<AuthOptions> authOptions)
+        public TokenService(IOptions<AuthOptions> authOptions)
             => _authOptions = authOptions.Value;
 
         public Guid? UserId { get; set; } = null;
@@ -33,7 +33,7 @@ namespace ToDoList.Core.Authentication
                             issuer: _authOptions.Issuer,
                             audience: _authOptions.Audience,
                             claims: clainms,
-                            expires: DateTime.Now.AddHours(_authOptions.TokenLifeTime),
+                            expires: DateTime.UtcNow.AddSeconds(_authOptions.TokenLifeTime),
                             signingCredentials: credentials);
 
             return new JwtSecurityTokenHandler().WriteToken(token);
@@ -42,7 +42,10 @@ namespace ToDoList.Core.Authentication
         public void SetToken(string token)
         {
             var tokenHandler = token.GetTokenHandler(_authOptions);
-            if (tokenHandler == null || tokenHandler.ReadToken(token) is not JwtSecurityToken securityToken)
+            if (tokenHandler == null ||
+                tokenHandler.ReadToken(token) is not JwtSecurityToken securityToken ||
+                securityToken.ValidTo < DateTime.UtcNow ||
+                securityToken.ValidFrom > DateTime.UtcNow)
             {
                 return;
             }
