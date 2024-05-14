@@ -1,9 +1,9 @@
 ﻿using ToDoList.Core.Authentication;
-using ToDoList.Core.DBContext;
 using ToDoList.Core.Models;
 using ToDoList.Core.Models.Users;
 using ToDoList.Core.Repository;
 using ToDoList.Core.Service;
+using ToDoList.Migrations;
 using ToDoListMVC.Controllers;
 using ToDoListMVC.Extension.ConfigJWTAuth;
 

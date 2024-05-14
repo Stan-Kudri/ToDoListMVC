@@ -33,7 +33,7 @@ namespace ToDoList.Core.Authentication
                             issuer: _authOptions.Issuer,
                             audience: _authOptions.Audience,
                             claims: clainms,
-                            expires: DateTime.UtcNow.AddSeconds(_authOptions.TokenLifeTime),
+                            expires: DateTime.UtcNow.AddHours(_authOptions.TokenLifeTime),
                             signingCredentials: credentials);
 
             return new JwtSecurityTokenHandler().WriteToken(token);
