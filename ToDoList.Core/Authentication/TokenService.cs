@@ -2,6 +2,7 @@
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using ToDoList.Core.Extension;
 using ToDoList.Core.Models;
 using ToDoList.Core.Models.Users;
@@ -37,6 +38,22 @@ namespace ToDoList.Core.Authentication
                             signingCredentials: credentials);
 
             return new JwtSecurityTokenHandler().WriteToken(token);
+        }
+
+
+        public RefreshToken GenerateRefreshToken(User user)
+        {
+            var randomNumber = new byte[32];
+            using var generator = new RNGCryptoServiceProvider();
+            generator.GetBytes(randomNumber);
+
+            return new RefreshToken
+            {
+                UserId = user.Id,
+                Token = Convert.ToBase64String(randomNumber),
+                Create = LoginConst.GetDateCreateRefreshToken,
+                Expires = LoginConst.GetExpiresRefreshToken,
+            };
         }
 
         public void SetToken(string token)

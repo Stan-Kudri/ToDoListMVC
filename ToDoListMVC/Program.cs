@@ -2,6 +2,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting.StaticWebAssets;
 using ToDoList;
 using ToDoList.Core.Authentication;
+using ToDoList.Core.Extension;
+using ToDoList.Core.Service;
 
 var builder = WebApplication.CreateBuilder(args);
 StaticWebAssetsLoader.UseStaticWebAssets(builder.Environment, builder.Configuration);
@@ -35,16 +37,37 @@ app.Use((context, func) =>
         return RedirectIfNeeded(context, func);
     }
 
+    if (!context.Request.Cookies.TryGetValue(LoginConst.GetRefreshTokenKey, out var refreshTokenStr))
+    {
+        return RedirectIfNeeded(context, func);
+    }
+
     var tokenHelper = context.RequestServices.GetRequiredService<TokenService>();
+
     tokenHelper.SetToken(usingToken);
 
-    return tokenHelper.UserId == null ? RedirectIfNeeded(context, func) : func();
+    var userId = (Guid)tokenHelper.UserId;
+    var user = context.RequestServices.GetRequiredService<UserService>().GetUser(userId);
+
+    var refreshTokenServer = context.RequestServices.GetRequiredService<RefreshTokenService>();
+    var refreshToken = refreshTokenServer.GetRefreshToken(refreshTokenStr, userId);
+
+    if (!refreshToken.IsActiveRefreshToken() || refreshTokenServer.IsExistRefreshToken(refreshTokenStr, userId))
+    {
+        context.Response.Cookies.Delete(LoginConst.GetRefreshTokenKey);
+        context.Response.Cookies.Delete(LoginConst.GetTokenKey);
+    }
+    else if (!refreshToken.IsExpiredRefreshToken() && tokenHelper.UserId != null)
+    {
+        var newRefreshToken = tokenHelper.GenerateRefreshToken(user);
+        refreshTokenServer.Uppdata(newRefreshToken);
+    }
+
+    return tokenHelper.UserId == null || refreshTokenServer.IsExistRefreshToken(refreshTokenStr, (Guid)tokenHelper.UserId) ? RedirectIfNeeded(context, func) : func();
 });
 
 app.UseAuthentication();
 app.UseAuthorization();
-
-
 
 app.MapControllerRoute(
     name: "default",

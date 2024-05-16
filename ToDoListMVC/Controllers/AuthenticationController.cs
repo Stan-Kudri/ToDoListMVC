@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ToDoList.Core.Authentication;
+using ToDoList.Core.Extension;
 using ToDoList.Core.Models.Users;
 using ToDoList.Core.Service;
 using ToDoListMVC.Models;
@@ -13,11 +14,13 @@ namespace ToDoListMVC.Controllers
 
         private readonly UserService _userService;
         private readonly TokenService _tokenHelper;
+        private readonly RefreshTokenService _refreshTokenService;
 
-        public AuthenticationController(UserService userService, TokenService tokenHelper)
+        public AuthenticationController(UserService userService, TokenService tokenHelper, RefreshTokenService refreshTokenService)
         {
             _userService = userService;
             _tokenHelper = tokenHelper;
+            _refreshTokenService = refreshTokenService;
         }
 
         [HttpGet]
@@ -62,7 +65,13 @@ namespace ToDoListMVC.Controllers
             else
             {
                 var token = _tokenHelper.GenerateTokenJWT(user);
+                var refreshToken = _tokenHelper.GenerateRefreshToken(user);
+                var cookiyOptionRefreshToken = new CookieOptions { HttpOnly = true, Expires = DateTime.UtcNow.AddHours(LoginConst.GetExpiresRefreshToken.Hour) };
+
+                _refreshTokenService.UppdataRefreshToken(refreshToken);
+
                 HttpContext.Response.Cookies.Append(LoginConst.GetTokenKey, token);
+                HttpContext.Response.Cookies.Append(LoginConst.GetRefreshTokenKey, refreshToken.Token, cookiyOptionRefreshToken);
 
                 return RedirectToAction("ViewToDo", "ToDoList");
             }
@@ -107,6 +116,7 @@ namespace ToDoListMVC.Controllers
         public IActionResult Output()
         {
             HttpContext.Response.Cookies.Delete(LoginConst.GetTokenKey);
+            HttpContext.Response.Cookies.Delete(LoginConst.GetRefreshTokenKey);
             _tokenHelper.UserId = null;
             return RedirectToAction("HomePage", "Home");
         }

@@ -42,6 +42,8 @@ namespace ToDoList.Core.Models.Users
 
         public List<Affairs>? Affairs { get; set; } = null;
 
+        public List<RefreshToken> RefreshTokens { get; set; } = null;
+
         public bool IsVerificationPassword(string password)
             => _passwordHasher.Verification(password, PasswordHash);
     }
