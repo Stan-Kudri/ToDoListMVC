@@ -23,6 +23,7 @@ namespace ToDoList
             builder.Services.AddScoped(e => new User());
             builder.Services.AddScoped<AuthenticationController>();
             builder.Services.AddScoped<ToDoListController>();
+            builder.Services.AddSingleton<AccessToken>();
         }
 
         public static void AddConfigureService(this WebApplicationBuilder builder)

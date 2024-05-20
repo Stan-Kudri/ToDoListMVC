@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using ToDoList.Core.Authentication;
 using ToDoList.Core.Extension;
+using ToDoList.Core.Models;
 using ToDoList.Core.Models.Users;
 using ToDoList.Core.Service;
 using ToDoListMVC.Models;
@@ -15,12 +16,14 @@ namespace ToDoListMVC.Controllers
         private readonly UserService _userService;
         private readonly TokenService _tokenHelper;
         private readonly RefreshTokenService _refreshTokenService;
+        private readonly AccessToken _accessToken;
 
-        public AuthenticationController(UserService userService, TokenService tokenHelper, RefreshTokenService refreshTokenService)
+        public AuthenticationController(UserService userService, TokenService tokenHelper, RefreshTokenService refreshTokenService, AccessToken accessToken)
         {
             _userService = userService;
             _tokenHelper = tokenHelper;
             _refreshTokenService = refreshTokenService;
+            _accessToken = accessToken;
         }
 
         [HttpGet]
@@ -66,12 +69,14 @@ namespace ToDoListMVC.Controllers
             {
                 var token = _tokenHelper.GenerateTokenJWT(user);
                 var refreshToken = _tokenHelper.GenerateRefreshToken(user);
-                var cookiyOptionRefreshToken = new CookieOptions { HttpOnly = true, Expires = DateTime.UtcNow.AddHours(LoginConst.GetExpiresRefreshToken.Hour) };
+                var cookiyOptionRefreshToken = new CookieOptions { HttpOnly = true };
 
                 _refreshTokenService.UppdataRefreshToken(refreshToken);
 
-                HttpContext.Response.Cookies.Append(LoginConst.GetTokenKey, token);
-                HttpContext.Response.Cookies.Append(LoginConst.GetRefreshTokenKey, refreshToken.Token, cookiyOptionRefreshToken);
+                _accessToken.RefreshToken = refreshToken;
+                _accessToken.Token = token;
+
+                HttpContext.Response.Cookies.Append(LoginConst.GetTokenKey, token, cookiyOptionRefreshToken);
 
                 return RedirectToAction("ViewToDo", "ToDoList");
             }
@@ -116,8 +121,10 @@ namespace ToDoListMVC.Controllers
         public IActionResult Output()
         {
             HttpContext.Response.Cookies.Delete(LoginConst.GetTokenKey);
-            HttpContext.Response.Cookies.Delete(LoginConst.GetRefreshTokenKey);
+            _refreshTokenService.Remove(_tokenHelper.UserId);
             _tokenHelper.UserId = null;
+            _accessToken.RefreshToken = null;
+
             return RedirectToAction("HomePage", "Home");
         }
     }
