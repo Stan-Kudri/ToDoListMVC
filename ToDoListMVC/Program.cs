@@ -41,14 +41,14 @@ app.Use((context, func) =>
 
     var tokenHelper = context.RequestServices.GetRequiredService<TokenService>();
     tokenHelper.SetToken(usingToken);
+    var userId = tokenHelper.UserId;
 
-    if (!tokenHelper.TryGetUsingUserId(out var userId) || userId == null)
+    if (userId == null)
     {
         return RedirectIfNeeded(context, func);
     }
 
     var refreshTokenServer = context.RequestServices.GetRequiredService<RefreshTokenService>();
-
     var refreshToken = refreshTokenServer.GetRefreshToken(usingRefreshToken, (Guid)userId);
 
     if (refreshToken == null || refreshTokenServer.IsExistRefreshToken(refreshToken))
