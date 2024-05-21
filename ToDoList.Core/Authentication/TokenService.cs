@@ -72,5 +72,17 @@ namespace ToDoList.Core.Authentication
                 .Select(e => !Guid.TryParse(e.Value, out var id) ? (Guid?)null : id)
                 .FirstOrDefault();
         }
+
+        public bool TryGetUsingUserId(out Guid? userId)
+        {
+            if (UserId == null)
+            {
+                userId = null;
+                return false;
+            }
+
+            userId = UserId;
+            return true;
+        }
     }
 }
