@@ -6,6 +6,7 @@ using ToDoList.Core.Service;
 using ToDoList.Migrations;
 using ToDoListMVC.Controllers;
 using ToDoListMVC.Extension.ConfigJWTAuth;
+using ToDoListMVC.Models;
 
 namespace ToDoList
 {
@@ -23,6 +24,7 @@ namespace ToDoList
             builder.Services.AddScoped(e => new User());
             builder.Services.AddScoped<AuthenticationController>();
             builder.Services.AddScoped<ToDoListController>();
+            builder.Services.AddScoped<TokenValidator>();
         }
 
         public static void AddConfigureService(this WebApplicationBuilder builder)

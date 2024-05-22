@@ -41,7 +41,7 @@ namespace ToDoList.Core.Authentication
         }
 
 
-        public RefreshToken GenerateRefreshToken(User user)
+        public RefreshToken GenerateRefreshToken(Guid userId)
         {
             var randomNumber = new byte[32];
             using var generator = new RNGCryptoServiceProvider();
@@ -49,14 +49,14 @@ namespace ToDoList.Core.Authentication
 
             return new RefreshToken
             {
-                UserId = user.Id,
+                UserId = userId,
                 Token = Convert.ToBase64String(randomNumber),
                 Create = LoginConst.GetDateCreateRefreshToken,
                 Expires = LoginConst.GetExpiresRefreshToken,
             };
         }
 
-        public void SetToken(string token)
+        public void SetAcsessToken(string token)
         {
             var tokenHandler = token.GetTokenHandler(_authOptions);
             if (tokenHandler == null ||
@@ -71,6 +71,26 @@ namespace ToDoList.Core.Authentication
                 .Where(e => e.Type == ClaimTypes.NameIdentifier)
                 .Select(e => !Guid.TryParse(e.Value, out var id) ? (Guid?)null : id)
                 .FirstOrDefault();
+        }
+
+        public bool ValidAcsessToken(string token)
+        {
+            var tokenHandler = token.GetTokenHandler(_authOptions);
+            return tokenHandler != null &&
+                tokenHandler.ReadToken(token) is JwtSecurityToken securityToken &&
+                securityToken.ValidTo >= DateTime.UtcNow &&
+                securityToken.ValidFrom <= DateTime.UtcNow;
+        }
+
+        public bool IsUppdateAcsessToken(string token)
+        {
+            var tokenHandler = token.GetTokenHandler(_authOptions);
+            if (tokenHandler == null || tokenHandler.ReadToken(token) is not JwtSecurityToken securityToken)
+            {
+                throw new ArgumentException("Token is not valid.");
+            }
+
+            return securityToken.ValidFrom >= DateTime.UtcNow.AddMinutes(30);
         }
     }
 }

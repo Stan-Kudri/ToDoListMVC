@@ -63,7 +63,7 @@ namespace ToDoList.Core.Service
         {
             var refreshToken = _appDbContext.RefreshTokens.FirstOrDefault(e => e.Token == token && e.UserId == userId);
 
-            if (refreshToken == null || !refreshToken.IsExpiredRefreshToken())
+            if (refreshToken == null || refreshToken.IsExpiredRefreshToken())
             {
                 return null;
             }

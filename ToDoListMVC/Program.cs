@@ -2,9 +2,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting.StaticWebAssets;
 using ToDoList;
 using ToDoList.Core.Authentication;
-using ToDoList.Core.Extension;
-using ToDoList.Core.Service;
-using ToDoListMVC.Extension;
+using ToDoListMVC.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 StaticWebAssetsLoader.UseStaticWebAssets(builder.Environment, builder.Configuration);
@@ -39,36 +37,20 @@ app.Use((context, func) =>
         return RedirectIfNeeded(context, func);
     }
 
+    var tokenValidator = context.RequestServices.GetRequiredService<TokenValidator>();
+    tokenValidator.InitializingParameters(context, usingToken, usingRefreshToken);
+
+    if (!tokenValidator.IsValidTokensFromCookies())
+    {
+        return RedirectIfNeeded(context, func);
+    }
+
+    tokenValidator.UpdateTokens();
+
     var tokenHelper = context.RequestServices.GetRequiredService<TokenService>();
-    tokenHelper.SetToken(usingToken);
     var userId = tokenHelper.UserId;
 
-    if (userId == null)
-    {
-        return RedirectIfNeeded(context, func);
-    }
-
-    var refreshTokenServer = context.RequestServices.GetRequiredService<RefreshTokenService>();
-    var refreshToken = refreshTokenServer.GetRefreshToken(usingRefreshToken, (Guid)userId);
-
-    if (refreshToken == null || refreshTokenServer.IsExistRefreshToken(refreshToken))
-    {
-        return RedirectIfNeeded(context, func);
-    }
-
-    if (!refreshToken.IsActiveRefreshToken() || refreshTokenServer.IsExistRefreshToken(refreshToken))
-    {
-        context.Response.Cookies.Delete(LoginConst.GetTokenKey);
-    }
-    else if (!refreshToken.IsExpiredRefreshToken() && tokenHelper.UserId != null)
-    {
-        var userService = context.RequestServices.GetRequiredService<UserService>();
-        var newRefreshToken = tokenHelper.GenerateRefreshToken(userService.GetUser(userId));
-        refreshTokenServer.Uppdata(newRefreshToken);
-        context.AppendRefreshToken(newRefreshToken.Token);
-    }
-
-    return tokenHelper.UserId == null || refreshTokenServer.IsExistRefreshToken(refreshToken) ? RedirectIfNeeded(context, func) : func();
+    return tokenHelper.UserId == null ? RedirectIfNeeded(context, func) : func();
 });
 
 app.UseAuthentication();

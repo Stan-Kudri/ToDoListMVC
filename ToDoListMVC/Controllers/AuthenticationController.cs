@@ -66,7 +66,7 @@ namespace ToDoListMVC.Controllers
             else
             {
                 var token = _tokenHelper.GenerateTokenJWT(user);
-                var refreshToken = _tokenHelper.GenerateRefreshToken(user);
+                var refreshToken = _tokenHelper.GenerateRefreshToken(user.Id);
 
                 _refreshTokenService.UppdataRefreshToken(refreshToken);
 
