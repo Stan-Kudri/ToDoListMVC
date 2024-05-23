@@ -48,6 +48,9 @@ namespace ToDoList.Core.Service
             }
 
             item.Token = refreshToken.Token;
+            item.Expires = refreshToken.Expires;
+            item.Create = refreshToken.Create;
+
             _appDbContext.RefreshTokens.Update(item);
             _appDbContext.SaveChanges();
         }
@@ -63,8 +66,9 @@ namespace ToDoList.Core.Service
         {
             var refreshToken = _appDbContext.RefreshTokens.FirstOrDefault(e => e.Token == token && e.UserId == userId);
 
-            if (refreshToken == null || refreshToken.IsExpiredRefreshToken())
+            if (refreshToken == null || !refreshToken.IsActiveRefreshToken())
             {
+                Remove(userId);
                 return null;
             }
 
@@ -79,6 +83,6 @@ namespace ToDoList.Core.Service
             => IsExistRefreshToken(refreshToken.Token, refreshToken.UserId);
 
         public bool IsExistRefreshToken(string refreshToken, Guid userId)
-            => _appDbContext.RefreshTokens.FirstOrDefault(e => e.Token == refreshToken && e.UserId == userId) == null;
+            => _appDbContext.RefreshTokens.FirstOrDefault(e => e.Token == refreshToken && e.UserId == userId) != null;
     }
 }

@@ -44,16 +44,16 @@ namespace ToDoListMVC.Models
                 return false;
             }
 
-            var token = _refreshTokenService.GetRefreshToken(_refreshToken, (Guid)userId);
+            var refreshToken = _refreshTokenService.GetRefreshToken(_refreshToken, (Guid)userId);
 
-            if (token == null || _refreshTokenService.IsExistRefreshToken(token))
+            if (refreshToken != null && _refreshTokenService.IsExistRefreshToken(refreshToken) && refreshToken.IsActiveRefreshToken())
             {
-                _httpContext.RemoveRefreshToken();
-                _httpContext.RemoveToken();
-                return false;
+                return true;
             }
 
-            return true;
+            _httpContext.RemoveRefreshToken();
+            _httpContext.RemoveToken();
+            return false;
         }
 
         public void UpdateTokens()
