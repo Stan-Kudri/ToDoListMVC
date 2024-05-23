@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ToDoList.Core.Authentication;
+using ToDoList.Core.Extension;
 using ToDoList.Core.Models.Users;
 using ToDoList.Core.Service;
+using ToDoListMVC.Extension;
 using ToDoListMVC.Models;
 
 namespace ToDoListMVC.Controllers
@@ -12,12 +14,14 @@ namespace ToDoListMVC.Controllers
         private readonly static UserValidator _userValidator = new UserValidator();
 
         private readonly UserService _userService;
-        private readonly JwtToken _tokenHelper;
+        private readonly TokenService _tokenHelper;
+        private readonly RefreshTokenService _refreshTokenService;
 
-        public AuthenticationController(UserService userService, JwtToken tokenHelper)
+        public AuthenticationController(UserService userService, TokenService tokenHelper, RefreshTokenService refreshTokenService)
         {
             _userService = userService;
             _tokenHelper = tokenHelper;
+            _refreshTokenService = refreshTokenService;
         }
 
         [HttpGet]
@@ -62,8 +66,12 @@ namespace ToDoListMVC.Controllers
             else
             {
                 var token = _tokenHelper.GenerateTokenJWT(user);
+                var refreshToken = _tokenHelper.GenerateRefreshToken(user.Id);
 
-                HttpContext.Response.Cookies.Append(LoginConst.GetTokenKey, token);
+                _refreshTokenService.UppdataRefreshToken(refreshToken);
+
+                HttpContext.AppendToken(token);
+                HttpContext.AppendRefreshToken(refreshToken.Token);
 
                 return RedirectToAction("ViewToDo", "ToDoList");
             }
@@ -100,15 +108,18 @@ namespace ToDoListMVC.Controllers
             }
 
             _userService.Add(userModel.ToUser());
-            return RedirectToAction("ViewToDo", "ToDoList");
+            return RedirectToAction("SignIn", "Authentication");
         }
 
         [Authorize]
         [HttpGet]
         public IActionResult Output()
         {
-            HttpContext.Response.Cookies.Delete(LoginConst.GetTokenKey);
+            HttpContext.RemoveToken();
+            HttpContext.RemoveRefreshToken();
+            _refreshTokenService.Remove(_tokenHelper.UserId);
             _tokenHelper.UserId = null;
+
             return RedirectToAction("HomePage", "Home");
         }
     }

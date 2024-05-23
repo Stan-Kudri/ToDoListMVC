@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
-using ToDoList.Core.Models;
 using ToDoList.Core.Models.Affair;
 using ToDoList.Core.Repository;
 using ToDoList.Models;
@@ -20,10 +19,8 @@ namespace ToDoListMVC.Controllers
             _affairsService = caseService;
         }
 
-        [AllowAnonymous]
         [HttpGet]
-        public IActionResult ViewToDo([FromServices] ICurrentUserAccessor currentUserAccessor)
-            => currentUserAccessor.UserId is null ? RedirectToAction("SignIn", "Authentication") : View();
+        public IActionResult ViewToDo() => View();
 
 
         [HttpPost]

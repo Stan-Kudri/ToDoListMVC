@@ -1,6 +1,8 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting.StaticWebAssets;
 using ToDoList;
 using ToDoList.Core.Authentication;
+using ToDoListMVC.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 StaticWebAssetsLoader.UseStaticWebAssets(builder.Environment, builder.Configuration);
@@ -27,23 +29,48 @@ app.UseRouting();
 
 app.UseCors();
 
+app.Use((context, func) =>
+{
+    if (!context.Request.Cookies.TryGetValue(LoginConst.GetTokenKey, out var usingToken)
+        || !context.Request.Cookies.TryGetValue(LoginConst.GetRefreshTokenKey, out var usingRefreshToken))
+    {
+        return RedirectIfNeeded(context, func);
+    }
+
+    var tokenValidator = context.RequestServices.GetRequiredService<TokenValidator>();
+    tokenValidator.InitializingParameters(context, usingToken, usingRefreshToken);
+
+    if (!tokenValidator.IsValidTokensFromCookies())
+    {
+        return RedirectIfNeeded(context, func);
+    }
+
+    tokenValidator.UpdateTokens();
+
+    var tokenHelper = context.RequestServices.GetRequiredService<TokenService>();
+    var userId = tokenHelper.UserId;
+
+    return tokenHelper.UserId == null ? RedirectIfNeeded(context, func) : func();
+});
+
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.Use((context, func) =>
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=Authentication}/{action=SignIn}/{id?}");
+
+app.Run();
+
+Task RedirectIfNeeded(HttpContext context, Func<Task> func)
 {
-    if (!context.Request.Cookies.TryGetValue(LoginConst.GetTokenKey, out var usingToken))
+    var endpoint = context.GetEndpoint();
+
+    if (endpoint != null && endpoint.Metadata.GetMetadata<AllowAnonymousAttribute>() != null)
     {
         return func();
     }
 
-    var tokenHelper = context.RequestServices.GetRequiredService<JwtToken>();
-    tokenHelper.SetToken(usingToken);
-    return func();
-});
-
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=ToDoList}/{action=ViewToDo}/{id?}");
-
-app.Run();
+    context.Response.Redirect("/Authentication/SignIn");
+    return Task.CompletedTask;
+}

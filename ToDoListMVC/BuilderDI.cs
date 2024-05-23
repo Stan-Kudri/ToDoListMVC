@@ -1,11 +1,12 @@
 ﻿using ToDoList.Core.Authentication;
-using ToDoList.Core.DBContext;
 using ToDoList.Core.Models;
 using ToDoList.Core.Models.Users;
 using ToDoList.Core.Repository;
 using ToDoList.Core.Service;
+using ToDoList.Migrations;
 using ToDoListMVC.Controllers;
 using ToDoListMVC.Extension.ConfigJWTAuth;
+using ToDoListMVC.Models;
 
 namespace ToDoList
 {
@@ -17,11 +18,13 @@ namespace ToDoList
             builder.Services.AddScoped(e => e.GetRequiredService<DbContextFactory>().Create());
             builder.Services.AddScoped<AffairsService>();
             builder.Services.AddScoped<UserService>();
-            builder.Services.AddScoped<JwtToken>();
-            builder.Services.AddScoped<ICurrentUserAccessor>(e => e.GetRequiredService<JwtToken>());
+            builder.Services.AddScoped<RefreshTokenService>();
+            builder.Services.AddScoped<TokenService>();
+            builder.Services.AddScoped<ICurrentUserAccessor>(e => e.GetRequiredService<TokenService>());
             builder.Services.AddScoped(e => new User());
             builder.Services.AddScoped<AuthenticationController>();
             builder.Services.AddScoped<ToDoListController>();
+            builder.Services.AddScoped<TokenValidator>();
         }
 
         public static void AddConfigureService(this WebApplicationBuilder builder)
