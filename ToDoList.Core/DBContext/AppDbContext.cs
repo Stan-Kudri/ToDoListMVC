@@ -49,6 +49,7 @@ namespace ToDoList.Core.DBContext
             configurationRefreshToken.Property(e => e.Token).HasDefaultValue(null).HasColumnName("refreshtoken");
             configurationRefreshToken.Property(e => e.Expires).IsRequired().HasColumnName("datetimeexpires").HasDefaultValue(LoginConst.GetExpiresRefreshToken).HasColumnType("DATETIME");
             configurationRefreshToken.Property(e => e.Create).IsRequired().HasColumnName("datetimecreate").HasDefaultValue(DateTime.UtcNow).HasColumnType("DATETIME");
+            configurationRefreshToken.HasOne(e => e.User).WithMany(e => e.RefreshTokens).HasForeignKey(e => e.UserId).OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

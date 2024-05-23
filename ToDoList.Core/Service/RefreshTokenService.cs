@@ -24,14 +24,15 @@ namespace ToDoList.Core.Service
 
             if (item != null)
             {
-                throw new ArgumentException("User with the same name already exists.");
+                Update(refreshToken);
+                return;
             }
 
             _appDbContext.RefreshTokens.Add(refreshToken);
             _appDbContext.SaveChanges();
         }
 
-        public void Uppdata(RefreshToken refreshToken)
+        public void Update(RefreshToken refreshToken)
         {
             var user = _appDbContext.Users.FirstOrDefault(e => e.Id == refreshToken.UserId);
 

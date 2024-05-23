@@ -76,7 +76,7 @@ namespace ToDoListMVC.Models
             if (refreshToken != null && refreshToken.IsExpiredRefreshToken())
             {
                 var newRefreshToken = _tokenService.GenerateRefreshToken(user.Id);
-                _refreshTokenService.Uppdata(newRefreshToken);
+                _refreshTokenService.Update(newRefreshToken);
                 _httpContext.AppendRefreshToken(newRefreshToken.Token);
             }
         }
