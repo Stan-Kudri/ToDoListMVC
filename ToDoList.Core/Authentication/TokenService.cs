@@ -34,7 +34,7 @@ namespace ToDoList.Core.Authentication
                             issuer: _authOptions.Issuer,
                             audience: _authOptions.Audience,
                             claims: clainms,
-                            expires: DateTime.UtcNow.AddHours(_authOptions.TokenLifeTime),
+                            expires: DateTime.UtcNow.AddMinutes(_authOptions.TokenLifeTime),
                             signingCredentials: credentials);
 
             return new JwtSecurityTokenHandler().WriteToken(token);
@@ -85,12 +85,13 @@ namespace ToDoList.Core.Authentication
         public bool IsUppdateAcsessToken(string token)
         {
             var tokenHandler = token.GetTokenHandler(_authOptions);
+
             if (tokenHandler == null || tokenHandler.ReadToken(token) is not JwtSecurityToken securityToken)
             {
                 throw new ArgumentException("Token is not valid.");
             }
 
-            return securityToken.ValidFrom >= DateTime.UtcNow.AddMinutes(30);
+            return DateTime.UtcNow >= securityToken.ValidFrom.Add(LoginConst.GetUpdateTimeToken) && DateTime.UtcNow <= securityToken.ValidTo;
         }
     }
 }

@@ -6,10 +6,12 @@
 
         public static string GetRefreshTokenKey => "RefreshToken";
 
-        public static DateTime GetExpiresRefreshToken => DateTime.UtcNow.AddMinutes(3);//=> DateTime.UtcNow.AddHours(24);
+        public static TimeSpan GetUpdateTimeToken => TimeSpan.FromMinutes(1);
 
         public static DateTime GetDateCreateRefreshToken => DateTime.UtcNow;
 
-        public static TimeSpan GetUpdateTimeRefreshToken => TimeSpan.FromMinutes(1);//TimeSpan.FromHours(2);
+        public static DateTime GetExpiresRefreshToken => DateTime.UtcNow.AddHours(1);
+
+        public static TimeSpan GetUpdateTimeRefreshToken => TimeSpan.FromMinutes(30);
     }
 }

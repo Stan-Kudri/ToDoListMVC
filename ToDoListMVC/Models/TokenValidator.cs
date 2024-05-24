@@ -69,6 +69,7 @@ namespace ToDoListMVC.Models
             {
                 var newAcsessToken = _tokenService.GenerateTokenJWT(user);
                 _tokenService.SetAcsessToken(newAcsessToken);
+                _httpContext.AppendToken(newAcsessToken);
             }
 
             var refreshToken = _refreshTokenService.GetRefreshToken(_refreshToken, user.Id);
