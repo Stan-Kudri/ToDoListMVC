@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting.StaticWebAssets;
 using ToDoList;
 using ToDoList.Core.Authentication;
+using ToDoListMVC.Extension;
 using ToDoListMVC.Models;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -37,18 +38,11 @@ app.Use((context, func) =>
         return RedirectIfNeeded(context, func);
     }
 
-    var tokenValidator = context.RequestServices.GetRequiredService<TokenValidator>();
-    tokenValidator.InitializingParameters(context, usingToken, usingRefreshToken);
-
-    if (!tokenValidator.IsValidTokensFromCookies())
-    {
-        return RedirectIfNeeded(context, func);
-    }
-
+    var tokenValidator = context.GetTokenValidator(usingToken, usingRefreshToken);
+    ValidationTokens(context, func, tokenValidator);
     tokenValidator.UpdateTokens();
 
     var tokenHelper = context.RequestServices.GetRequiredService<TokenService>();
-    var userId = tokenHelper.UserId;
 
     return tokenHelper.UserId == null ? RedirectIfNeeded(context, func) : func();
 });
@@ -74,3 +68,6 @@ Task RedirectIfNeeded(HttpContext context, Func<Task> func)
     context.Response.Redirect("/Authentication/SignIn");
     return Task.CompletedTask;
 }
+
+Task ValidationTokens(HttpContext httpContext, Func<Task> func, TokenValidator tokenValidator)
+    => tokenValidator.IsValidTokensFromCookies() ? Task.CompletedTask : RedirectIfNeeded(httpContext, func);

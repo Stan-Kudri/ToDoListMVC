@@ -74,7 +74,7 @@ namespace ToDoListMVC.Models
 
             var refreshToken = _refreshTokenService.GetRefreshToken(_refreshToken, user.Id);
 
-            if (refreshToken != null && refreshToken.IsExpiredRefreshToken())
+            if (refreshToken != null && refreshToken.IsUppdateRefreshToken())
             {
                 var newRefreshToken = _tokenService.GenerateRefreshToken(user.Id);
                 _refreshTokenService.Update(newRefreshToken);
@@ -82,7 +82,6 @@ namespace ToDoListMVC.Models
             }
         }
 
-        private bool IsValidAcsessToken()
-            => _tokenService.ValidAcsessToken(_acsessToken);
+        private bool IsValidAcsessToken() => _tokenService.ValidAcsessToken(_acsessToken);
     }
 }

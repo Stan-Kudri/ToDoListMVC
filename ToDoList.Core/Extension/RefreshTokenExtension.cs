@@ -18,7 +18,7 @@ namespace ToDoList.Core.Extension
             }
         }
 
-        public static bool IsExpiredRefreshToken(this RefreshToken refreshToken)
+        public static bool IsUppdateRefreshToken(this RefreshToken refreshToken)
             => DateTime.UtcNow <= refreshToken.Expires && DateTime.UtcNow >= refreshToken.Create.Add(LoginConst.GetUpdateTimeRefreshToken);
 
         public static bool IsActiveRefreshToken(this RefreshToken refreshToken)
