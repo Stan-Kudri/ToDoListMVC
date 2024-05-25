@@ -1,5 +1,4 @@
-﻿using ToDoList.Core.Authentication;
-using ToDoList.Core.Models;
+﻿using ToDoList.Core.Models;
 using ToDoList.Core.Service;
 
 namespace ToDoList.Core.Extension
@@ -17,11 +16,5 @@ namespace ToDoList.Core.Extension
                 refreshTokenService.Add(refreshToken);
             }
         }
-
-        public static bool IsUppdateRefreshToken(this RefreshToken refreshToken)
-            => DateTime.UtcNow <= refreshToken.Expires && DateTime.UtcNow >= refreshToken.Create.Add(LoginConst.GetUpdateTimeRefreshToken);
-
-        public static bool IsActiveRefreshToken(this RefreshToken refreshToken)
-            => DateTime.UtcNow <= refreshToken.Expires;
     }
 }

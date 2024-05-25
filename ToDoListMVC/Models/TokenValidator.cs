@@ -1,5 +1,4 @@
 ﻿using ToDoList.Core.Authentication;
-using ToDoList.Core.Extension;
 using ToDoList.Core.Service;
 using ToDoListMVC.Extension;
 
@@ -46,7 +45,7 @@ namespace ToDoListMVC.Models
 
             var refreshToken = _refreshTokenService.GetRefreshToken(_refreshToken, (Guid)userId);
 
-            if (refreshToken != null && _refreshTokenService.IsExistRefreshToken(refreshToken) && refreshToken.IsActiveRefreshToken())
+            if (refreshToken != null && _refreshTokenService.IsExistRefreshToken(refreshToken) && refreshToken.Expired)
             {
                 return true;
             }
@@ -65,7 +64,7 @@ namespace ToDoListMVC.Models
                 throw new Exception("Database request error.");
             }
 
-            if (_tokenService.IsUppdateAcsessToken(_acsessToken))
+            if (_tokenService.ShouldUppdateAcsessToken(_acsessToken))
             {
                 var newAcsessToken = _tokenService.GenerateTokenJWT(user);
                 _tokenService.SetAcsessToken(newAcsessToken);
@@ -74,7 +73,7 @@ namespace ToDoListMVC.Models
 
             var refreshToken = _refreshTokenService.GetRefreshToken(_refreshToken, user.Id);
 
-            if (refreshToken != null && refreshToken.IsUppdateRefreshToken())
+            if (refreshToken != null && refreshToken.ShouldUppdate)
             {
                 var newRefreshToken = _tokenService.GenerateRefreshToken(user.Id);
                 _refreshTokenService.Update(newRefreshToken);

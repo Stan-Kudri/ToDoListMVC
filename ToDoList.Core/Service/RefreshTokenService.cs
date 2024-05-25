@@ -1,5 +1,4 @@
 ﻿using ToDoList.Core.DBContext;
-using ToDoList.Core.Extension;
 using ToDoList.Core.Models;
 
 namespace ToDoList.Core.Service
@@ -67,14 +66,13 @@ namespace ToDoList.Core.Service
         {
             var refreshToken = _appDbContext.RefreshTokens.FirstOrDefault(e => e.Token == token && e.UserId == userId);
 
-            if (refreshToken == null || !refreshToken.IsActiveRefreshToken())
+            if (refreshToken == null || !refreshToken.Expired)
             {
                 Remove(userId);
                 return null;
             }
 
             return refreshToken;
-
         }
 
         public bool IsUserIdExist(Guid userId)

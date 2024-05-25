@@ -82,7 +82,7 @@ namespace ToDoList.Core.Authentication
                 securityToken.ValidFrom <= DateTime.UtcNow;
         }
 
-        public bool IsUppdateAcsessToken(string token)
+        public bool ShouldUppdateAcsessToken(string token)
         {
             var tokenHandler = token.GetTokenHandler(_authOptions);
 
