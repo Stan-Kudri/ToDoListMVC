@@ -51,12 +51,7 @@ namespace ToDoListMVC.Controllers
         [HttpPost]
         public IActionResult Edit(Affairs item)
         {
-            if (item == null)
-            {
-                return NoContent();
-            }
-
-            if (string.IsNullOrEmpty(item.Description))
+            if (item == null || string.IsNullOrEmpty(item.Description))
             {
                 return NoContent();
             }

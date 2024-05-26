@@ -36,12 +36,9 @@ namespace ToDoList.Core.Models.Affair
 
         public bool Equals(Affairs? task)
         {
-            if (task == null)
-            {
-                return false;
-            }
-
-            return task.Description == Description
+            return task == null
+                ? false
+                : task.Description == Description
                    && task.IsCaseCompletion == IsCaseCompletion
                    && task.DateCompletion == DateCompletion
                    && task.DateCreate == DateCreate
