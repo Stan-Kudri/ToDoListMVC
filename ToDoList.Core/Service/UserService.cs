@@ -43,6 +43,9 @@ namespace ToDoList.Core.Service
             return false;
         }
 
+        public User? GetUser(string username, string passwordHash)
+            => _dbContext.Users.FirstOrDefault(e => e.Username == username && e.PasswordHash == passwordHash);
+
         public User? GetUser(Guid? userId) => _dbContext.Users.FirstOrDefault(e => e.Id == userId);
     }
 }

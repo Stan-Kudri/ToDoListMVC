@@ -61,7 +61,9 @@ namespace ToDoListMVC.Controllers
             if (ModelState.Any(e => e.Value?.ValidationState
                                     == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid))
             {
-                return View(Results.Unauthorized());
+                HttpContext.RemoveRefreshToken();
+                HttpContext.RemoveToken();
+                return RedirectToAction("SignIn", "Authentication");
             }
             else
             {

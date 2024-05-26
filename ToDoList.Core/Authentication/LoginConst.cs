@@ -10,7 +10,7 @@
 
         public static DateTime GetDateCreateRefreshToken => DateTime.UtcNow;
 
-        public static DateTime GetExpiresRefreshToken => DateTime.UtcNow.AddHours(1);
+        public static DateTime GetExpiresRefreshToken => DateTime.UtcNow.AddHours(24);
 
         public static TimeSpan GetUpdateTimeRefreshToken => TimeSpan.FromMinutes(30);
     }

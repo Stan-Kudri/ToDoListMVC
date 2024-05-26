@@ -45,7 +45,7 @@ namespace ToDoListMVC.Models
 
             var refreshToken = _refreshTokenService.GetRefreshToken(_refreshToken, (Guid)userId);
 
-            if (refreshToken != null && _refreshTokenService.IsExistRefreshToken(refreshToken) && refreshToken.Expired)
+            if (refreshToken != null && _refreshTokenService.IsExistRefreshToken(refreshToken) && !refreshToken.Expired)
             {
                 return true;
             }

@@ -33,7 +33,7 @@ app.UseCors();
 app.Use((context, func) =>
 {
     if (!context.Request.Cookies.TryGetValue(LoginConst.GetTokenKey, out var usingToken)
-        || !context.Request.Cookies.TryGetValue(LoginConst.GetRefreshTokenKey, out var usingRefreshToken))
+            || !context.Request.Cookies.TryGetValue(LoginConst.GetRefreshTokenKey, out var usingRefreshToken))
     {
         return RedirectIfNeeded(context, func);
     }
@@ -43,7 +43,6 @@ app.Use((context, func) =>
     tokenValidator.UpdateTokens();
 
     var tokenHelper = context.RequestServices.GetRequiredService<TokenService>();
-
     return tokenHelper.UserId == null ? RedirectIfNeeded(context, func) : func();
 });
 

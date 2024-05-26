@@ -10,6 +10,7 @@ namespace ToDoList.Core.DBContext.Configurations
         {
             builder.HasKey(e => e.Id);
             builder.Property(e => e.Id).HasColumnName("id").ValueGeneratedOnAdd();
+            ConfigureCore(builder);
         }
 
         protected abstract void ConfigureCore(EntityTypeBuilder<T> builder);
