@@ -1,15 +1,15 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using ToDoList.Core.Models.Users;
 
-namespace ToDoList.Core.Models.Affair
+namespace ToDoList.Core.Models.ToDoItem
 {
-    public class Affairs : Entity
+    public class ToDoItems : Entity
     {
-        public Affairs()
+        public ToDoItems()
         {
         }
 
-        public Affairs(string description, DateTime dateCreate, bool isCaseCompletion, DateTime? dateCompletion, Guid userId)
+        public ToDoItems(string description, DateTime dateCreate, bool isCaseCompletion, DateTime? dateCompletion, Guid userId)
         {
             Id = Guid.NewGuid();
             Description = description;
@@ -34,7 +34,7 @@ namespace ToDoList.Core.Models.Affair
 
         public Guid UserId { get; set; }
 
-        public bool Equals(Affairs? task)
+        public bool Equals(ToDoItems? task)
         {
             return task == null
                 ? false
@@ -47,7 +47,7 @@ namespace ToDoList.Core.Models.Affair
         }
 
         public override bool Equals(object? obj)
-            => Equals(obj as Affairs);
+            => Equals(obj as ToDoItems);
 
         public override int GetHashCode()
             => HashCode.Combine(Id, Description, DateCreate, DateCompletion);

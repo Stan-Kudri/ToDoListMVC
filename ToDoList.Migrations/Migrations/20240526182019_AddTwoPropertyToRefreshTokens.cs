@@ -1,12 +1,11 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
 namespace ToDoList.Migrations.Migrations
 {
     /// <inheritdoc />
-    public partial class Add_Two_Property_To_RefreshTokens : Migration
+    public partial class AddTwoPropertyToRefreshTokens : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

@@ -1,25 +1,25 @@
 ﻿using ToDoList.Core.DBContext;
 using ToDoList.Core.Models;
-using ToDoList.Core.Models.Affair;
+using ToDoList.Core.Models.ToDoItem;
 
 namespace ToDoList.Core.Repository
 {
-    public class AffairsService
+    public class ToDoItemsService
     {
         private readonly AppDbContext _dbContext;
         private readonly ICurrentUserAccessor _currentUser;
 
-        public AffairsService(AppDbContext dbContext, ICurrentUserAccessor currentUserAccessor)
+        public ToDoItemsService(AppDbContext dbContext, ICurrentUserAccessor currentUserAccessor)
         {
             _dbContext = dbContext;
             _currentUser = currentUserAccessor;
         }
 
-        public void Add(AffairsModel affairsModel)
+        public void Add(ToDoItemsModel toDoItemModel)
         {
-            if (affairsModel == null)
+            if (toDoItemModel == null)
             {
-                throw new ArgumentNullException("Case item has a value of zero.", nameof(affairsModel));
+                throw new ArgumentNullException("Case item has a value of zero.", nameof(toDoItemModel));
             }
 
             if (_currentUser.UserId == null)
@@ -27,30 +27,30 @@ namespace ToDoList.Core.Repository
                 throw new Exception("User authorization error.");
             }
 
-            if (string.IsNullOrEmpty(affairsModel.Description))
+            if (string.IsNullOrEmpty(toDoItemModel.Description))
             {
                 return;
             }
 
-            var item = new Affairs(
-                                    affairsModel.Description,
+            var item = new ToDoItems(
+                                    toDoItemModel.Description,
                                     DateTime.Now,
-                                    affairsModel.IsCaseCompletion,
-                                    affairsModel.IsCaseCompletion == true ? DateTime.Now : null,
+                                    toDoItemModel.IsCaseCompletion,
+                                    toDoItemModel.IsCaseCompletion == true ? DateTime.Now : null,
                                     (Guid)_currentUser.UserId);
 
-            _dbContext.Affairs.Add(item);
+            _dbContext.ToDoItems.Add(item);
             _dbContext.SaveChanges();
         }
 
-        public void Update(Affairs? item)
+        public void Update(ToDoItems? item)
         {
             if (item == null)
             {
                 throw new ArgumentNullException("Case item has a value of zero.", nameof(item));
             }
 
-            var oldItem = _dbContext.Affairs.FirstOrDefault(e => e.Id == item.Id);
+            var oldItem = _dbContext.ToDoItems.FirstOrDefault(e => e.Id == item.Id);
 
             if (oldItem == null || oldItem.Equals(item))
             {
@@ -67,20 +67,20 @@ namespace ToDoList.Core.Repository
 
         public void Remove(Guid? id)
         {
-            var item = _dbContext.Affairs.FirstOrDefault(e => e.Id == id);
+            var item = _dbContext.ToDoItems.FirstOrDefault(e => e.Id == id);
 
             if (item == null)
             {
                 return;
             }
 
-            _dbContext.Affairs.Remove(item);
+            _dbContext.ToDoItems.Remove(item);
             _dbContext.SaveChanges();
         }
 
         public void MarkCompleted(Guid? id)
         {
-            var item = _dbContext.Affairs.FirstOrDefault(e => e.Id == id);
+            var item = _dbContext.ToDoItems.FirstOrDefault(e => e.Id == id);
 
             if (item == null)
             {
@@ -103,7 +103,7 @@ namespace ToDoList.Core.Repository
 
         public void UpdateDescription(Guid? id, string description)
         {
-            var item = _dbContext.Affairs.FirstOrDefault(e => e.Id == id);
+            var item = _dbContext.ToDoItems.FirstOrDefault(e => e.Id == id);
 
             if (item == null)
             {
@@ -119,9 +119,9 @@ namespace ToDoList.Core.Repository
             _dbContext.SaveChanges();
         }
 
-        public bool TrySearchItem(Guid? id, out Affairs item)
+        public bool TrySearchItem(Guid? id, out ToDoItems item)
         {
-            item = _dbContext.Affairs.FirstOrDefault(e => e.Id == id);
+            item = _dbContext.ToDoItems.FirstOrDefault(e => e.Id == id);
 
             if (item == null)
             {
@@ -131,22 +131,22 @@ namespace ToDoList.Core.Repository
             return true;
         }
 
-        public List<Affairs> GetCompliteTask()
+        public List<ToDoItems> GetCompliteTask()
         {
-            var query = _dbContext.Affairs.Where(e => e.UserId == _currentUser.UserId).Where(e => e.IsCaseCompletion);
+            var query = _dbContext.ToDoItems.Where(e => e.UserId == _currentUser.UserId).Where(e => e.IsCaseCompletion);
 
             return query.Count() > 0
                    ? query.ToList()
-                   : new List<Affairs>();
+                   : new List<ToDoItems>();
         }
 
-        public List<Affairs> GetNotCompliteTask()
+        public List<ToDoItems> GetNotCompliteTask()
         {
-            var query = _dbContext.Affairs.Where(e => e.UserId == _currentUser.UserId).Where(e => !e.IsCaseCompletion);
+            var query = _dbContext.ToDoItems.Where(e => e.UserId == _currentUser.UserId).Where(e => !e.IsCaseCompletion);
 
             return query.Count() > 0
                    ? query.ToList()
-                   : new List<Affairs>();
+                   : new List<ToDoItems>();
         }
     }
 }

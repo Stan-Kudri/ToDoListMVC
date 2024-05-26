@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ToDoList.Core.DBContext.Configurations;
 using ToDoList.Core.Models;
-using ToDoList.Core.Models.Affair;
+using ToDoList.Core.Models.ToDoItem;
 using ToDoList.Core.Models.Users;
 
 namespace ToDoList.Core.DBContext
@@ -15,7 +15,7 @@ namespace ToDoList.Core.DBContext
 
         public DbSet<User> Users { get; set; }
 
-        public DbSet<Affairs> Affairs { get; set; }
+        public DbSet<ToDoItems> ToDoItems { get; set; }
 
         public DbSet<RefreshToken> RefreshTokens { get; set; }
 

@@ -16,7 +16,7 @@ namespace ToDoList
         {
             builder.Services.AddSingleton(e => new DbContextFactory(path));
             builder.Services.AddScoped(e => e.GetRequiredService<DbContextFactory>().Create());
-            builder.Services.AddScoped<AffairsService>();
+            builder.Services.AddScoped<ToDoItemsService>();
             builder.Services.AddScoped<UserService>();
             builder.Services.AddScoped<RefreshTokenService>();
             builder.Services.AddScoped<TokenService>();

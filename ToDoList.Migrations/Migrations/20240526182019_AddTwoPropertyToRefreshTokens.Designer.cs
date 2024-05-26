@@ -12,7 +12,7 @@ namespace ToDoList.Migrations.Migrations
 {
     [DbContext(typeof(AppDbContext))]
     [Migration("20240526182019_Add_Two_Property_To_RefreshTokens")]
-    partial class Add_Two_Property_To_RefreshTokens
+    partial class AddTwoPropertyToRefreshTokens
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

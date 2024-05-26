@@ -1,4 +1,4 @@
-﻿using ToDoList.Core.Models.Affair;
+﻿using ToDoList.Core.Models.ToDoItem;
 
 namespace ToDoList.Core.Models.Users
 {
@@ -40,7 +40,7 @@ namespace ToDoList.Core.Models.Users
 
         public UserRole UserRole { get; set; } = UserRole.User;
 
-        public List<Affairs>? Affairs { get; set; } = null;
+        public List<ToDoItems>? ToDoItems { get; set; } = null;
 
         public List<RefreshToken> RefreshTokens { get; set; } = null;
 
