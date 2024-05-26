@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
-using ToDoList.Core.Models.Affair;
+using ToDoList.Core.Models.ToDoItem;
 using ToDoList.Core.Repository;
 using ToDoList.Models;
 
@@ -11,9 +11,9 @@ namespace ToDoListMVC.Controllers
     public class ToDoListController : Controller
     {
         private readonly ILogger<ToDoListController> _logger;
-        private readonly AffairsService _affairsService;
+        private readonly ToDoItemsService _affairsService;
 
-        public ToDoListController(ILogger<ToDoListController> logger, AffairsService caseService)
+        public ToDoListController(ILogger<ToDoListController> logger, ToDoItemsService caseService)
         {
             _logger = logger;
             _affairsService = caseService;
@@ -24,7 +24,7 @@ namespace ToDoListMVC.Controllers
 
 
         [HttpPost]
-        public IActionResult ViewToDo(AffairsModel item)
+        public IActionResult ViewToDo(ToDoItemsModel item)
         {
             _affairsService.Add(item);
             return RedirectToAction();
@@ -49,7 +49,7 @@ namespace ToDoListMVC.Controllers
                 : NoContent();
 
         [HttpPost]
-        public IActionResult Edit(Affairs item)
+        public IActionResult Edit(ToDoItems item)
         {
             if (item == null || string.IsNullOrEmpty(item.Description))
             {

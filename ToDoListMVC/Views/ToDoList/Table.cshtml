@@ -1,13 +1,13 @@
-﻿@using ToDoList.Core.Models.Affair
+﻿@using ToDoList.Core.Models.ToDoItem
 @using ToDoList.Core.Repository
 
-@model List<Affairs>
+@model List<ToDoItems>
 
 @{
     ViewData["Title"] = "Home Page";
 }
 
-@inject AffairsService Service
+@inject ToDoItemsService Service
 
 <head>
     <meta  name="viewport", content="width=device=width"/>

@@ -9,12 +9,12 @@ namespace ToDoList.Core.DBContext.Configurations
     {
         public void Configure(EntityTypeBuilder<RefreshToken> builder)
         {
-            builder.ToTable("refreshtoken");
+            builder.ToTable("refreshTokens");
             builder.HasKey(e => e.UserId);
-            builder.Property(e => e.UserId).IsRequired().HasColumnName("userid");
-            builder.Property(e => e.Token).HasDefaultValue(null).HasColumnName("refreshtoken");
-            builder.Property(e => e.Expires).IsRequired().HasColumnName("datetimeexpires").HasDefaultValue(LoginConst.GetExpiresRefreshToken).HasColumnType("DATETIME");
-            builder.Property(e => e.Create).IsRequired().HasColumnName("datetimecreate").HasDefaultValue(DateTime.UtcNow).HasColumnType("DATETIME");
+            builder.Property(e => e.UserId).IsRequired().HasColumnName("userId");
+            builder.Property(e => e.Token).HasDefaultValue(null).HasColumnName("refreshToken");
+            builder.Property(e => e.Expires).IsRequired().HasColumnName("dateTimeExpires").HasDefaultValue(LoginConst.GetExpiresRefreshToken).HasColumnType("DATETIME");
+            builder.Property(e => e.Create).IsRequired().HasColumnName("dateTimeCreate").HasDefaultValue(DateTime.UtcNow).HasColumnType("DATETIME");
             builder.HasOne(e => e.User).WithMany(e => e.RefreshTokens).HasForeignKey(e => e.UserId).OnDelete(DeleteBehavior.Cascade);
             builder.Ignore(e => e.Expired);
             builder.Ignore(e => e.ShouldUppdate);

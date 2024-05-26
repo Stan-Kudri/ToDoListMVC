@@ -1,14 +1,14 @@
-﻿@using ToDoList.Core.Models.Affair
+﻿@using ToDoList.Core.Models.ToDoItem
 @using ToDoList.Core.Models.Users
 @using ToDoList.Core.Repository
 
-@model AffairsModel
+@model ToDoItemsModel
 
 @{
     ViewData["Title"] = "Home Page";
 }
 
-@inject AffairsService Service
+@inject ToDoItemsService Service
 @inject User User 
 
 <head>
@@ -20,7 +20,7 @@
 <body>
     <div class="panel panel-succses font-txt">
         <div class="panel-heading text-center">
-            <h2>Affairs</h2>
+            <h2>ToDoItems</h2>
         </div>
         <div class="panel-body">
             <form class="p-2" asp-action="ViewToDo" method="post">
