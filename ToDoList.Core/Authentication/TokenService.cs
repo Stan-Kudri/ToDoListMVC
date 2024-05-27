@@ -49,6 +49,7 @@ namespace ToDoList.Core.Authentication
 
             return new RefreshToken
             {
+                Id = Guid.NewGuid(),
                 UserId = userId,
                 Token = Convert.ToBase64String(randomNumber),
                 Create = LoginConst.GetDateCreateRefreshToken,

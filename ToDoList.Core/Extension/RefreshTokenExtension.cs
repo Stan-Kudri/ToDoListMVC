@@ -7,7 +7,7 @@ namespace ToDoList.Core.Extension
     {
         public static void UppdataRefreshToken(this RefreshTokenService refreshTokenService, RefreshToken refreshToken)
         {
-            if (refreshTokenService.IsUserIdExist(refreshToken.UserId))
+            if (refreshTokenService.IsUserIdExist(refreshToken))
             {
                 refreshTokenService.Update(refreshToken);
             }
