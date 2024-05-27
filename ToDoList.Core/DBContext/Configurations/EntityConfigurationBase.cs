@@ -9,7 +9,7 @@ namespace ToDoList.Core.DBContext.Configurations
         public void Configure(EntityTypeBuilder<T> builder)
         {
             builder.HasKey(e => e.Id);
-            builder.Property(e => e.Id).HasColumnName("id").ValueGeneratedOnAdd();
+            builder.Property(e => e.Id).HasColumnName("id").ValueGeneratedOnAdd().IsRequired();
             ConfigureCore(builder);
         }
 

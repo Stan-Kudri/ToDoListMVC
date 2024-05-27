@@ -19,7 +19,7 @@ namespace ToDoList.Core.Service
                 throw new ArgumentException("This user does not exist.");
             }
 
-            var item = _appDbContext.RefreshTokens.FirstOrDefault(e => e.UserId == refreshToken.UserId);
+            var item = _appDbContext.RefreshTokens.FirstOrDefault(e => e.UserId == refreshToken.UserId && e.Id == refreshToken.Id);
 
             if (item != null)
             {
@@ -40,7 +40,7 @@ namespace ToDoList.Core.Service
                 throw new ArgumentException("This user does not exist.");
             }
 
-            var item = _appDbContext.RefreshTokens.FirstOrDefault(e => e.UserId == refreshToken.UserId);
+            var item = _appDbContext.RefreshTokens.FirstOrDefault(e => e.UserId == refreshToken.UserId && e.Id == refreshToken.Id);
 
             if (item == null)
             {
@@ -55,9 +55,12 @@ namespace ToDoList.Core.Service
             _appDbContext.SaveChanges();
         }
 
-        public void Remove(Guid? id)
+        public void Remove(RefreshToken? refreshToken)
         {
-            var item = _appDbContext.RefreshTokens.FirstOrDefault(e => e.UserId == id) ?? throw new InvalidOperationException("Interaction element not found.");
+            var item = _appDbContext.RefreshTokens
+                                        .FirstOrDefault(e => e.UserId == refreshToken.UserId && e.Id == refreshToken.Id)
+                                        ?? throw new InvalidOperationException("Interaction element not found.");
+
             _appDbContext.RefreshTokens.Remove(item);
             _appDbContext.SaveChanges();
         }
@@ -68,20 +71,35 @@ namespace ToDoList.Core.Service
 
             if (refreshToken == null || refreshToken.Expired)
             {
-                Remove(userId);
+                Remove(refreshToken);
                 return null;
             }
+
+            //Remove RefreshToken Expires by UserId
+            RemoveRangeTokensExpired(refreshToken);
 
             return refreshToken;
         }
 
-        public bool IsUserIdExist(Guid userId)
-            => _appDbContext.RefreshTokens.FirstOrDefault(e => e.UserId == userId) != null;
+        public bool IsUserIdExist(RefreshToken refreshToken)
+            => _appDbContext.RefreshTokens.FirstOrDefault(e => e.UserId == refreshToken.UserId && e.Id == refreshToken.Id) != null;
 
         public bool IsExistRefreshToken(RefreshToken refreshToken)
             => IsExistRefreshToken(refreshToken.Token, refreshToken.UserId);
 
         public bool IsExistRefreshToken(string refreshToken, Guid userId)
             => _appDbContext.RefreshTokens.FirstOrDefault(e => e.Token == refreshToken && e.UserId == userId) != null;
+
+        private void RemoveRangeTokensExpired(RefreshToken refreshToken)
+        {
+            var item = _appDbContext.RefreshTokens.Where(e => e.UserId == refreshToken.UserId && DateTime.Now > e.Expires).ToList();
+
+            if (item.Count == 0)
+            {
+                return;
+            }
+
+            _appDbContext.RefreshTokens.RemoveRange(item);
+        }
     }
 }

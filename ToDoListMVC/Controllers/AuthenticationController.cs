@@ -58,11 +58,11 @@ namespace ToDoListMVC.Controllers
                 ModelState.AddModelError("", "The login or password was entered incorrectly.");
             }
 
+            HttpContext.RemoveAllToken();
+
             if (ModelState.Any(e => e.Value?.ValidationState
                                     == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid))
             {
-                HttpContext.RemoveRefreshToken();
-                HttpContext.RemoveToken();
                 return RedirectToAction("SignIn", "Authentication");
             }
             else
@@ -117,12 +117,21 @@ namespace ToDoListMVC.Controllers
         [HttpGet]
         public IActionResult Output()
         {
-            HttpContext.RemoveToken();
-            HttpContext.RemoveRefreshToken();
-            _refreshTokenService.Remove(_tokenHelper.UserId);
-            _tokenHelper.UserId = null;
+            if (HttpContext.Request.Cookies.TryGetValue(LoginConst.GetRefreshTokenKey, out var refreshTokenCookies) && _tokenHelper.UserId != null)
+            {
+                var refreshToken = _refreshTokenService.GetRefreshToken(refreshTokenCookies, (Guid)_tokenHelper.UserId);
 
-            return RedirectToAction("HomePage", "Home");
+                if (refreshToken != null)
+                {
+                    _refreshTokenService.Remove(refreshToken);
+                }
+
+                HttpContext.RemoveToken();
+                HttpContext.RemoveRefreshToken();
+                _tokenHelper.UserId = null;
+            }
+
+            return RedirectToAction("SignIn", "Authentication");
         }
     }
 }

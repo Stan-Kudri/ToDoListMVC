@@ -17,12 +17,17 @@ namespace ToDoListMVC.Extension
             Expires = DateTime.UtcNow.AddHours(LoginConst.GetExpiresRefreshToken.Hour),
         };
 
-
         public static void AppendRefreshToken(this HttpContext httpContext, string token)
             => Append(httpContext, LoginConst.GetRefreshTokenKey, token, _optionRefreshToken);
 
         public static void AppendToken(this HttpContext httpContext, string token)
             => Append(httpContext, LoginConst.GetTokenKey, token, _optionToken);
+
+        public static void RemoveAllToken(this HttpContext httpContext)
+        {
+            httpContext.Response.Cookies.Delete(LoginConst.GetTokenKey);
+            httpContext.Response.Cookies.Delete(LoginConst.GetRefreshTokenKey);
+        }
 
         public static void RemoveToken(this HttpContext httpContext)
             => httpContext.Response.Cookies.Delete(LoginConst.GetTokenKey);

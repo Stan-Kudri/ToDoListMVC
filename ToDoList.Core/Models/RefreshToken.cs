@@ -3,7 +3,7 @@ using ToDoList.Core.Models.Users;
 
 namespace ToDoList.Core.Models
 {
-    public class RefreshToken
+    public class RefreshToken : Entity
     {
         public string Token { get; set; } = string.Empty;
 
