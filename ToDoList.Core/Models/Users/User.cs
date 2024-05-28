@@ -20,12 +20,12 @@ namespace ToDoList.Core.Models.Users
         {
             Id = id;
 
-            if (!_userValidator.ValidFormatPassword(password, out var messageValidPass))
+            if (!_userValidator.ValidatePassword(password, out var messageValidPass))
             {
                 throw new ArgumentException(messageValidPass, nameof(password));
             }
 
-            if (!_userValidator.ValidFormatUsername(username, out var messageValidUsername))
+            if (!_userValidator.ValidetUsername(username, out var messageValidUsername))
             {
                 throw new ArgumentException(messageValidUsername, nameof(username));
             }

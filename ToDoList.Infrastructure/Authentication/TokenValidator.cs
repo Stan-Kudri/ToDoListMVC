@@ -1,8 +1,8 @@
-﻿using ToDoList.Core.Authentication;
+﻿using Microsoft.AspNetCore.Http;
 using ToDoList.Core.Service;
-using ToDoListMVC.Extension;
+using ToDoList.Infrastructure.Extension;
 
-namespace ToDoListMVC.Models
+namespace ToDoList.Infrastructure.Authentication
 {
     public class TokenValidator
     {

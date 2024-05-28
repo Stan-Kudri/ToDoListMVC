@@ -11,12 +11,12 @@ namespace ToDoListMVC.Controllers
     public class ToDoListController : Controller
     {
         private readonly ILogger<ToDoListController> _logger;
-        private readonly ToDoItemsService _affairsService;
+        private readonly ToDoItemsService _toDoItemsService;
 
         public ToDoListController(ILogger<ToDoListController> logger, ToDoItemsService caseService)
         {
             _logger = logger;
-            _affairsService = caseService;
+            _toDoItemsService = caseService;
         }
 
         [HttpGet]
@@ -26,8 +26,8 @@ namespace ToDoListMVC.Controllers
         [HttpPost]
         public IActionResult ViewToDo(ToDoItemsModel item)
         {
-            _affairsService.Add(item);
-            return RedirectToAction();
+            _toDoItemsService.Add(item);
+            return View();
         }
 
         [HttpPost]
@@ -38,13 +38,13 @@ namespace ToDoListMVC.Controllers
                 return NoContent();
             }
 
-            _affairsService.Remove(id);
-            return RedirectToAction("ViewToDo");
+            _toDoItemsService.Remove(id);
+            return View("ViewToDo");
         }
 
         [HttpGet]
         public IActionResult Edit(Guid? id)
-            => id != null && _affairsService.TrySearchItem(id, out var item) && !string.IsNullOrEmpty(item.Description)
+            => id != null && _toDoItemsService.TrySearchItem(id, out var item) && !string.IsNullOrEmpty(item.Description)
                 ? View("Edit", item)
                 : NoContent();
 
@@ -56,8 +56,8 @@ namespace ToDoListMVC.Controllers
                 return NoContent();
             }
 
-            _affairsService.Update(item);
-            return RedirectToAction("ViewToDo");
+            _toDoItemsService.Update(item);
+            return View("ViewToDo");
         }
 
         [HttpPost]
@@ -65,8 +65,8 @@ namespace ToDoListMVC.Controllers
         {
             if (id != null)
             {
-                _affairsService.MarkCompleted(id);
-                return RedirectToAction("ViewToDo");
+                _toDoItemsService.MarkCompleted(id);
+                return View("ViewToDo");
             }
 
             return NoContent();
@@ -77,10 +77,10 @@ namespace ToDoListMVC.Controllers
         {
             if (id != null && !string.IsNullOrEmpty(description))
             {
-                _affairsService.UpdateDescription(id, description);
+                _toDoItemsService.UpdateDescription(id, description);
             }
 
-            return RedirectToAction("ViewToDo");
+            return View("ViewToDo");
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

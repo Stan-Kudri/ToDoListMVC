@@ -1,4 +1,5 @@
-﻿@using ToDoListMVC.Models
+﻿@using ToDoList.Infrastructure.Authentication.Model
+@using ToDoListMVC.Models
 
 @model UserModel
 
@@ -21,20 +22,20 @@
                 Already have an account?
                 <a class="link-info" asp-controller="Authentication" asp-action="SignIn">Sign In</a>
             </h6>
-            <form class="row g-2 needs-validation" method="get">
+            <form class="row g-2 needs-validation" method="post">
                 <div>
                     <input type="text" class="form-control" placeholder="Username" aria-label="Username" asp-for="Username">
-                    <span asp-validation-for="Username" accesskey="username" style="color:red"></span>
+                    <span asp-validation-for="Username" accesskey=@AccessKeyErrorConstant.UsernameKey style="color:red"></span>
                 </div>
 
                 <div>
                     <input type="password" class="form-control" placeholder="Password" aria-label="Password" asp-for="Password">
-                    <span asp-validation-for="Password" accesskey="password" style="color:red"></span>
+                    <span asp-validation-for="Password" accesskey=@AccessKeyErrorConstant.PasswordKey style="color:red"></span>
                 </div>
 
                 <div class="text-center" style="padding-top:20px">
-                    <button type="submit" style="width: 100px; height: 40px;" class="btn btn-outline-secondary">OK</button>
-                    <button type="submit" asp-action="ClearFieldRegistration" style="width: 100px; height: 40px;" class="btn btn-outline-secondary">Clear</button>
+                    <button type="submit" asp-action="CreateAccount" style="width: 100px; height: 40px;" class="btn btn-outline-secondary">Create</button>
+                    <button type="reset" asp-action="ClearFieldRegistration" style="width: 100px; height: 40px;" class="btn btn-outline-secondary">Clear</button>
                 </div>
             </form>
 

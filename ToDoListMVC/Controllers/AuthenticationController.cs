@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using ToDoList.Core.Authentication;
-using ToDoList.Core.Extension;
-using ToDoList.Core.Models.Users;
 using ToDoList.Core.Service;
+using ToDoList.Infrastructure.Authentication;
+using ToDoList.Infrastructure.Authentication.Model;
+using ToDoList.Infrastructure.Extension;
 using ToDoListMVC.Extension;
 using ToDoListMVC.Models;
 
@@ -11,8 +13,6 @@ namespace ToDoListMVC.Controllers
 {
     public class AuthenticationController : Controller
     {
-        private readonly static UserValidator _userValidator = new UserValidator();
-
         private readonly UserService _userService;
         private readonly TokenService _tokenHelper;
         private readonly RefreshTokenService _refreshTokenService;
@@ -24,93 +24,81 @@ namespace ToDoListMVC.Controllers
             _refreshTokenService = refreshTokenService;
         }
 
-        [HttpGet]
-        public IActionResult ClearFieldRegistration()
-        {
-            ModelState.Clear();
-            return RedirectToAction("Registration", "Authentication");
-        }
-
-        [HttpGet]
-        public IActionResult ClearFieldSignIn()
-        {
-            ModelState.Clear();
-            return RedirectToAction("SignIn", "Authentication");
-        }
-
         [AllowAnonymous]
         [HttpGet]
         public IActionResult SignIn(UserModel userModel)
-        {
-            if (_tokenHelper.UserId is not null)
-            {
-                return RedirectToAction("HomePage", "Home");
-            }
-
-            if (!_userValidator.ValidFormatUsername(userModel.Username) || !_userValidator.ValidFormatPassword(userModel.Password))
-            {
-                ModelState.AddModelError("", "The data was entered incorrectly.");
-                return View();
-            }
-
-            if (!_userService.IsUserModelData(userModel, out var user))
-            {
-                ModelState.AddModelError("", "The login or password was entered incorrectly.");
-            }
-
-            HttpContext.RemoveAllToken();
-
-            if (ModelState.Any(e => e.Value?.ValidationState
-                                    == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid))
-            {
-                return RedirectToAction("SignIn", "Authentication");
-            }
-            else
-            {
-                var token = _tokenHelper.GenerateTokenJWT(user);
-                var refreshToken = _tokenHelper.GenerateRefreshToken(user.Id);
-
-                _refreshTokenService.UppdataRefreshToken(refreshToken);
-
-                HttpContext.AppendToken(token);
-                HttpContext.AppendRefreshToken(refreshToken.Token);
-
-                return RedirectToAction("ViewToDo", "ToDoList");
-            }
-        }
+            => _tokenHelper.UserId is not null
+                ? RedirectToAction("HomePage", "Home")
+                : View();
 
         [AllowAnonymous]
         [HttpGet]
         public IActionResult Registration(UserModel userModel)
+            => _tokenHelper.UserId is not null
+                ? RedirectToAction("HomePage", "Home")
+                : View();
+
+        [AllowAnonymous]
+        [HttpPost]
+        public IActionResult ClearFieldRegistration()
         {
-            if (_tokenHelper.UserId is not null)
+            ModelState.Clear();
+            return View("Registration");
+        }
+
+        [AllowAnonymous]
+        [HttpPost]
+        public IActionResult ClearFieldSignIn()
+        {
+            ModelState.Clear();
+            return View("SignIn");
+        }
+
+        [AllowAnonymous]
+        [HttpPost]
+        public IActionResult Login(UserModel userModel)
+        {
+            if (!_userService.TryGetUserData(userModel, out var user))
             {
-                return RedirectToAction("HomePage", "Home");
+                ModelState.AddModelError(AccessKeyErrorConstant.EmptyKey, "The login or password was entered incorrectly.");
             }
 
-            if (!_userValidator.ValidFormatUsername(userModel.Username, out var validUsernameMessage))
+            HttpContext.RemoveAllToken();
+
+            if (ModelState.Any(e => e.Value?.ValidationState == ModelValidationState.Invalid))
             {
-                ModelState.AddModelError("username", validUsernameMessage);
+                return View("SignIn", userModel);
             }
 
-            if (!_userValidator.ValidFormatPassword(userModel.Password, out var validPasswordMessage))
-            {
-                ModelState.AddModelError("password", validPasswordMessage);
-            }
+            var token = _tokenHelper.GenerateTokenJWT(user);
+            var refreshToken = _tokenHelper.GenerateRefreshToken(user.Id);
+
+            _refreshTokenService.UppdataRefreshToken(refreshToken);
+
+            HttpContext.AppendToken(token);
+            HttpContext.AppendRefreshToken(refreshToken.Token);
+
+            return RedirectToAction("ViewToDo", "ToDoList");
+        }
+
+        [AllowAnonymous]
+        [HttpPost]
+        public IActionResult CreateAccount(UserModel userModel)
+        {
+            ModelState.ValidateModelUserRegistration(userModel);
 
             if (!_userService.IsFreeUsername(userModel.Username))
             {
-                ModelState.AddModelError("username", "This username is taken ");
+                ModelState.AddModelError(AccessKeyErrorConstant.UsernameKey, "This username is taken.");
             }
 
-            if (ModelState.Any(e => e.Value?.ValidationState
-                                    == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid))
+            if (ModelState.Any(e => e.Value?.ValidationState == ModelValidationState.Invalid))
             {
-                return View();
+                return View("Registration", userModel);
             }
 
             _userService.Add(userModel.ToUser());
-            return RedirectToAction("SignIn", "Authentication");
+            return View("SignIn");
         }
 
         [Authorize]
@@ -119,19 +107,13 @@ namespace ToDoListMVC.Controllers
         {
             if (HttpContext.Request.Cookies.TryGetValue(LoginConst.GetRefreshTokenKey, out var refreshTokenCookies) && _tokenHelper.UserId != null)
             {
-                var refreshToken = _refreshTokenService.GetRefreshToken(refreshTokenCookies, (Guid)_tokenHelper.UserId);
-
-                if (refreshToken != null)
-                {
-                    _refreshTokenService.Remove(refreshToken);
-                }
-
+                _refreshTokenService.Remove(refreshTokenCookies, (Guid)_tokenHelper.UserId);
                 HttpContext.RemoveToken();
                 HttpContext.RemoveRefreshToken();
                 _tokenHelper.UserId = null;
             }
 
-            return RedirectToAction("SignIn", "Authentication");
+            return View("SignIn");
         }
     }
 }

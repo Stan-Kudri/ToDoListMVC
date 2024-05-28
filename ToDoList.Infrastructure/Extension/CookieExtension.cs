@@ -1,6 +1,7 @@
-﻿using ToDoList.Core.Authentication;
+﻿using Microsoft.AspNetCore.Http;
+using ToDoList.Core.Authentication;
 
-namespace ToDoListMVC.Extension
+namespace ToDoList.Infrastructure.Extension
 {
     public static class CookieExtension
     {

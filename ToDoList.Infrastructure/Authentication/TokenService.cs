@@ -3,11 +3,12 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
-using ToDoList.Core.Extension;
+using ToDoList.Core.Authentication;
 using ToDoList.Core.Models;
 using ToDoList.Core.Models.Users;
+using ToDoList.Infrastructure.Extension;
 
-namespace ToDoList.Core.Authentication
+namespace ToDoList.Infrastructure.Authentication
 {
     public class TokenService : ICurrentUserAccessor
     {
@@ -39,7 +40,6 @@ namespace ToDoList.Core.Authentication
 
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
-
 
         public RefreshToken GenerateRefreshToken(Guid userId)
         {

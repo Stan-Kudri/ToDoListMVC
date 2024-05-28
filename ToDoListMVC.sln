@@ -7,7 +7,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ToDoListMVC", "ToDoListMVC\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ToDoList.Core", "ToDoList.Core\ToDoList.Core.csproj", "{D44969AE-D071-458C-AEE1-7EB11A97E4AA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToDoList.Migrations", "ToDoList.Migrations\ToDoList.Migrations.csproj", "{EE92C30C-66E0-4A7F-A606-2DA1CA9D2AFF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ToDoList.Migrations", "ToDoList.Migrations\ToDoList.Migrations.csproj", "{EE92C30C-66E0-4A7F-A606-2DA1CA9D2AFF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToDoList.Infrastructure", "ToDoList.Infrastructure\ToDoList.Infrastructure.csproj", "{46199A8A-B9F1-4665-88E7-DB9FA596C94F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{EE92C30C-66E0-4A7F-A606-2DA1CA9D2AFF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EE92C30C-66E0-4A7F-A606-2DA1CA9D2AFF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EE92C30C-66E0-4A7F-A606-2DA1CA9D2AFF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{46199A8A-B9F1-4665-88E7-DB9FA596C94F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{46199A8A-B9F1-4665-88E7-DB9FA596C94F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{46199A8A-B9F1-4665-88E7-DB9FA596C94F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{46199A8A-B9F1-4665-88E7-DB9FA596C94F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

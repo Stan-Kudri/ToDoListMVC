@@ -1,6 +1,8 @@
-﻿using ToDoListMVC.Models;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.DependencyInjection;
+using ToDoList.Infrastructure.Authentication;
 
-namespace ToDoListMVC.Extension
+namespace ToDoList.Infrastructure.Extension
 {
     public static class TokenValidatorExtension
     {

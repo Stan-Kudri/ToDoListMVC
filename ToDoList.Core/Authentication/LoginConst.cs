@@ -6,7 +6,7 @@
 
         public static string GetRefreshTokenKey => "RefreshToken";
 
-        public static TimeSpan GetUpdateTimeToken => TimeSpan.FromMinutes(1);
+        public static TimeSpan GetUpdateTimeToken => TimeSpan.FromMinutes(30);
 
         public static DateTime GetDateCreateRefreshToken => DateTime.UtcNow;
 

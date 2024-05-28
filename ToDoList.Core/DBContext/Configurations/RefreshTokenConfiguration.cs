@@ -5,7 +5,7 @@ using ToDoList.Core.Models;
 
 namespace ToDoList.Core.DBContext.Configurations
 {
-    public sealed class RefrashTokenConfiguration : EntityConfigurationBase<RefreshToken>
+    public sealed class RefreshTokenConfiguration : EntityConfigurationBase<RefreshToken>
     {
         protected override void ConfigureCore(EntityTypeBuilder<RefreshToken> builder)
         {

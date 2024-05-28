@@ -12,16 +12,14 @@ namespace ToDoList.Core.Service
 
         public void Add(RefreshToken refreshToken)
         {
-            var user = _appDbContext.Users.FirstOrDefault(e => e.Id == refreshToken.UserId);
-
-            if (user == null)
+            if (!_appDbContext.Users.Any(e => e.Id == refreshToken.UserId))
             {
                 throw new ArgumentException("This user does not exist.");
             }
 
-            var item = _appDbContext.RefreshTokens.FirstOrDefault(e => e.UserId == refreshToken.UserId && e.Id == refreshToken.Id);
+            var isTokenUsed = _appDbContext.RefreshTokens.Any(e => e.UserId == refreshToken.UserId && e.Id == refreshToken.Id);
 
-            if (item != null)
+            if (isTokenUsed)
             {
                 Update(refreshToken);
                 return;
@@ -33,9 +31,7 @@ namespace ToDoList.Core.Service
 
         public void Update(RefreshToken refreshToken)
         {
-            var user = _appDbContext.Users.FirstOrDefault(e => e.Id == refreshToken.UserId);
-
-            if (user == null)
+            if (!_appDbContext.Users.Any(e => e.Id == refreshToken.UserId))
             {
                 throw new ArgumentException("This user does not exist.");
             }
@@ -44,7 +40,7 @@ namespace ToDoList.Core.Service
 
             if (item == null)
             {
-                throw new ArgumentException("This user does not exist.");
+                throw new ArgumentException("This refresh token does not exist.");
             }
 
             item.Token = refreshToken.Token;
@@ -65,6 +61,16 @@ namespace ToDoList.Core.Service
             _appDbContext.SaveChanges();
         }
 
+        public void Remove(string token, Guid userId)
+        {
+            var item = _appDbContext.RefreshTokens.FirstOrDefault(e => e.Token == token && e.UserId == userId);
+
+            if (item != null)
+            {
+                _appDbContext.RefreshTokens.Remove(item);
+            }
+        }
+
         public RefreshToken? GetRefreshToken(string token, Guid userId)
         {
             var refreshToken = _appDbContext.RefreshTokens.FirstOrDefault(e => e.Token == token && e.UserId == userId);
@@ -76,23 +82,29 @@ namespace ToDoList.Core.Service
             }
 
             //Remove RefreshToken Expires by UserId
-            RemoveRangeTokensExpired(refreshToken);
+            RemoveExpiredTokens(refreshToken.UserId);
 
             return refreshToken;
         }
 
-        public bool IsUserIdExist(RefreshToken refreshToken)
-            => _appDbContext.RefreshTokens.FirstOrDefault(e => e.UserId == refreshToken.UserId && e.Id == refreshToken.Id) != null;
+        public void UppdataRefreshToken(RefreshToken refreshToken)
+        {
+            if (_appDbContext.RefreshTokens.Any(e => e.UserId == refreshToken.UserId && e.Id == refreshToken.Id))
+            {
+                Update(refreshToken);
+            }
+            else
+            {
+                Add(refreshToken);
+            }
+        }
 
         public bool IsExistRefreshToken(RefreshToken refreshToken)
-            => IsExistRefreshToken(refreshToken.Token, refreshToken.UserId);
+            => _appDbContext.RefreshTokens.Any(e => e.Token == refreshToken.Token && e.UserId == refreshToken.UserId);
 
-        public bool IsExistRefreshToken(string refreshToken, Guid userId)
-            => _appDbContext.RefreshTokens.FirstOrDefault(e => e.Token == refreshToken && e.UserId == userId) != null;
-
-        private void RemoveRangeTokensExpired(RefreshToken refreshToken)
+        private void RemoveExpiredTokens(Guid userId)
         {
-            var item = _appDbContext.RefreshTokens.Where(e => e.UserId == refreshToken.UserId && DateTime.Now > e.Expires).ToList();
+            var item = _appDbContext.RefreshTokens.Where(e => e.UserId == userId && DateTime.Now > e.Expires).ToList();
 
             if (item.Count == 0)
             {

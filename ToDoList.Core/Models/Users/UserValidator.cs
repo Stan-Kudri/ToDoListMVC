@@ -5,7 +5,7 @@
         public const int MinLengthUsername = 6;
         public const int MinLengthPassword = 8;
 
-        public bool ValidFormatUsername(string username, out string message)
+        public bool ValidetUsername(string username, out string message)
         {
             message = string.Empty;
 
@@ -36,13 +36,7 @@
             return true;
         }
 
-        public bool ValidFormatUsername(string username)
-            => !string.IsNullOrEmpty(username)
-                    && username.Length >= MinLengthUsername
-                    && char.IsLetter(username[0])
-                    && username.All(char.IsLetterOrDigit);
-
-        public bool ValidFormatPassword(string password, out string message)
+        public bool ValidatePassword(string password, out string message)
         {
             message = string.Empty;
 
@@ -54,7 +48,7 @@
 
             if (password.Length < MinLengthPassword)
             {
-                message = "Your password isn't too long.";
+                message = "Your password is too short.";
                 return false;
             }
 
@@ -66,10 +60,5 @@
 
             return true;
         }
-
-        public bool ValidFormatPassword(string password)
-            => !string.IsNullOrEmpty(password)
-                    && password.Length >= MinLengthPassword
-                    && password.All(char.IsLetterOrDigit);
     }
 }

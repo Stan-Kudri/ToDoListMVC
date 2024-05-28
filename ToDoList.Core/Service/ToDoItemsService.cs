@@ -122,31 +122,13 @@ namespace ToDoList.Core.Repository
         public bool TrySearchItem(Guid? id, out ToDoItems item)
         {
             item = _dbContext.ToDoItems.FirstOrDefault(e => e.Id == id);
-
-            if (item == null)
-            {
-                return false;
-            }
-
-            return true;
+            return item != null;
         }
 
-        public List<ToDoItems> GetCompliteTask()
-        {
-            var query = _dbContext.ToDoItems.Where(e => e.UserId == _currentUser.UserId).Where(e => e.IsCaseCompletion);
-
-            return query.Count() > 0
-                   ? query.ToList()
-                   : new List<ToDoItems>();
-        }
+        public List<ToDoItems> GetComplitedTasks()
+            => _dbContext.ToDoItems.Where(e => e.UserId == _currentUser.UserId).Where(e => e.IsCaseCompletion).ToList();
 
         public List<ToDoItems> GetNotCompliteTask()
-        {
-            var query = _dbContext.ToDoItems.Where(e => e.UserId == _currentUser.UserId).Where(e => !e.IsCaseCompletion);
-
-            return query.Count() > 0
-                   ? query.ToList()
-                   : new List<ToDoItems>();
-        }
+            => _dbContext.ToDoItems.Where(e => e.UserId == _currentUser.UserId).Where(e => !e.IsCaseCompletion).ToList();
     }
 }
