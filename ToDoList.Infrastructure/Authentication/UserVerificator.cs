@@ -20,7 +20,7 @@ namespace ToDoList.Infrastructure.Authentication
 
         public IEnumerable<ErrorModel> ValidateModelUserRegistration(UserModel userModel)
         {
-            if (!_userValidator.ValidetUsername(userModel.Username, out var validUsernameMessage))
+            if (!_userValidator.ValidateUsername(userModel.Username, out var validUsernameMessage))
             {
                 yield return new ErrorModel(AccessKeyErrorConstant.UsernameKey, validUsernameMessage);
             }

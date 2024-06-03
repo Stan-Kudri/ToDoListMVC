@@ -19,7 +19,7 @@ namespace ToDoList.Core.Service
 
             if (_dbContext.Users.Any(e => e.Username == user.Username))
             {
-                throw new ArgumentException("This username exists.");
+                throw new ArgumentException("This username already exists.");
             }
 
             _dbContext.Users.Add(user);

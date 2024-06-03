@@ -16,8 +16,4 @@
     <ProjectReference Include="..\ToDoList.Core\ToDoList.Core.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Authentication\Model\" />
-  </ItemGroup>
-
 </Project>

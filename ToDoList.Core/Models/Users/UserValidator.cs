@@ -5,7 +5,7 @@
         public const int MinLengthUsername = 6;
         public const int MinLengthPassword = 8;
 
-        public bool ValidetUsername(string username, out string message)
+        public bool ValidateUsername(string username, out string message)
         {
             message = string.Empty;
 

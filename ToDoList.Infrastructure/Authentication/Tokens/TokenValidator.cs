@@ -34,7 +34,7 @@ namespace ToDoList.Infrastructure.Authentication.Tokens
             var token = _tokenService.GenerateTokenJWT(user);
             var refreshToken = _tokenService.GenerateRefreshToken(user.Id);
 
-            _refreshTokenService.UppdataRefreshToken(refreshToken);
+            _refreshTokenService.UpsertRefreshToken(refreshToken);
 
             _httpContext.AppendToken(token);
             _httpContext.AppendRefreshToken(refreshToken.Token);
