@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting.StaticWebAssets;
 using ToDoList;
 using ToDoList.Core.Authentication;
-using ToDoList.Infrastructure.Authentication;
+using ToDoList.Infrastructure.Authentication.Tokens;
 using ToDoList.Infrastructure.Extension;
 
 var builder = WebApplication.CreateBuilder(args);

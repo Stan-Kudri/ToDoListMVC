@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
-using ToDoList.Infrastructure.Authentication;
+using ToDoList.Infrastructure.Authentication.Tokens;
 
 namespace ToDoList.Infrastructure.Extension
 {

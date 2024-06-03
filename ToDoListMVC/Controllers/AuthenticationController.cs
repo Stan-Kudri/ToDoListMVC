@@ -2,11 +2,12 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using ToDoList.Core.Authentication;
+using ToDoList.Core.Models.Errors;
 using ToDoList.Core.Service;
 using ToDoList.Infrastructure.Authentication;
 using ToDoList.Infrastructure.Authentication.Model;
+using ToDoList.Infrastructure.Authentication.Tokens;
 using ToDoList.Infrastructure.Extension;
-using ToDoListMVC.Extension;
 using ToDoListMVC.Models;
 
 namespace ToDoListMVC.Controllers
@@ -15,13 +16,19 @@ namespace ToDoListMVC.Controllers
     {
         private readonly UserService _userService;
         private readonly TokenService _tokenHelper;
-        private readonly RefreshTokenService _refreshTokenService;
+        private readonly UserVerificator _userVerificator;
+        private readonly CookieSettingService _cookieSettingService;
 
-        public AuthenticationController(UserService userService, TokenService tokenHelper, RefreshTokenService refreshTokenService)
+        public AuthenticationController(
+            UserService userService,
+            TokenService tokenHelper,
+            UserVerificator userVerificator,
+            CookieSettingService cookieSettingService)
         {
             _userService = userService;
             _tokenHelper = tokenHelper;
-            _refreshTokenService = refreshTokenService;
+            _userVerificator = userVerificator;
+            _cookieSettingService = cookieSettingService;
         }
 
         [AllowAnonymous]
@@ -58,25 +65,15 @@ namespace ToDoListMVC.Controllers
         [HttpPost]
         public IActionResult Login(UserModel userModel)
         {
-            if (!_userService.TryGetUserData(userModel, out var user))
-            {
-                ModelState.AddModelError(AccessKeyErrorConstant.EmptyKey, "The login or password was entered incorrectly.");
-            }
-
             HttpContext.RemoveAllToken();
 
-            if (ModelState.Any(e => e.Value?.ValidationState == ModelValidationState.Invalid))
+            if (!_userService.TryGetUserData(userModel, out var user) || user == null)
             {
+                ModelState.AddModelError(AccessKeyErrorConstant.EmptyKey, ErrorMessage.MessageInvalidUser);
                 return View("SignIn", userModel);
             }
 
-            var token = _tokenHelper.GenerateTokenJWT(user);
-            var refreshToken = _tokenHelper.GenerateRefreshToken(user.Id);
-
-            _refreshTokenService.UppdataRefreshToken(refreshToken);
-
-            HttpContext.AppendToken(token);
-            HttpContext.AppendRefreshToken(refreshToken.Token);
+            _cookieSettingService.SetTokens(HttpContext, user);
 
             return RedirectToAction("ViewToDo", "ToDoList");
         }
@@ -85,11 +82,9 @@ namespace ToDoListMVC.Controllers
         [HttpPost]
         public IActionResult CreateAccount(UserModel userModel)
         {
-            ModelState.ValidateModelUserRegistration(userModel);
-
-            if (!_userService.IsFreeUsername(userModel.Username))
+            foreach (var error in _userVerificator.ValidateModelUserRegistration(userModel))
             {
-                ModelState.AddModelError(AccessKeyErrorConstant.UsernameKey, "This username is taken.");
+                ModelState.AddModelError(error.AccsesKey, error.Message);
             }
 
             if (ModelState.Any(e => e.Value?.ValidationState == ModelValidationState.Invalid))
@@ -105,12 +100,9 @@ namespace ToDoListMVC.Controllers
         [HttpGet]
         public IActionResult Output()
         {
-            if (HttpContext.Request.Cookies.TryGetValue(LoginConst.GetRefreshTokenKey, out var refreshTokenCookies) && _tokenHelper.UserId != null)
+            if (HttpContext.Request.Cookies.TryGetValue(LoginConst.GetRefreshTokenKey, out var refreshToken) && _tokenHelper.UserId != null)
             {
-                _refreshTokenService.Remove(refreshTokenCookies, (Guid)_tokenHelper.UserId);
-                HttpContext.RemoveToken();
-                HttpContext.RemoveRefreshToken();
-                _tokenHelper.UserId = null;
+                _cookieSettingService.RemoveTokens(HttpContext, refreshToken);
             }
 
             return View("SignIn");

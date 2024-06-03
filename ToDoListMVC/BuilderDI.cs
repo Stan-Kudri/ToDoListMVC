@@ -3,6 +3,7 @@ using ToDoList.Core.Models.Users;
 using ToDoList.Core.Repository;
 using ToDoList.Core.Service;
 using ToDoList.Infrastructure.Authentication;
+using ToDoList.Infrastructure.Authentication.Tokens;
 using ToDoList.Migrations;
 using ToDoListMVC.Controllers;
 using ToDoListMVC.Extension.ConfigJWTAuth;
@@ -24,6 +25,9 @@ namespace ToDoList
             builder.Services.AddScoped<AuthenticationController>();
             builder.Services.AddScoped<ToDoListController>();
             builder.Services.AddScoped<TokenValidator>();
+            builder.Services.AddScoped<UserValidator>();
+            builder.Services.AddScoped<UserVerificator>();
+            builder.Services.AddScoped<CookieSettingService>();
         }
 
         public static void AddConfigureService(this WebApplicationBuilder builder)

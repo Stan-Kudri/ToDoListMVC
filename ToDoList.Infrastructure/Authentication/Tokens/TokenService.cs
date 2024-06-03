@@ -8,7 +8,7 @@ using ToDoList.Core.Models;
 using ToDoList.Core.Models.Users;
 using ToDoList.Infrastructure.Extension;
 
-namespace ToDoList.Infrastructure.Authentication
+namespace ToDoList.Infrastructure.Authentication.Tokens
 {
     public class TokenService : ICurrentUserAccessor
     {

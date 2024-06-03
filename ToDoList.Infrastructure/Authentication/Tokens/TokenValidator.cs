@@ -1,8 +1,9 @@
 ﻿using Microsoft.AspNetCore.Http;
+using ToDoList.Core.Models.Users;
 using ToDoList.Core.Service;
 using ToDoList.Infrastructure.Extension;
 
-namespace ToDoList.Infrastructure.Authentication
+namespace ToDoList.Infrastructure.Authentication.Tokens
 {
     public class TokenValidator
     {
@@ -26,6 +27,17 @@ namespace ToDoList.Infrastructure.Authentication
             _httpContext = httpContext;
             _acsessToken = acsessToken;
             _refreshToken = refreshToken;
+        }
+
+        public void SetTokens(User user)
+        {
+            var token = _tokenService.GenerateTokenJWT(user);
+            var refreshToken = _tokenService.GenerateRefreshToken(user.Id);
+
+            _refreshTokenService.UppdataRefreshToken(refreshToken);
+
+            _httpContext.AppendToken(token);
+            _httpContext.AppendRefreshToken(refreshToken.Token);
         }
 
         public bool IsValidTokensFromCookies()
