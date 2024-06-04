@@ -15,31 +15,25 @@ namespace ToDoList.Infrastructure.Extension
         {
             HttpOnly = true,
             Secure = true,
-            Expires = DateTime.UtcNow.AddHours(LoginConst.GetExpiresRefreshToken.Hour),
+            Expires = DateTime.UtcNow.AddHours(TokensConst.GetExpiresRefreshToken.Hour),
         };
 
         public static void AppendRefreshToken(this HttpContext httpContext, string token)
-            => Append(httpContext, LoginConst.GetRefreshTokenKey, token, _optionRefreshToken);
+            => httpContext.Response.Cookies.Append(TokensConst.GetRefreshTokenKey, token, _optionRefreshToken);
 
         public static void AppendToken(this HttpContext httpContext, string token)
-            => Append(httpContext, LoginConst.GetTokenKey, token, _optionToken);
+            => httpContext.Response.Cookies.Append(TokensConst.GetTokenKey, token, _optionToken);
 
-        public static void RemoveAllToken(this HttpContext httpContext)
+        public static void RemoveAllTokens(this HttpContext httpContext)
         {
-            httpContext.Response.Cookies.Delete(LoginConst.GetTokenKey);
-            httpContext.Response.Cookies.Delete(LoginConst.GetRefreshTokenKey);
+            RemoveToken(httpContext);
+            RemoveRefreshToken(httpContext);
         }
 
         public static void RemoveToken(this HttpContext httpContext)
-            => httpContext.Response.Cookies.Delete(LoginConst.GetTokenKey);
+            => httpContext.Response.Cookies.Delete(TokensConst.GetTokenKey);
 
         public static void RemoveRefreshToken(this HttpContext httpContext)
-            => httpContext.Response.Cookies.Delete(LoginConst.GetRefreshTokenKey);
-
-        private static void Append(this HttpContext httpContext, string key, string token, CookieOptions cookieOptions)
-        {
-            httpContext.Response.Cookies.Delete(key);
-            httpContext.Response.Cookies.Append(key, token, cookieOptions);
-        }
+            => httpContext.Response.Cookies.Delete(TokensConst.GetRefreshTokenKey);
     }
 }

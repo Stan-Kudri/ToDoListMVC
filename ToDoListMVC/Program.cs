@@ -32,8 +32,8 @@ app.UseCors();
 
 app.Use((context, func) =>
 {
-    if (!context.Request.Cookies.TryGetValue(LoginConst.GetTokenKey, out var usingToken)
-            || !context.Request.Cookies.TryGetValue(LoginConst.GetRefreshTokenKey, out var usingRefreshToken))
+    if (!context.Request.Cookies.TryGetValue(TokensConst.GetTokenKey, out var usingToken)
+            || !context.Request.Cookies.TryGetValue(TokensConst.GetRefreshTokenKey, out var usingRefreshToken))
     {
         return RedirectIfNeeded(context, func);
     }

@@ -1,6 +1,6 @@
 ﻿namespace ToDoList.Core.Authentication
 {
-    public static class LoginConst
+    public static class TokensConst
     {
         public static string GetTokenKey => "JWTBearer";
 

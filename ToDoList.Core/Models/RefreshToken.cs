@@ -17,6 +17,6 @@ namespace ToDoList.Core.Models
 
         public bool Expired => DateTime.UtcNow > Expires;
 
-        public bool ShouldUppdate => !Expired && DateTime.UtcNow >= Create.Add(LoginConst.GetUpdateTimeRefreshToken);
+        public bool ShouldUppdate => !Expired && DateTime.UtcNow >= Create.Add(TokensConst.GetUpdateTimeRefreshToken);
     }
 }

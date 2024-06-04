@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Http;
-using ToDoList.Core.Models.Users;
 using ToDoList.Core.Service;
 using ToDoList.Infrastructure.Extension;
 
@@ -29,17 +28,6 @@ namespace ToDoList.Infrastructure.Authentication.Tokens
             _refreshToken = refreshToken;
         }
 
-        public void SetTokens(User user)
-        {
-            var token = _tokenService.GenerateTokenJWT(user);
-            var refreshToken = _tokenService.GenerateRefreshToken(user.Id);
-
-            _refreshTokenService.UpsertRefreshToken(refreshToken);
-
-            _httpContext.AppendToken(token);
-            _httpContext.AppendRefreshToken(refreshToken.Token);
-        }
-
         public bool IsValidTokensFromCookies()
         {
             if (!IsValidAcsessToken())
@@ -62,8 +50,7 @@ namespace ToDoList.Infrastructure.Authentication.Tokens
                 return true;
             }
 
-            _httpContext.RemoveRefreshToken();
-            _httpContext.RemoveToken();
+            _httpContext.RemoveAllTokens();
             return false;
         }
 

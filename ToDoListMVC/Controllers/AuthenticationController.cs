@@ -65,7 +65,7 @@ namespace ToDoListMVC.Controllers
         [HttpPost]
         public IActionResult Login(UserModel userModel)
         {
-            HttpContext.RemoveAllToken();
+            HttpContext.RemoveAllTokens();
 
             if (!_userService.TryGetUserData(userModel, out var user) || user == null)
             {
@@ -100,7 +100,7 @@ namespace ToDoListMVC.Controllers
         [HttpGet]
         public IActionResult Output()
         {
-            if (HttpContext.Request.Cookies.TryGetValue(LoginConst.GetRefreshTokenKey, out var refreshToken) && _tokenHelper.UserId != null)
+            if (HttpContext.Request.Cookies.TryGetValue(TokensConst.GetRefreshTokenKey, out var refreshToken) && _tokenHelper.UserId != null)
             {
                 _cookieSettingService.RemoveTokens(HttpContext, refreshToken);
             }
