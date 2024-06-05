@@ -10,7 +10,7 @@ namespace ToDoList.Core.Service
         public RefreshTokenService(AppDbContext appDbContext)
             => _appDbContext = appDbContext;
 
-        public void Add(RefreshToken refreshToken)
+        public void Upsert(RefreshToken refreshToken)
         {
             if (!_appDbContext.Users.Any(e => e.Id == refreshToken.UserId))
             {
@@ -87,7 +87,7 @@ namespace ToDoList.Core.Service
             return refreshToken;
         }
 
-        public void UppdataRefreshToken(RefreshToken refreshToken)
+        public void UpsertRefreshToken(RefreshToken refreshToken)
         {
             if (_appDbContext.RefreshTokens.Any(e => e.UserId == refreshToken.UserId && e.Id == refreshToken.Id))
             {
@@ -95,7 +95,7 @@ namespace ToDoList.Core.Service
             }
             else
             {
-                Add(refreshToken);
+                Upsert(refreshToken);
             }
         }
 

@@ -8,7 +8,7 @@ using ToDoList.Core.Models;
 using ToDoList.Core.Models.Users;
 using ToDoList.Infrastructure.Extension;
 
-namespace ToDoList.Infrastructure.Authentication
+namespace ToDoList.Infrastructure.Authentication.Tokens
 {
     public class TokenService : ICurrentUserAccessor
     {
@@ -52,8 +52,8 @@ namespace ToDoList.Infrastructure.Authentication
                 Id = Guid.NewGuid(),
                 UserId = userId,
                 Token = Convert.ToBase64String(randomNumber),
-                Create = LoginConst.GetDateCreateRefreshToken,
-                Expires = LoginConst.GetExpiresRefreshToken,
+                Create = TokensConst.GetDateCreateRefreshToken,
+                Expires = TokensConst.GetExpiresRefreshToken,
             };
         }
 
@@ -92,7 +92,7 @@ namespace ToDoList.Infrastructure.Authentication
                 throw new ArgumentException("Token is not valid.");
             }
 
-            return DateTime.UtcNow >= securityToken.ValidFrom.Add(LoginConst.GetUpdateTimeToken) && DateTime.UtcNow <= securityToken.ValidTo;
+            return DateTime.UtcNow >= securityToken.ValidFrom.Add(TokensConst.GetUpdateTimeToken) && DateTime.UtcNow <= securityToken.ValidTo;
         }
     }
 }

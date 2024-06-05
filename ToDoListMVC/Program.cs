@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting.StaticWebAssets;
 using ToDoList;
 using ToDoList.Core.Authentication;
-using ToDoList.Infrastructure.Authentication;
+using ToDoList.Infrastructure.Authentication.Tokens;
 using ToDoList.Infrastructure.Extension;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -32,8 +32,8 @@ app.UseCors();
 
 app.Use((context, func) =>
 {
-    if (!context.Request.Cookies.TryGetValue(LoginConst.GetTokenKey, out var usingToken)
-            || !context.Request.Cookies.TryGetValue(LoginConst.GetRefreshTokenKey, out var usingRefreshToken))
+    if (!context.Request.Cookies.TryGetValue(TokensConst.GetTokenKey, out var usingToken)
+            || !context.Request.Cookies.TryGetValue(TokensConst.GetRefreshTokenKey, out var usingRefreshToken))
     {
         return RedirectIfNeeded(context, func);
     }

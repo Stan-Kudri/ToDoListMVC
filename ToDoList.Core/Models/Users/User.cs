@@ -25,7 +25,7 @@ namespace ToDoList.Core.Models.Users
                 throw new ArgumentException(messageValidPass, nameof(password));
             }
 
-            if (!_userValidator.ValidetUsername(username, out var messageValidUsername))
+            if (!_userValidator.ValidateUsername(username, out var messageValidUsername))
             {
                 throw new ArgumentException(messageValidUsername, nameof(username));
             }

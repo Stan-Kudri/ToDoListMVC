@@ -9,6 +9,9 @@ namespace ToDoList.Core.Repository
         private readonly AppDbContext _dbContext;
         private readonly ICurrentUserAccessor _currentUser;
 
+        private IQueryable<ToDoItems> GetUserTaskQueriably
+            => _dbContext.ToDoItems.Where(e => e.UserId == _currentUser.UserId);
+
         public ToDoItemsService(AppDbContext dbContext, ICurrentUserAccessor currentUserAccessor)
         {
             _dbContext = dbContext;
@@ -105,12 +108,7 @@ namespace ToDoList.Core.Repository
         {
             var item = _dbContext.ToDoItems.FirstOrDefault(e => e.Id == id);
 
-            if (item == null)
-            {
-                return;
-            }
-
-            if (item.Description == description)
+            if (item == null || item.Description == description)
             {
                 return;
             }
@@ -126,9 +124,9 @@ namespace ToDoList.Core.Repository
         }
 
         public List<ToDoItems> GetComplitedTasks()
-            => _dbContext.ToDoItems.Where(e => e.UserId == _currentUser.UserId).Where(e => e.IsCaseCompletion).ToList();
+            => GetUserTaskQueriably.Where(e => e.IsCaseCompletion).ToList();
 
         public List<ToDoItems> GetNotCompliteTask()
-            => _dbContext.ToDoItems.Where(e => e.UserId == _currentUser.UserId).Where(e => !e.IsCaseCompletion).ToList();
+            => GetUserTaskQueriably.Where(e => !e.IsCaseCompletion).ToList();
     }
 }

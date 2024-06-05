@@ -1,6 +1,6 @@
 ﻿namespace ToDoList.Core.Authentication
 {
-    public static class LoginConst
+    public static class TokensConst
     {
         public static string GetTokenKey => "JWTBearer";
 
@@ -12,6 +12,6 @@
 
         public static DateTime GetExpiresRefreshToken => DateTime.UtcNow.AddHours(24);
 
-        public static TimeSpan GetUpdateTimeRefreshToken => TimeSpan.FromMinutes(30);
+        public static TimeSpan GetUpdateTimeRefreshToken => TimeSpan.FromMinutes(60);
     }
 }

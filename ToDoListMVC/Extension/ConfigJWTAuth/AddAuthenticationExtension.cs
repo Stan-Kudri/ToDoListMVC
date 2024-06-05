@@ -34,7 +34,7 @@ namespace ToDoListMVC.Extension.ConfigJWTAuth
                     {
                         OnMessageReceived = context =>
                         {
-                            var token = context.Request.Cookies[LoginConst.GetTokenKey];
+                            var token = context.Request.Cookies[TokensConst.GetTokenKey];
                             context.Token = token;
                             return Task.CompletedTask;
                         }

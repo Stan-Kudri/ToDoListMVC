@@ -2,7 +2,7 @@
 using ToDoList.Core.Service;
 using ToDoList.Infrastructure.Extension;
 
-namespace ToDoList.Infrastructure.Authentication
+namespace ToDoList.Infrastructure.Authentication.Tokens
 {
     public class TokenValidator
     {
@@ -37,12 +37,6 @@ namespace ToDoList.Infrastructure.Authentication
 
             _tokenService.SetAcsessToken(_acsessToken);
             var userId = _tokenService.UserId;
-
-            if (userId == null)
-            {
-                return false;
-            }
-
             var refreshToken = _refreshTokenService.GetRefreshToken(_refreshToken, (Guid)userId);
 
             if (refreshToken != null && _refreshTokenService.IsExistRefreshToken(refreshToken) && !refreshToken.Expired)
@@ -50,8 +44,7 @@ namespace ToDoList.Infrastructure.Authentication
                 return true;
             }
 
-            _httpContext.RemoveRefreshToken();
-            _httpContext.RemoveToken();
+            _httpContext.RemoveAllTokens();
             return false;
         }
 
