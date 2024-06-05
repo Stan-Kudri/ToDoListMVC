@@ -6,19 +6,19 @@ using ToDoListMVC.Models;
 
 namespace ToDoList.Infrastructure.Authentication
 {
-    public class UserVerificator
+    public class UserModelValidator
     {
         private readonly UserService _userService;
 
         private readonly UserValidator _userValidator;
 
-        public UserVerificator(UserService userService, UserValidator userValidator)
+        public UserModelValidator(UserService userService, UserValidator userValidator)
         {
             _userService = userService;
             _userValidator = userValidator;
         }
 
-        public IEnumerable<ErrorModel> ValidateModelUserRegistration(UserModel userModel)
+        public IEnumerable<ErrorModel> Validate(UserModel userModel)
         {
             if (!_userValidator.ValidateUsername(userModel.Username, out var validUsernameMessage))
             {

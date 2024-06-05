@@ -37,12 +37,6 @@ namespace ToDoList.Infrastructure.Authentication.Tokens
 
             _tokenService.SetAcsessToken(_acsessToken);
             var userId = _tokenService.UserId;
-
-            if (userId == null)
-            {
-                return false;
-            }
-
             var refreshToken = _refreshTokenService.GetRefreshToken(_refreshToken, (Guid)userId);
 
             if (refreshToken != null && _refreshTokenService.IsExistRefreshToken(refreshToken) && !refreshToken.Expired)

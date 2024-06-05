@@ -16,13 +16,13 @@ namespace ToDoListMVC.Controllers
     {
         private readonly UserService _userService;
         private readonly TokenService _tokenHelper;
-        private readonly UserVerificator _userVerificator;
+        private readonly UserModelValidator _userVerificator;
         private readonly CookieSettingService _cookieSettingService;
 
         public AuthenticationController(
             UserService userService,
             TokenService tokenHelper,
-            UserVerificator userVerificator,
+            UserModelValidator userVerificator,
             CookieSettingService cookieSettingService)
         {
             _userService = userService;
@@ -82,7 +82,7 @@ namespace ToDoListMVC.Controllers
         [HttpPost]
         public IActionResult CreateAccount(UserModel userModel)
         {
-            foreach (var error in _userVerificator.ValidateModelUserRegistration(userModel))
+            foreach (var error in _userVerificator.Validate(userModel))
             {
                 ModelState.AddModelError(error.AccsesKey, error.Message);
             }

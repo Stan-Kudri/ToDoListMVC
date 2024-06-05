@@ -26,7 +26,7 @@ namespace ToDoList
             builder.Services.AddScoped<ToDoListController>();
             builder.Services.AddScoped<TokenValidator>();
             builder.Services.AddScoped<UserValidator>();
-            builder.Services.AddScoped<UserVerificator>();
+            builder.Services.AddScoped<UserModelValidator>();
             builder.Services.AddScoped<CookieSettingService>();
         }
 
