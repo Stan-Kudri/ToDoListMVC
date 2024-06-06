@@ -1,4 +1,5 @@
 ﻿using ToDoList.Core.Models.ToDoItem;
+using ToDoList.Core.Models.Users.PersonalData;
 
 namespace ToDoList.Core.Models.Users
 {
@@ -40,11 +41,33 @@ namespace ToDoList.Core.Models.Users
 
         public UserRole UserRole { get; set; } = UserRole.User;
 
+        public string FirstName { get; set; } = string.Empty;
+
+        public string LastName { get; set; } = string.Empty;
+
+        public Gender Gender { get; set; } = Gender.Unknown;
+
+        public Country Country { get; set; } = Country.Unknown;
+
+        public DateTime? BirthDate { get; set; } = null;
+
         public List<ToDoItems>? ToDoItems { get; set; } = null;
 
         public List<RefreshToken> RefreshTokens { get; set; } = null;
 
         public bool IsVerificationPassword(string password)
             => _passwordHasher.Verification(password, PasswordHash);
+
+        public override bool Equals(object? obj)
+            => Equals(obj as User);
+
+        public bool Equals(User? user)
+            => user == null
+                ? false
+                : user.FirstName == FirstName
+                  && user.LastName == LastName
+                  && user.BirthDate == BirthDate
+                  && user.Country == Country
+                  && user.Gender == Gender;
     }
 }

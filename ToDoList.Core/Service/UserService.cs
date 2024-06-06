@@ -1,5 +1,6 @@
 ﻿using ToDoList.Core.DBContext;
 using ToDoList.Core.Models.Users;
+using ToDoList.Core.Models.Users.PersonalData;
 using ToDoListMVC.Models;
 
 namespace ToDoList.Core.Service
@@ -23,6 +24,25 @@ namespace ToDoList.Core.Service
             }
 
             _dbContext.Users.Add(user);
+            _dbContext.SaveChanges();
+        }
+
+        public void UpdatePersonalData(UserPersonalDataModel userPersonalDate)
+        {
+            var user = _dbContext.Users.FirstOrDefault(e => e.Id == userPersonalDate.UserId);
+
+            if (user == null || userPersonalDate.Equals(user))
+            {
+                return;
+            }
+
+            user.BirthDate = userPersonalDate.BirthDate;
+            user.FirstName = userPersonalDate.FirstName;
+            user.LastName = userPersonalDate.LastName;
+            user.Country = userPersonalDate.Country;
+            user.Gender = userPersonalDate.Gender;
+
+            _dbContext.Users.Update(user);
             _dbContext.SaveChanges();
         }
 
