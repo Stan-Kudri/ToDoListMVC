@@ -8,7 +8,7 @@
 
         public string LastName { get; private set; } = string.Empty;
 
-        public Gender Gender { get; private set; } = Gender.Unknown;
+        public Gender Gender { get; set; } = Gender.Unknown;
 
         public Country Country { get; private set; } = Country.Unknown;
 

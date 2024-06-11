@@ -32,6 +32,7 @@ namespace ToDoList.Infrastructure.Authentication.Tokens
         {
             if (!IsValidAcsessToken())
             {
+                _httpContext.RemoveAllTokens();
                 return false;
             }
 

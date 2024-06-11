@@ -2,9 +2,9 @@
 
 namespace ToDoListMVC.Controllers
 {
-    public class UserPersonalDateController : Controller
+    public class PersonalDateController : Controller
     {
-        public IActionResult Index()
+        public IActionResult PersonalDate()
         {
             return View();
         }

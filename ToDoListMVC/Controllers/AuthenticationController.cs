@@ -98,7 +98,7 @@ namespace ToDoListMVC.Controllers
 
         [Authorize]
         [HttpGet]
-        public IActionResult Output()
+        public IActionResult SignOut()
         {
             if (HttpContext.Request.Cookies.TryGetValue(TokensConst.GetRefreshTokenKey, out var refreshToken) && _tokenHelper.UserId != null)
             {
