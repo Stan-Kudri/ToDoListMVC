@@ -1,7 +1,11 @@
 ﻿@using Ardalis.SmartEnum
+@using ToDoList.Core.Models
+@using ToDoList.Core.Models.Users
 @using ToDoList.Core.Models.Users.PersonalData
 
 @model UserPersonalDataModel
+
+@inject ICurrentUserAccessor CurrentUser;
 
 <head>
     <meta name="viewport" , content="width=device=width" />
@@ -16,33 +20,36 @@
 
             <h5 style="text-align:center;"><b>Personal Date</b></h5>
 
-            <form class="row g-2" method="post">
+            <form class="row g-2" asp-controller="PersonalDate">
+
+                <input type="hidden" asp-for="UserId" value="@CurrentUser.UserId" />
+
                 <div class="row m-md-2">
                     <div class="col">
-                        <input type="text" class="form-control" placeholder="First name" aria-label="First name">
+                        <input type="text" class="form-control" placeholder="First name" aria-label="First name" asp-for="FirstName">
                     </div>
                     <div class="col">
-                        <input type="text" class="form-control" placeholder="Last name" aria-label="Last name">
+                        <input type="text" class="form-control" placeholder="Last name" aria-label="Last name" asp-for="LastName">
                     </div>
                 </div>
 
                 <div class="row m-md-2">
-                    <div class="col-6">
+                    <div class="col-6">                        
                         <label asp-for="Gender">Gender:</label>
                         <select asp-for="Gender" asp-items="@new SelectList(Gender.List)"></select>
-                        <label asp-for="Country">Country:</label>
-                        <select asp-for="Country" asp-items="@new SelectList(Country.List)"></select>
+                        <label asp-for="Country.Value">Country:</label>
+                        <select asp-for="Country.Value" asp-items="@new SelectList(Country.List)"></select>
                     </div>
                     <div class="col-6 align-content-center">
-                        <input type="date" class="form-control" placeholder="Date of Birth" />
+                        <input type="date" class="form-control" placeholder="Date of Birth" asp-for="BirthDate"></input>
                     </div>
                 </div>
 
-
                 <div class="text-center" style="padding-top:20px">
-                    <button type="submit" style="font-size:16px;" asp-action="SaveDate" style="width: 100px; height: 40px;" class="btn btn-outline-success">Save</button>
-                    <button type="button" style="font-size:16px;" asp-action="Close" style="width: 100px; height: 40px;" class="btn btn-outline-danger">Close</button>
+                    <button type="submit" style="font-size:16px;" formmethod="post" asp-action="SaveDate" style="width: 100px; height: 40px;" class="btn btn-outline-success">Save</button>
+                    <a type="button" style="font-size:16px;" formmethod="get" asp-action="Close" style="width: 100px; height: 40px;" class="btn btn-outline-danger">Close</a>
                 </div>
+
             </form>
 
         </div>
@@ -60,5 +67,3 @@
         }
     </style>
 </body>
-
-

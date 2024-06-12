@@ -55,6 +55,9 @@ namespace ToDoList.Core.Models.Users
 
         public List<RefreshToken> RefreshTokens { get; set; } = null;
 
+        public UserPersonalDataModel GetPersonalDate()
+            => new UserPersonalDataModel(Id, FirstName, LastName, Gender, Country, BirthDate);
+
         public bool IsVerificationPassword(string password)
             => _passwordHasher.Verification(password, PasswordHash);
 

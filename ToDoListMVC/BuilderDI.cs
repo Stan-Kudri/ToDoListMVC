@@ -24,6 +24,7 @@ namespace ToDoList
             builder.Services.AddScoped(e => new User());
             builder.Services.AddScoped<AuthenticationController>();
             builder.Services.AddScoped<ToDoListController>();
+            builder.Services.AddScoped<PersonalDateController>();
             builder.Services.AddScoped<TokenValidator>();
             builder.Services.AddScoped<UserValidator>();
             builder.Services.AddScoped<UserModelValidator>();

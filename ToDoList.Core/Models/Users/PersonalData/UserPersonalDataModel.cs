@@ -2,17 +2,21 @@
 {
     public class UserPersonalDataModel
     {
-        public Guid UserId { get; private set; }
+        public Guid UserId { get; set; }
 
-        public string FirstName { get; private set; } = string.Empty;
+        public string FirstName { get; set; } = string.Empty;
 
-        public string LastName { get; private set; } = string.Empty;
+        public string LastName { get; set; } = string.Empty;
 
         public Gender Gender { get; set; } = Gender.Unknown;
 
-        public Country Country { get; private set; } = Country.Unknown;
+        public Country Country { get; set; } = Country.Unknown;
 
-        public DateTime? BirthDate { get; private set; } = null;
+        public DateTime? BirthDate { get; set; } = null;
+
+        public UserPersonalDataModel()
+        {
+        }
 
         public UserPersonalDataModel(Guid userId, string firstName, string lastName, Gender gender, Country country, DateTime? birthDate)
         {

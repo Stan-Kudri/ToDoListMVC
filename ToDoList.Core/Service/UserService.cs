@@ -64,5 +64,7 @@ namespace ToDoList.Core.Service
         }
 
         public User? GetUser(Guid? userId) => _dbContext.Users.FirstOrDefault(e => e.Id == userId);
+
+        public UserPersonalDataModel? GetUserPersonalDate(Guid? userId) => GetUser(userId)?.GetPersonalDate();
     }
 }
