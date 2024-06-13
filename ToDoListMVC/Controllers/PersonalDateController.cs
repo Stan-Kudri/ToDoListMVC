@@ -25,10 +25,10 @@ namespace ToDoListMVC.Controllers
         }
 
         [HttpPost]
-        public IActionResult SaveDate(UserPersonalDataModel userPersonalData)
+        public IActionResult Update(UserPersonalDataModel userPersonalData)
         {
             _userService.UpdatePersonalData(userPersonalData);
-            return View("PersonalDate");
+            return RedirectToAction("HomePage", "Home");
         }
 
         [HttpGet]
