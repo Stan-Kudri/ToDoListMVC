@@ -2,6 +2,7 @@
 using ToDoList.Core.Models.Users;
 using ToDoList.Core.Repository;
 using ToDoList.Core.Service;
+using ToDoList.Core.SmartEnumBinding;
 using ToDoList.Infrastructure.Authentication;
 using ToDoList.Infrastructure.Authentication.Tokens;
 using ToDoList.Migrations;
@@ -24,10 +25,15 @@ namespace ToDoList
             builder.Services.AddScoped(e => new User());
             builder.Services.AddScoped<AuthenticationController>();
             builder.Services.AddScoped<ToDoListController>();
+            builder.Services.AddScoped<PersonalDateController>();
             builder.Services.AddScoped<TokenValidator>();
             builder.Services.AddScoped<UserValidator>();
             builder.Services.AddScoped<UserModelValidator>();
             builder.Services.AddScoped<CookieSettingService>();
+            builder.Services.AddRazorPages().AddMvcOptions(options =>
+            {
+                options.ModelBinderProviders.Insert(0, new SmartEnumBinderProvider());
+            });
         }
 
         public static void AddConfigureService(this WebApplicationBuilder builder)

@@ -1,0 +1,79 @@
+﻿@using Ardalis.SmartEnum
+@using ToDoList.Core.Models
+@using ToDoList.Core.Models.Users
+@using ToDoList.Core.Models.Users.PersonalData
+
+@model UserPersonalDataModel
+
+@inject ICurrentUserAccessor CurrentUser;
+
+<head>
+    <meta name="viewport" , content="width=device=width" />
+    <title>PersonalDate</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+</head>
+
+<body class="font-txt">
+
+    <div class="page">
+        <div style="max-width:800px; max-height:800px">
+
+            <h5 style="text-align:center;"><b>Personal Date</b></h5>
+
+            <form class="row g-2" asp-controller="PersonalDate">
+
+                <input type="hidden" asp-for="UserId" value="@CurrentUser.UserId" />
+
+                <div class="row m-md-2">
+                    <div class="col">
+                        <input type="text" class="form-control" placeholder="First name" aria-label="First name" asp-for="FirstName">
+                    </div>
+                    <div class="col">
+                        <input type="text" class="form-control" placeholder="Last name" aria-label="Last name" asp-for="LastName">
+                    </div>
+                </div>
+
+                <div class="row m-md-2">
+                    <div class="col-6 align-content-center">
+                        <label asp-for="Gender">Gender:</label>
+                        <select asp-for="Gender">
+                            @foreach (var item in Gender.List)
+                            {
+                                <option value="@item.Name" selected="@(item.Name == Model.Gender.Name)">@item.Name</option>
+                            }
+                        </select>
+                        <label asp-for="Country">Country:</label>
+                        <select asp-for="Country">
+                            @foreach (var item in Country.List)
+                            {
+                                <option value="@item.Name" selected="@(item.Name == Model.Country.Name)">@item.Name</option>
+                            }
+                        </select>
+                    </div>                      
+                    <div class="col-6 align-content-center">
+                        <input type="date" class="form-control" placeholder="Date of Birth" asp-for="BirthDate"></input>
+                    </div>
+                </div>
+
+                <div class="text-center" style="padding-top:20px">
+                    <button type="submit" style="font-size:16px;" onclick="" formmethod="post" asp-action="Update" style="width: 100px; height: 40px;" class="btn btn-outline-success">Update</button>
+                    <a type="button" style="font-size:16px;" formmethod="get" asp-action="Close" style="width: 100px; height: 40px;" class="btn btn-outline-danger">Close</a>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+
+    <style>
+        .font-txt {
+            font-family: 'Times New Roman';
+        }
+
+        .page {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
+</body>
