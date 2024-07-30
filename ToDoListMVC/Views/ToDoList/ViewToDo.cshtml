@@ -15,6 +15,12 @@
     <meta  name="viewport", content="width=device=width"/>
     <title>ViewToDo</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+
+    <style>
+        .font-txt {
+            font-family: 'Times New Roman';
+        }
+    </style>
 </head>
 
 <body>
@@ -31,7 +37,7 @@
                             <input type="checkbox" asp-for="IsCaseCompletion" style="font-size:14px;"/>
                         </td>
                         <td style="width:95%">
-                            <textarea class="form-control" asp-for="Description" contenteditable="true"></textarea>
+                            <textarea class="form-control" asp-for="Description" contenteditable="true" required></textarea>
                         </td>
                     </tr>
                 </table>
@@ -65,11 +71,4 @@
             </div>
         </div>
     </div>
-
-    <style>
-        .font-txt {
-            font-family: 'Times New Roman';
-        }
-    </style>
-
 </body>
