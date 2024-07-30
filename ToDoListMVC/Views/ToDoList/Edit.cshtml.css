@@ -2,3 +2,18 @@
     text-align : left;
     overflow : hidden;
 }
+
+.description {
+    text-align: left;
+    overflow: hidden;
+    font-family: 'Times New Roman';
+}
+
+.font-txt {
+    font-family: 'Times New Roman';
+}
+
+.div-class {
+    margin-top: 10px;
+    font-family: 'Times New Roman';
+}

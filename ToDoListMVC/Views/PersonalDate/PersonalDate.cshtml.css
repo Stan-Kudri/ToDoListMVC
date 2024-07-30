@@ -1,0 +1,9 @@
+﻿.font-txt {
+    font-family: 'Times New Roman';
+}
+
+.page {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
