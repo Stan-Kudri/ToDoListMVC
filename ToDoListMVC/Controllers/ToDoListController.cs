@@ -10,6 +10,10 @@ namespace ToDoListMVC.Controllers
     [Authorize(Roles = "User")]
     public class ToDoListController : Controller
     {
+        public const string NameEditPage = "Edit";
+        public const string NameViewToDoPage = "ViewToDo";
+        public const string NameToDoListController = "ToDoList";
+
         private readonly ILogger<ToDoListController> _logger;
         private readonly ToDoItemsService _toDoItemsService;
 
@@ -39,13 +43,13 @@ namespace ToDoListMVC.Controllers
             }
 
             _toDoItemsService.Remove(id);
-            return View("ViewToDo");
+            return View(NameViewToDoPage);
         }
 
         [HttpGet]
         public IActionResult Edit(Guid? id)
             => id != null && _toDoItemsService.TrySearchItem(id, out var item) && !string.IsNullOrEmpty(item.Description)
-                ? View("Edit", item)
+                ? View(NameEditPage, item)
                 : NoContent();
 
         [HttpPost]
@@ -57,7 +61,7 @@ namespace ToDoListMVC.Controllers
             }
 
             _toDoItemsService.Update(item);
-            return View("ViewToDo");
+            return View(NameViewToDoPage);
         }
 
         [HttpPost]
@@ -66,7 +70,7 @@ namespace ToDoListMVC.Controllers
             if (id != null)
             {
                 _toDoItemsService.MarkCompleted(id);
-                return View("ViewToDo");
+                return View(NameViewToDoPage);
             }
 
             return NoContent();
@@ -80,7 +84,7 @@ namespace ToDoListMVC.Controllers
                 _toDoItemsService.UpdateDescription(id, description);
             }
 
-            return View("ViewToDo");
+            return View(NameViewToDoPage);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

@@ -50,24 +50,18 @@
     </div>
 
     <div style="padding-top:10px" class="font-txt">
-        @{
-            Html.RenderPartial("Table", Service.GetNotCompliteTask());
-        }
+        <partial name="Table" model="@Service.GetNotCompliteTask()"/>
     </div>
 
     <hr />
 
-    <div class="accordion-item">
-        <h3 class="accordion-header">
-            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" 
-                    aria-expanded="true" aria-controls="collapseOne" style="background-color:antiquewhite; color:darkgreen">
-                    Completed items on the list
-            </button>
-        </h3>
-        <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
-            @{
-                Html.RenderPartial("Table", Service.GetComplitedTasks());
-            }
-        </div>
+    <h3 class="accordion-header">
+        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne"
+                aria-expanded="true" aria-controls="collapseOne" style="background-color:antiquewhite; color:darkgreen">
+            Completed items on the list
+        </button>
+    </h3>
+    <div id="collapseOne" class="accordion-collapse collapse " data-bs-parent="#accordionExample">
+        <partial name="Table" model="@Service.GetComplitedTasks()"/>
     </div>
 </body>

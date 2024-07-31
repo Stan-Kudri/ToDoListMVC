@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using ToDoList.Controllers;
 using ToDoList.Core.Authentication;
 using ToDoList.Core.Models.Errors;
 using ToDoList.Core.Service;
@@ -14,6 +15,9 @@ namespace ToDoListMVC.Controllers
 {
     public class AuthenticationController : Controller
     {
+        private const string NameRazorPageSignIn = "SignIn";
+        private const string NameRazorPageRegistration = "Registration";
+
         private readonly UserService _userService;
         private readonly TokenService _tokenHelper;
         private readonly UserModelValidator _userVerificator;
@@ -35,14 +39,14 @@ namespace ToDoListMVC.Controllers
         [HttpGet]
         public IActionResult SignIn(UserModel userModel)
             => _tokenHelper.UserId is not null
-                ? RedirectToAction("HomePage", "Home")
+                ? RedirectToAction(HomeController.NameHomePage, HomeController.NameHomeController)
                 : View();
 
         [AllowAnonymous]
         [HttpGet]
         public IActionResult Registration(UserModel userModel)
             => _tokenHelper.UserId is not null
-                ? RedirectToAction("HomePage", "Home")
+                ? RedirectToAction(HomeController.NameHomePage, HomeController.NameHomeController)
                 : View();
 
         [AllowAnonymous]
@@ -50,7 +54,7 @@ namespace ToDoListMVC.Controllers
         public IActionResult ClearFieldRegistration()
         {
             ModelState.Clear();
-            return View("Registration");
+            return View(NameRazorPageRegistration);
         }
 
         [AllowAnonymous]
@@ -58,7 +62,7 @@ namespace ToDoListMVC.Controllers
         public IActionResult ClearFieldSignIn()
         {
             ModelState.Clear();
-            return View("SignIn");
+            return View(NameRazorPageSignIn);
         }
 
         [AllowAnonymous]
@@ -70,12 +74,12 @@ namespace ToDoListMVC.Controllers
             if (!_userService.TryGetUserData(userModel, out var user) || user == null)
             {
                 ModelState.AddModelError(AccessKeyErrorConstant.EmptyKey, ErrorMessage.MessageInvalidUser);
-                return View("SignIn", userModel);
+                return View(NameRazorPageSignIn, userModel);
             }
 
             _cookieSettingService.SetTokens(HttpContext, user);
 
-            return RedirectToAction("ViewToDo", "ToDoList");
+            return RedirectToAction(ToDoListController.NameViewToDoPage, ToDoListController.NameToDoListController);
         }
 
         [AllowAnonymous]
@@ -89,11 +93,11 @@ namespace ToDoListMVC.Controllers
 
             if (ModelState.Any(e => e.Value?.ValidationState == ModelValidationState.Invalid))
             {
-                return View("Registration", userModel);
+                return View(NameRazorPageRegistration, userModel);
             }
 
             _userService.Add(userModel.ToUser());
-            return View("SignIn");
+            return View(NameRazorPageSignIn);
         }
 
         [Authorize]
@@ -105,7 +109,7 @@ namespace ToDoListMVC.Controllers
                 _cookieSettingService.RemoveTokens(HttpContext, refreshToken);
             }
 
-            return View("SignIn");
+            return View(NameRazorPageSignIn);
         }
     }
 }

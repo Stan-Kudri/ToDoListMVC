@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using ToDoList.Controllers;
 using ToDoList.Core.Models;
 using ToDoList.Core.Models.Users.PersonalData;
 using ToDoList.Core.Service;
@@ -20,19 +21,17 @@ namespace ToDoListMVC.Controllers
 
         [HttpGet]
         public IActionResult PersonalDate()
-        {
-            return View(_userService.GetUserPersonalDate(_currentUser.UserId));
-        }
+            => View(_userService.GetUserPersonalDate(_currentUser.UserId));
 
         [HttpPost]
         public IActionResult Update(UserPersonalDataModel userPersonalData)
         {
             _userService.UpdatePersonalData(userPersonalData);
-            return RedirectToAction("HomePage", "Home");
+            return RedirectToAction(HomeController.NameHomePage, HomeController.NameHomeController);
         }
 
         [HttpGet]
         public IActionResult Close()
-            => RedirectToAction("ViewToDo", "ToDoList");
+            => RedirectToAction(ToDoListController.NameViewToDoPage, ToDoListController.NameToDoListController);
     }
 }
