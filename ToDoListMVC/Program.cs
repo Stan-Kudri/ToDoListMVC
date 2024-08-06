@@ -32,18 +32,25 @@ app.UseCors();
 
 app.Use((context, func) =>
 {
-    if (!context.Request.Cookies.TryGetValue(TokensConst.GetTokenKey, out var usingToken)
-            || !context.Request.Cookies.TryGetValue(TokensConst.GetRefreshTokenKey, out var usingRefreshToken))
+    try
     {
+        if (!context.Request.Cookies.TryGetValue(TokensConst.GetTokenKey, out var usingToken)
+            || !context.Request.Cookies.TryGetValue(TokensConst.GetRefreshTokenKey, out var usingRefreshToken))
+        {
+            return RedirectIfNeeded(context, func);
+        }
+        var tokenValidator = context.GetTokenValidator(usingToken, usingRefreshToken);
+        ValidationTokens(context, func, tokenValidator);
+        tokenValidator.UpdateTokens();
+
+        var tokenHelper = context.RequestServices.GetRequiredService<TokenService>();
+        return tokenHelper.UserId == null ? RedirectIfNeeded(context, func) : func();
+    }
+    catch
+    {
+        context.RemoveAllTokens();
         return RedirectIfNeeded(context, func);
     }
-
-    var tokenValidator = context.GetTokenValidator(usingToken, usingRefreshToken);
-    ValidationTokens(context, func, tokenValidator);
-    tokenValidator.UpdateTokens();
-
-    var tokenHelper = context.RequestServices.GetRequiredService<TokenService>();
-    return tokenHelper.UserId == null ? RedirectIfNeeded(context, func) : func();
 });
 
 app.UseAuthentication();

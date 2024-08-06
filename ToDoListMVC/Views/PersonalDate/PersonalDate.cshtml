@@ -35,7 +35,7 @@
                 </div>
 
                 <div class="row m-md-2">
-                    <div class="col-6 align-content-center">
+                    <div class="col-md-4 align-content-md-center">
                         <label asp-for="Gender">Gender:</label>
                         <select asp-for="Gender">
                             @foreach (var item in Gender.List)
@@ -43,6 +43,8 @@
                                 <option value="@item.Name" selected="@(item.Name == Model.Gender.Name)">@item.Name</option>
                             }
                         </select>
+                    </div>  
+                    <div class="col-md-4 align-content-md-center">
                         <label asp-for="Country">Country:</label>
                         <select asp-for="Country">
                             @foreach (var item in Country.List)
@@ -50,8 +52,8 @@
                                 <option value="@item.Name" selected="@(item.Name == Model.Country.Name)">@item.Name</option>
                             }
                         </select>
-                    </div>                      
-                    <div class="col-6 align-content-center">
+                    </div>
+                    <div class="col-md-4 align-content-md-center">
                         <input type="date" class="form-control" placeholder="Date of Birth" asp-for="BirthDate"></input>
                     </div>
                 </div>
