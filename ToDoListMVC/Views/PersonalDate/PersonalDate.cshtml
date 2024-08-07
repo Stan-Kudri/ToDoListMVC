@@ -21,21 +21,21 @@
 
             <h5 style="text-align:center;"><b>Personal Date</b></h5>
 
-            <form class="row g-2" asp-controller="PersonalDate">
+            <form class="row g-2 " asp-controller="PersonalDate">
 
                 <input type="hidden" asp-for="UserId" value="@CurrentUser.UserId" />
 
-                <div class="row m-md-2">
-                    <div class="col">
+                <div class="row g-2 ">
+                    <div class="col-xxl-6 col-sm-6 col-12">
                         <input type="text" class="form-control" placeholder="First name" aria-label="First name" asp-for="FirstName">
                     </div>
-                    <div class="col">
+                    <div class="col-xxl-6 col-sm-6 col-12">
                         <input type="text" class="form-control" placeholder="Last name" aria-label="Last name" asp-for="LastName">
                     </div>
                 </div>
 
-                <div class="row m-md-2">
-                    <div class="col-md-4 align-content-md-center">
+                <div class="row g-2 ">
+                    <div class="col-xl-4 col-lg-4 col-sm-4 col-auto ml-auto mr-auto">
                         <label asp-for="Gender">Gender:</label>
                         <select asp-for="Gender">
                             @foreach (var item in Gender.List)
@@ -44,7 +44,7 @@
                             }
                         </select>
                     </div>  
-                    <div class="col-md-4 align-content-md-center">
+                    <div class="col-xl-4 col-lg-4 col-sm-5 col-auto ml-auto mr-auto">
                         <label asp-for="Country">Country:</label>
                         <select asp-for="Country">
                             @foreach (var item in Country.List)
@@ -53,7 +53,7 @@
                             }
                         </select>
                     </div>
-                    <div class="col-md-4 align-content-md-center">
+                    <div class="col-xl-4 col-lg-4 col-sm-3 col-12 ml-auto mr-auto">
                         <input type="date" class="form-control" placeholder="Date of Birth" asp-for="BirthDate"></input>
                     </div>
                 </div>

@@ -7,3 +7,10 @@
     align-items: center;
     justify-content: center;
 }
+
+label {
+    padding: 2px;
+}
+
+div{
+}
