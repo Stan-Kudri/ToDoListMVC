@@ -48,7 +48,13 @@
                                 @using (Html.BeginForm("ChangeDescription", "ToDoList", FormMethod.Post))
                                 {
                                     @Html.Hidden("Id", item.Id)
-                                    <textarea asp-for='@item.Description' class="form-control description-txt strikethroughText" name="Description" onchange="this.form.submit()" onclick="autoExpand(this)" rows="1"></textarea>
+                                    <textarea asp-for='@item.Description' 
+                                                        class="form-control description-txt strikethroughText" 
+                                                        name="Description" 
+                                                        onchange="this.form.submit()" 
+                                                        onclick="autoExpand(this)" 
+                                                        rows="1">
+                                    </textarea>
                                 }
                             </td>
                         }
@@ -58,7 +64,13 @@
                                 @using (Html.BeginForm("ChangeDescription", "ToDoList", FormMethod.Post))
                                 {
                                     @Html.Hidden("Id", item.Id)
-                                    <textarea asp-for='@item.Description' class="form-control description-txt" name="Description" onchange="this.form.submit()" onclick="autoExpand(this)" rows="1"></textarea>
+                                    <textarea asp-for='@item.Description' 
+                                                        class="form-control description-txt" 
+                                                        name="Description" 
+                                                        onchange="this.form.submit()" 
+                                                        onclick="autoExpand(this)" 
+                                                        rows="1">
+                                    </textarea>
                                 }
                             </td>
                         }

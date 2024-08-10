@@ -37,13 +37,13 @@
                             <input type="checkbox" asp-for="IsCaseCompletion" style="font-size:14px;"/>
                         </td>
                         <td style="width:95%">
-                            <textarea class="form-control" asp-for="Description" contenteditable="true" required></textarea>
+                            <textarea class="form-control" asp-for="Description" contenteditable="true" required id="TextAreaDescription"></textarea>
                         </td>
                     </tr>
                 </table>
                 <div class="text-center" style="padding-top:20px">
                     <button style="font-size:16px; " class="btn btn-outline-success mr-4" type="submit">Add</button>
-                    <button style="font-size:16px; " class="btn btn-outline-success" type="reset">Clear</button>
+                    <button style="font-size:16px; " class="btn btn-outline-success" type="button" onclick="ClearTextAreaValue()">Clear</button>
                 </div>
             </form>
         </div>
@@ -61,7 +61,14 @@
             Completed items on the list
         </button>
     </h3>
-    <div id="collapseOne" class="accordion-collapse collapse " data-bs-parent="#accordionExample">
+    <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
         <partial name="Table" model="@Service.GetComplitedTasks()"/>
     </div>
+
+    <script>
+        function ClearTextAreaValue() { 
+            document.getElementById("TextAreaDescription").value = "";
+        }
+    </script>
+
 </body>

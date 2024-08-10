@@ -31,7 +31,8 @@ namespace ToDoListMVC.Controllers
         public IActionResult ViewToDo(ToDoItemsModel item)
         {
             _toDoItemsService.Add(item);
-            return View();
+            ModelState.Clear();
+            return View(NameViewToDoPage);
         }
 
         [HttpPost]

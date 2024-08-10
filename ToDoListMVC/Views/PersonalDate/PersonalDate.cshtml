@@ -35,7 +35,7 @@
                 </div>
 
                 <div class="row g-2 ">
-                    <div class="col-xl-4 col-lg-4 col-sm-4 col-auto ml-auto mr-auto">
+                    <div class="col-xl-4 col-lg-4 col-sm-4 col-auto ml-auto mr-auto align-self-center">
                         <label asp-for="Gender">Gender:</label>
                         <select asp-for="Gender">
                             @foreach (var item in Gender.List)
@@ -44,7 +44,7 @@
                             }
                         </select>
                     </div>  
-                    <div class="col-xl-4 col-lg-4 col-sm-5 col-auto ml-auto mr-auto">
+                    <div class="col-xl-4 col-lg-4 col-sm-5 col-auto ml-auto mr-auto align-self-center">
                         <label asp-for="Country">Country:</label>
                         <select asp-for="Country">
                             @foreach (var item in Country.List)
@@ -53,7 +53,7 @@
                             }
                         </select>
                     </div>
-                    <div class="col-xl-4 col-lg-4 col-sm-3 col-12 ml-auto mr-auto">
+                    <div class="col-xl-4 col-lg-4 col-sm-3 col-12 ml-auto mr-auto align-self-center">
                         <input type="date" class="form-control" placeholder="Date of Birth" asp-for="BirthDate"></input>
                     </div>
                 </div>
