@@ -117,7 +117,7 @@ namespace ToDoList.Core.Repository
             _dbContext.SaveChanges();
         }
 
-        public bool TrySearchItem(Guid? id, out ToDoItems item)
+        public bool TrySearchItem(Guid? id, out ToDoItems? item)
         {
             item = _dbContext.ToDoItems.FirstOrDefault(e => e.Id == id);
             return item != null;

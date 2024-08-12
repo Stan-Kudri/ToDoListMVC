@@ -21,81 +21,63 @@
 </head>
 
 <body >
-    <div class="accordion-body">
-        <table class="p-1 table table-condensed table-hover" style="width:100%">
-            <thead>
-                <tr class="border-bottom">
-                    <th style="text-align:center; width:10%;"></th>
-                    <th style="text-align:center; width:86%;"></th>
-                    <th style="text-align:center; width:7%;"></th>
-                    <th style="text-align:center; width:7%;"></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model)
+    <div class="row text">
+        @foreach (var item in Model)
+        {
+            <div class="col-xxl-1 col-xl-1 col-lg-1 col-md-1 col-sm-1 align-self-center g-2 g-lg-3" align="center">
+                <form asp-controller="ToDoList" asp-action="ChangeExecution" method="post" asp-route-id="@item.Id" class="styled" name="changeItem">
+                    <input type="checkbox" value="@item.IsCaseCompletion" checked="@item.IsCaseCompletion" name="checkbox" onclick="this.form.submit()" />
+                </form>
+            </div>
+            <div class="col-xxl-9 col-xl-9 col-lg-9 col-md-7 col-sm-11 align-self-center g-2 g-lg-3" align="center">
+                @if (item.IsCaseCompletion)
                 {
-                    <tr class="border-bottom">
-
-                        <td style="text-align:center">
-                            <form asp-controller="ToDoList" asp-action="ChangeExecution" method="post" asp-route-id="@item.Id" class="styled" name="changeItem">
-                                <input type="checkbox" value="@item.IsCaseCompletion" checked="@item.IsCaseCompletion" name="checkbox" onclick="this.form.submit()"/>
-                            </form>
-                        </td>
-
-                        @if (item.IsCaseCompletion)
-                        {
-                            <td>
-                                @using (Html.BeginForm("ChangeDescription", "ToDoList", FormMethod.Post))
-                                {
-                                    @Html.Hidden("Id", item.Id)
-                                    <textarea asp-for='@item.Description' 
-                                                        class="form-control description-txt strikethroughText" 
-                                                        name="Description" 
-                                                        onchange="this.form.submit()" 
-                                                        onclick="autoExpand(this)" 
-                                                        rows="1">
-                                    </textarea>
-                                }
-                            </td>
-                        }
-                        else
-                        {
-                            <td>
-                                @using (Html.BeginForm("ChangeDescription", "ToDoList", FormMethod.Post))
-                                {
-                                    @Html.Hidden("Id", item.Id)
-                                    <textarea asp-for='@item.Description' 
-                                                        class="form-control description-txt" 
-                                                        name="Description" 
-                                                        onchange="this.form.submit()" 
-                                                        onclick="autoExpand(this)" 
-                                                        rows="1">
-                                    </textarea>
-                                }
-                            </td>
-                        }
-
-                        <td style="text-align:center">
-
-                            <form asp-controller="ToDoList" asp-action="Delete" method="post" asp-route-id="@item.Id">
-                                <input type="submit" value="Delete" class="c-button" />
-                            </form>
-
-                        </td>
-
-                        <td style="text-align:center">
-
-                            <form asp-controller="ToDoList" asp-action="Edit" method="get" asp-route-id="@item.Id">
-                                <input type="submit" value="Edit" class="c-button" />
-                            </form>
-
-                        </td>
-
-                    </tr>
+                    @using (Html.BeginForm("ChangeDescription", "ToDoList", FormMethod.Post))
+                    {
+                        @Html.Hidden("Id", item.Id)
+                        <textarea asp-for='@item.Description'
+                                  class="form-control description-txt strikethroughText"
+                                  name="Description"
+                                  onchange="this.form.submit()"
+                                  onclick="autoExpand(this)"
+                                  rows="1">
+                        </textarea>
+                    }
                 }
-            </tbody>
-        </table>
-    </div> 
+                else
+                {
+                    @using (Html.BeginForm("ChangeDescription", "ToDoList", FormMethod.Post))
+                    {
+                        @Html.Hidden("Id", item.Id)
+                        <textarea asp-for='@item.Description'
+                                  class="form-control description-txt"
+                                  name="Description"
+                                  onchange="this.form.submit()"
+                                  onclick="autoExpand(this)"
+                                  rows="1">
+                        </textarea>
+                    }
+                }
+            </div>
+
+            <div class="col-xxl-1 col-xl-1 col-lg-1 col-md-2 col-sm-6 align-self-center align-content-center g-2 g-lg-3" align="center">
+
+                <form asp-controller="ToDoList" asp-action="Delete" method="post" asp-route-id="@item.Id">
+                    <input type="submit" value="Delete" class="c-button" />
+                </form>
+
+            </div>
+
+            <div class="col-xxl-1 col-xl-1 col-lg-1 col-md-2 col-sm-6 align-self-center align-content-center g-2 g-lg-3" align="center">
+
+                <form asp-controller="ToDoList" asp-action="Edit" method="get" asp-route-id="@item.Id">
+                    <input type="submit" value="Edit" class="c-button" />
+                </form>
+
+            </div>
+        }
+
+    </div>
 
     <script>
         function autoExpand(element) {

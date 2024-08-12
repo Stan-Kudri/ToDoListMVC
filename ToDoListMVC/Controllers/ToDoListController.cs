@@ -49,7 +49,7 @@ namespace ToDoListMVC.Controllers
 
         [HttpGet]
         public IActionResult Edit(Guid? id)
-            => id != null && _toDoItemsService.TrySearchItem(id, out var item) && !string.IsNullOrEmpty(item.Description)
+            => id != null && _toDoItemsService.TrySearchItem(id, out var item) && !string.IsNullOrEmpty(item?.Description)
                 ? View(NameEditPage, item)
                 : NoContent();
 
