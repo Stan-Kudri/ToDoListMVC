@@ -5,7 +5,7 @@
 }
 
 .c-button {
-    min-width: 80px;
+    width: 100%;
     font-family: inherit;
     appearance: none;
     border-radius: 6px;
