@@ -46,8 +46,9 @@ app.Use((context, func) =>
         var tokenHelper = context.RequestServices.GetRequiredService<TokenService>();
         return tokenHelper.UserId == null ? RedirectIfNeeded(context, func) : func();
     }
-    catch
+    catch (Exception ex)
     {
+        var exception = ex;
         context.RemoveAllTokens();
         return RedirectIfNeeded(context, func);
     }

@@ -12,6 +12,6 @@
 
         public static DateTime GetExpiresRefreshToken => DateTime.UtcNow.AddHours(24);
 
-        public static TimeSpan GetUpdateTimeRefreshToken => TimeSpan.FromMinutes(60);
+        public static TimeSpan GetUpdateTimeRefreshToken => TimeSpan.FromMinutes(2);//60);
     }
 }

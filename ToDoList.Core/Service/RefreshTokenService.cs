@@ -112,6 +112,7 @@ namespace ToDoList.Core.Service
             }
 
             _appDbContext.RefreshTokens.RemoveRange(item);
+            _appDbContext.SaveChanges();
         }
     }
 }
