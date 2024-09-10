@@ -4,11 +4,11 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using ToDoList.Core.Authentication;
+using ToDoList.Core.Extension;
 using ToDoList.Core.Models;
 using ToDoList.Core.Models.Users;
-using ToDoList.Infrastructure.Extension;
 
-namespace ToDoList.Infrastructure.Authentication.Tokens
+namespace ToDoList.Core.Service
 {
     public class TokenService : ICurrentUserAccessor
     {
@@ -60,18 +60,16 @@ namespace ToDoList.Infrastructure.Authentication.Tokens
         public void SetAcsessToken(string token)
         {
             var tokenHandler = token.GetTokenHandler(_authOptions);
-            if (tokenHandler == null ||
-                tokenHandler.ReadToken(token) is not JwtSecurityToken securityToken ||
-                securityToken.ValidTo < DateTime.UtcNow ||
-                securityToken.ValidFrom > DateTime.UtcNow)
+            if (tokenHandler != null &&
+                tokenHandler.ReadToken(token) is JwtSecurityToken securityToken &&
+                securityToken.ValidTo >= DateTime.UtcNow &&
+                securityToken.ValidFrom <= DateTime.UtcNow)
             {
-                return;
+                UserId = securityToken.Claims
+                    .Where(e => e.Type == ClaimTypes.NameIdentifier)
+                    .Select(e => !Guid.TryParse(e.Value, out var id) ? (Guid?)null : id)
+                    .FirstOrDefault();
             }
-
-            UserId = securityToken.Claims
-                .Where(e => e.Type == ClaimTypes.NameIdentifier)
-                .Select(e => !Guid.TryParse(e.Value, out var id) ? (Guid?)null : id)
-                .FirstOrDefault();
         }
 
         public bool ValidAcsessToken(string token)
@@ -92,7 +90,8 @@ namespace ToDoList.Infrastructure.Authentication.Tokens
                 throw new ArgumentException("Token is not valid.");
             }
 
-            return DateTime.UtcNow >= securityToken.ValidFrom.Add(TokensConst.GetUpdateTimeToken) && DateTime.UtcNow <= securityToken.ValidTo;
+            return DateTime.UtcNow >= securityToken.ValidFrom.Add(TokensConst.GetUpdateTimeToken) &&
+                    DateTime.UtcNow <= securityToken.ValidTo;
         }
     }
 }

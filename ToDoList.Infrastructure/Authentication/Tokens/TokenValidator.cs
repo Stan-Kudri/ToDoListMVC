@@ -69,9 +69,8 @@ namespace ToDoList.Infrastructure.Authentication.Tokens
 
             if (refreshToken != null && refreshToken.ShouldUppdate)
             {
-                var newRefreshToken = _tokenService.GenerateRefreshToken(user.Id);
-                _refreshTokenService.Update(newRefreshToken);
-                _httpContext.AppendRefreshToken(newRefreshToken.Token);
+                _refreshTokenService.Update(refreshToken, out var UpdatedToken);
+                _httpContext.AppendRefreshToken(UpdatedToken.Token);
             }
         }
 

@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting.StaticWebAssets;
 using ToDoList;
 using ToDoList.Core.Authentication;
+using ToDoList.Core.Service;
 using ToDoList.Infrastructure.Authentication.Tokens;
 using ToDoList.Infrastructure.Extension;
 
@@ -32,25 +33,17 @@ app.UseCors();
 
 app.Use((context, func) =>
 {
-    try
-    {
-        if (!context.Request.Cookies.TryGetValue(TokensConst.GetTokenKey, out var usingToken)
+    if (!context.Request.Cookies.TryGetValue(TokensConst.GetTokenKey, out var usingToken)
             || !context.Request.Cookies.TryGetValue(TokensConst.GetRefreshTokenKey, out var usingRefreshToken))
-        {
-            return RedirectIfNeeded(context, func);
-        }
-        var tokenValidator = context.GetTokenValidator(usingToken, usingRefreshToken);
-        ValidationTokens(context, func, tokenValidator);
-        tokenValidator.UpdateTokens();
-
-        var tokenHelper = context.RequestServices.GetRequiredService<TokenService>();
-        return tokenHelper.UserId == null ? RedirectIfNeeded(context, func) : func();
-    }
-    catch
     {
-        context.RemoveAllTokens();
         return RedirectIfNeeded(context, func);
     }
+    var tokenValidator = context.GetTokenValidator(usingToken, usingRefreshToken);
+    ValidationTokens(context, func, tokenValidator);
+    tokenValidator.UpdateTokens();
+
+    var tokenHelper = context.RequestServices.GetRequiredService<TokenService>();
+    return tokenHelper.UserId == null ? RedirectIfNeeded(context, func) : func();
 });
 
 app.UseAuthentication();
@@ -71,6 +64,7 @@ Task RedirectIfNeeded(HttpContext context, Func<Task> func)
         return func();
     }
 
+    context.RemoveAllTokens();
     context.Response.Redirect("/Authentication/SignIn");
     return Task.CompletedTask;
 }
