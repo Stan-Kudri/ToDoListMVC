@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using ToDoList.Core.Models.Users;
 using ToDoList.Core.Service;
-using ToDoList.Infrastructure.Authentication.Tokens;
 using ToDoList.Infrastructure.Extension;
 
 namespace ToDoList.Infrastructure.Authentication
@@ -22,7 +21,7 @@ namespace ToDoList.Infrastructure.Authentication
             var token = _tokenService.GenerateTokenJWT(user);
             var refreshToken = _tokenService.GenerateRefreshToken(user.Id);
 
-            _refreshTokenService.UpsertRefreshToken(refreshToken);
+            _refreshTokenService.Upsert(refreshToken);
 
             httpContext.AppendToken(token);
             httpContext.AppendRefreshToken(refreshToken.Token);

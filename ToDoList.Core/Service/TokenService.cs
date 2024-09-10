@@ -4,11 +4,11 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using ToDoList.Core.Authentication;
+using ToDoList.Core.Extension;
 using ToDoList.Core.Models;
 using ToDoList.Core.Models.Users;
-using ToDoList.Infrastructure.Extension;
 
-namespace ToDoList.Infrastructure.Authentication.Tokens
+namespace ToDoList.Core.Service
 {
     public class TokenService : ICurrentUserAccessor
     {

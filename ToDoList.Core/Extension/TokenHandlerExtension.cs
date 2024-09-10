@@ -2,7 +2,7 @@
 using System.IdentityModel.Tokens.Jwt;
 using ToDoList.Core.Authentication;
 
-namespace ToDoList.Infrastructure.Extension
+namespace ToDoList.Core.Extension
 {
     public static class TokenHandlerExtension
     {
