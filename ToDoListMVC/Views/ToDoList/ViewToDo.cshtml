@@ -37,20 +37,20 @@
                             <input type="checkbox" asp-for="IsCaseCompletion" style="font-size:14px;"/>
                         </td>
                         <td style="width:95%">
-                            <textarea class="form-control" asp-for="Description" contenteditable="true" required id="TextAreaDescription"></textarea>
+                            <textarea class="form-control" asp-for="Description" contenteditable="true" required id="TextAreaDescription" onclick="autoExpand(this)"></textarea>
                         </td>
                     </tr>
                 </table>
                 <div class="text-center" style="padding-top:20px">
                     <button style="font-size:16px; " class="btn btn-outline-success mr-4" type="submit">Add</button>
-                    <button style="font-size:16px; " class="btn btn-outline-success" type="button" onclick="ClearTextAreaValue()">Clear</button>
+                    <button style="font-size:16px; " class="btn btn-outline-success" type="button" onclick="clearTextAreaValue()">Clear</button>
                 </div>
             </form>
         </div>
     </div>
 
     <div style="padding-top:10px" class="font-txt">
-        <partial name="Table" model="@Service.GetNotCompliteTask()"/>
+        <partial name="Table" model="@Service.GetNotCompliteTask" />
     </div>
 
     <hr />
@@ -62,13 +62,26 @@
         </button>
     </h3>
     <div id="collapseOne" class="accordion-collapse collapse show font-txt" data-bs-parent="#accordionExample">
-        <partial name="Table" model="@Service.GetComplitedTasks()"/>
+        <partial name="Table" model="@Service.GetComplitedTasks" />
     </div>
 
     <script>
-        function ClearTextAreaValue() { 
+        function clearTextAreaValue() { 
             document.getElementById("TextAreaDescription").value = "";
         }
+
+        function autoExpand(element) {
+            element.style.height = 'auto';
+            element.style.height = (element.scrollHeight) + 'px';
+        }
+    </script>
+
+    <script>
+        //Auto resize textarea
+        document.querySelector('textarea').addEventListener('input', function () {
+            this.style.height = 'auto';
+            this.style.height = `${this.scrollHeight}px`;
+        });
     </script>
 
 </body>

@@ -42,13 +42,13 @@
 
             <div class="form-group div-class">
                 <label asp-for="DateCreate" class="font-txt">Date Create:</label>
-                <input type="date" max="@DateTime.Now.ToString("yyyy-MM-dd")" asp-for="DateCreate" id="DateCreate" onchange="onChangeCreateDate()" />
+                <input type="date" max="@DateTime.Now.ToString("yyyy-MM-dd")" asp-for="DateCreate" id="DateCreate"  />
             </div>
 
 
             <div class="form-group div-class" id="DisplayDateComplite">
                 <label asp-for="DateCompletion" class="font-txt">Date Complite:</label>
-                <input type="date" max="@DateTime.Now.ToString("yyyy-MM-dd")" min="@Model.DateCreate.ToString("yyyy-MM-dd")" asp-for="DateCompletion" id="DateComplition"/>
+                <input type="date" max="@DateTime.Now.ToString("yyyy-MM-dd")" asp-for="DateCompletion" id="DateComplition"/>
             </div>
 
             <div class="text-left div-class">
@@ -67,22 +67,6 @@
     </script>
 
     <script>
-        function onChangeCreateDate() {
-            var isComplite = document.getElementById("IsCaseComplite");
-            
-            if (isComplite.value == 'False') { 
-                return;
-            }
-
-            var itemDateCreate = document.getElementById("DateCreate");
-            var itemDateComplite = document.getElementById("DateComplition");
-            if (itemDateCreate.value > itemDateComplite.value) { 
-                itemDateComplite.value = itemDateCreate.value;
-            }
-
-            itemDateComplite.min = itemDateComplite.value;
-
-        }
 
         function onHidden() {
             var isComplite = document.getElementById("IsCaseComplite");

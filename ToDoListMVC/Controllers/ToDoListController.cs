@@ -26,7 +26,6 @@ namespace ToDoListMVC.Controllers
         [HttpGet]
         public IActionResult ViewToDo() => View();
 
-
         [HttpPost]
         public IActionResult ViewToDo(ToDoItemsModel item)
         {
@@ -62,6 +61,7 @@ namespace ToDoListMVC.Controllers
             }
 
             _toDoItemsService.Update(item);
+            ModelState.Clear();
             return View(NameViewToDoPage);
         }
 
@@ -85,6 +85,7 @@ namespace ToDoListMVC.Controllers
                 _toDoItemsService.UpdateDescription(id, description);
             }
 
+            ModelState.Clear();
             return View(NameViewToDoPage);
         }
 
