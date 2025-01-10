@@ -26,6 +26,7 @@ a {
 .border-top {
     border-top: 1px solid #e5e5e5;
 }
+
 .border-bottom {
     border-bottom: 1px solid #e5e5e5;
 }
@@ -41,10 +42,11 @@ button.accept-policy {
 
 .footer {
     position: absolute;
-    bottom: 1em;
+    bottom: 0;
     width: 100%;
     line-height: 60px;
     flex-shrink: 0;
     background-color: honeydew;
-    border-bottom-width:1px;
+    border-bottom-width: 2px;
+    text-align: center;
 }

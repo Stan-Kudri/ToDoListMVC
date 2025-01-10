@@ -26,6 +26,7 @@
                     <input type="checkbox" value="@item.IsCaseCompletion" checked="@item.IsCaseCompletion" name="checkbox" onclick="this.form.submit()" />
                 </form>
             </div>
+
             <div class="col-xxl-9 col-xl-9 col-lg-9 col-md-7 col-sm-7 col-11 align-self-center g-2 g-lg-3" align="center">
 
                 @using (Html.BeginForm("ChangeDescription", "ToDoList", FormMethod.Post))
@@ -39,7 +40,8 @@
                                   name="Description"
                                   onchange="this.form.submit()"
                                   onclick="autoExpand(this)"
-                                  rows="1"></textarea>
+                                  rows="1">
+                        </textarea>
                     }
                     else 
                     {
@@ -48,12 +50,13 @@
                                   name="Description"
                                   onchange="this.form.submit()"
                                   onclick="autoExpand(this)"
-                                  rows="1"></textarea>
+                                  rows="1">
+                        </textarea>
                     }                       
                 }
             </div>
 
-            <div class="col-xxl-1 col-xl-1 col-lg-1 col-md-2 col-sm-2 col-6 align-self-center align-content-center g-2 g-lg-3" align="center">
+            <div class="col-xxl-1 col-xl-1 col-lg-1 col-md-2 col-sm-2 col-6 align-self-center g-2 g-lg-3" align="center">
 
                 <form asp-controller="ToDoList" asp-action="Delete" method="post" asp-route-id="@item.Id">
                     <input type="submit" value="Delete" class="c-button" />
@@ -61,7 +64,7 @@
 
             </div>
 
-            <div class="col-xxl-1 col-xl-1 col-lg-1 col-md-2 col-sm-2 col-6 align-self-center align-content-center g-2 g-lg-3" align="center">
+            <div class="col-xxl-1 col-xl-1 col-lg-1 col-md-2 col-sm-2 col-6 align-self-center g-2 g-lg-3" align="center">
 
                 <form asp-controller="ToDoList" asp-action="Edit" method="get" asp-route-id="@item.Id">
                     <input type="submit" value="Edit" class="c-button" />
