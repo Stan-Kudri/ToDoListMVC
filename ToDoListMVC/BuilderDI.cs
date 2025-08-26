@@ -29,7 +29,7 @@ namespace ToDoList
             builder.Services.AddScoped<TokenValidator>();
             builder.Services.AddScoped<UserValidator>();
             builder.Services.AddScoped<UserModelValidator>();
-            builder.Services.AddScoped<CookieSettingService>();
+            builder.Services.AddScoped<ICookieSettingService, CookieSettingService>();
             builder.Services.AddRazorPages().AddMvcOptions(options =>
             {
                 options.ModelBinderProviders.Insert(0, new SmartEnumBinderProvider());

@@ -8,19 +8,16 @@ namespace ToDoList.Core.SmartEnumBinding
     {
         public Task BindModelAsync(ModelBindingContext bindingContext)
         {
-            if (bindingContext == null)
-            {
-                throw new ArgumentNullException(nameof(bindingContext));
-            }
+            ArgumentNullException.ThrowIfNull(bindingContext);
 
-            Type modelType = bindingContext.ModelMetadata.ModelType;
+            var modelType = bindingContext.ModelMetadata.ModelType;
 
             if (!TypeUtil.IsDerived(modelType, typeof(SmartEnum<,>)))
             {
                 throw new ArgumentException($"{modelType} is not a SmartEnum");
             }
 
-            string propertyName = bindingContext.ModelName;
+            var propertyName = bindingContext.ModelName;
             ValueProviderResult valueProviderResult = bindingContext.ValueProvider.GetValue(propertyName);
             if (valueProviderResult == ValueProviderResult.None)
             {
@@ -45,7 +42,7 @@ namespace ToDoList.Core.SmartEnumBinding
                 {
                     if (methodsParams[0].ParameterType == typeof(string) && methodsParams[1].ParameterType == typeof(bool))
                     {
-                        var enumObj = methodInfo.Invoke(null, new object[] { enumKeyName, true });
+                        var enumObj = methodInfo.Invoke(null, [enumKeyName, true]);
                         bindingContext.Result = ModelBindingResult.Success(enumObj);
                         return Task.CompletedTask;
                     }

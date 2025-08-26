@@ -14,6 +14,6 @@ namespace ToDoList.Core.Authentication
         public int TokenLifeTime { get; set; }
 
         public SymmetricSecurityKey GetSymmetricSecurityKey()
-            => new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Secret));
+            => new(Encoding.ASCII.GetBytes(Secret));
     }
 }

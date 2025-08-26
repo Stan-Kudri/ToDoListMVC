@@ -10,12 +10,9 @@ using ToDoList.Core.Models.Users;
 
 namespace ToDoList.Core.Service
 {
-    public class TokenService : ICurrentUserAccessor
+    public class TokenService(IOptions<AuthOptions> authOptions) : ICurrentUserAccessor
     {
-        private readonly AuthOptions _authOptions;
-
-        public TokenService(IOptions<AuthOptions> authOptions)
-            => _authOptions = authOptions.Value;
+        private readonly AuthOptions _authOptions = authOptions.Value;
 
         public Guid? UserId { get; set; } = null;
 
@@ -90,8 +87,8 @@ namespace ToDoList.Core.Service
                 throw new ArgumentException("Token is not valid.");
             }
 
-            return DateTime.UtcNow >= securityToken.ValidFrom.Add(TokensConst.GetUpdateTimeToken) &&
-                    DateTime.UtcNow <= securityToken.ValidTo;
+            return DateTime.UtcNow >= securityToken.ValidFrom.Add(TokensConst.GetUpdateTimeToken)
+                    && DateTime.UtcNow <= securityToken.ValidTo;
         }
     }
 }

@@ -24,7 +24,6 @@
 
         public int TotalItems { get; private set; }
 
-        public int TotalPage
-            => (int)Math.Ceiling((decimal)(TotalItems / PageSize));
+        public int TotalPage => (int)Math.Ceiling((decimal)(TotalItems / PageSize));
     }
 }

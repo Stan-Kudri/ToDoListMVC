@@ -7,7 +7,6 @@ using ToDoList.Core.Models.Errors;
 using ToDoList.Core.Service;
 using ToDoList.Infrastructure.Authentication;
 using ToDoList.Infrastructure.Authentication.Model;
-using ToDoList.Infrastructure.Authentication.Tokens;
 using ToDoList.Infrastructure.Extension;
 using ToDoListMVC.Models;
 
@@ -21,13 +20,13 @@ namespace ToDoListMVC.Controllers
         private readonly UserService _userService;
         private readonly TokenService _tokenHelper;
         private readonly UserModelValidator _userVerificator;
-        private readonly CookieSettingService _cookieSettingService;
+        private readonly ICookieSettingService _cookieSettingService;
 
         public AuthenticationController(
             UserService userService,
             TokenService tokenHelper,
             UserModelValidator userVerificator,
-            CookieSettingService cookieSettingService)
+            ICookieSettingService cookieSettingService)
         {
             _userService = userService;
             _tokenHelper = tokenHelper;

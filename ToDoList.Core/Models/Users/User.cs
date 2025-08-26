@@ -53,7 +53,7 @@ namespace ToDoList.Core.Models.Users
 
         public List<ToDoItems>? ToDoItems { get; set; } = null;
 
-        public List<RefreshToken> RefreshTokens { get; set; } = null;
+        public List<RefreshToken>? RefreshTokens { get; set; } = null;
 
         public UserPersonalDataModel GetPersonalDate()
             => new UserPersonalDataModel(Id, FirstName, LastName, Gender, Country, BirthDate);
@@ -65,12 +65,11 @@ namespace ToDoList.Core.Models.Users
             => Equals(obj as User);
 
         public bool Equals(User? user)
-            => user == null
-                ? false
-                : user.FirstName == FirstName
-                  && user.LastName == LastName
-                  && user.BirthDate == BirthDate
-                  && user.Country == Country
-                  && user.Gender == Gender;
+            => user != null
+               && user.FirstName == FirstName
+               && user.LastName == LastName
+               && user.BirthDate == BirthDate
+               && user.Country == Country
+               && user.Gender == Gender;
     }
 }

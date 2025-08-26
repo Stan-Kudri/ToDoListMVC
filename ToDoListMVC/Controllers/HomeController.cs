@@ -2,15 +2,10 @@
 
 namespace ToDoList.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController(ILogger<HomeController> logger) : Controller
     {
         public const string NameHomePage = "HomePage";
         public const string NameHomeController = "Home";
-
-        private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
-            => _logger = logger;
 
         public IActionResult HomePage() => View();
     }

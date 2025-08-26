@@ -8,10 +8,7 @@ namespace ToDoList.Core.SmartEnumBinding
     {
         public IModelBinder? GetBinder(ModelBinderProviderContext context)
         {
-            if (context == null)
-            {
-                throw new ArgumentNullException(nameof(context));
-            }
+            ArgumentNullException.ThrowIfNull(context);
 
             if (TypeUtil.IsDerived(context.Metadata.ModelType, typeof(SmartEnum<,>)))
             {

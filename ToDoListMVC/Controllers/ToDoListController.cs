@@ -8,20 +8,11 @@ using ToDoList.Models;
 namespace ToDoListMVC.Controllers
 {
     [Authorize(Roles = "User")]
-    public class ToDoListController : Controller
+    public class ToDoListController(ILogger<ToDoListController> logger, ToDoItemsService caseService) : Controller
     {
         public const string NameEditPage = "Edit";
         public const string NameViewToDoPage = "ViewToDo";
         public const string NameToDoListController = "ToDoList";
-
-        private readonly ILogger<ToDoListController> _logger;
-        private readonly ToDoItemsService _toDoItemsService;
-
-        public ToDoListController(ILogger<ToDoListController> logger, ToDoItemsService caseService)
-        {
-            _logger = logger;
-            _toDoItemsService = caseService;
-        }
 
         [HttpGet]
         public IActionResult ViewToDo() => View();
@@ -29,7 +20,7 @@ namespace ToDoListMVC.Controllers
         [HttpPost]
         public IActionResult ViewToDo(ToDoItemsModel item)
         {
-            _toDoItemsService.Add(item);
+            caseService.Add(item);
             ModelState.Clear();
             return View(NameViewToDoPage);
         }
@@ -42,13 +33,13 @@ namespace ToDoListMVC.Controllers
                 return NoContent();
             }
 
-            _toDoItemsService.Remove(id);
+            caseService.Remove(id);
             return View(NameViewToDoPage);
         }
 
         [HttpGet]
         public IActionResult Edit(Guid? id)
-            => id != null && _toDoItemsService.TrySearchItem(id, out var item) && !string.IsNullOrEmpty(item?.Description)
+            => id != null && caseService.TrySearchItem(id, out var item) && !string.IsNullOrEmpty(item?.Description)
                 ? View(NameEditPage, item)
                 : NoContent();
 
@@ -60,7 +51,7 @@ namespace ToDoListMVC.Controllers
                 return NoContent();
             }
 
-            _toDoItemsService.Update(item);
+            caseService.Update(item);
             ModelState.Clear();
             return View(NameViewToDoPage);
         }
@@ -70,7 +61,7 @@ namespace ToDoListMVC.Controllers
         {
             if (id != null)
             {
-                _toDoItemsService.MarkCompleted(id);
+                caseService.MarkCompleted(id);
                 return View(NameViewToDoPage);
             }
 
@@ -82,7 +73,7 @@ namespace ToDoListMVC.Controllers
         {
             if (id != null && !string.IsNullOrEmpty(description))
             {
-                _toDoItemsService.UpdateDescription(id, description);
+                caseService.UpdateDescription(id, description);
             }
 
             ModelState.Clear();

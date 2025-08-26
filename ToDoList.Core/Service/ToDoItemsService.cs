@@ -4,20 +4,10 @@ using ToDoList.Core.Models.ToDoItem;
 
 namespace ToDoList.Core.Repository
 {
-    public class ToDoItemsService
+    public class ToDoItemsService(AppDbContext dbContext, ICurrentUserAccessor currentUserAccessor)
     {
-        private readonly AppDbContext _dbContext;
-        private readonly ICurrentUserAccessor _currentUser;
-
         private IQueryable<ToDoItems> _getUserTaskQueriably
-            => _dbContext.ToDoItems.Where(e => e.UserId == _currentUser.UserId);
-
-        public ToDoItemsService(AppDbContext dbContext, ICurrentUserAccessor currentUserAccessor)
-        {
-            _dbContext = dbContext;
-            _currentUser = currentUserAccessor;
-        }
-
+            => dbContext.ToDoItems.Where(e => e.UserId == currentUserAccessor.UserId);
 
         public List<ToDoItems> GetComplitedTasks
             => _getUserTaskQueriably.Where(e => e.IsCaseCompletion).ToList();
@@ -32,7 +22,7 @@ namespace ToDoList.Core.Repository
                 throw new ArgumentNullException("Case item has a value of zero.", nameof(toDoItemModel));
             }
 
-            if (_currentUser.UserId == null)
+            if (currentUserAccessor.UserId == null)
             {
                 throw new Exception("User authorization error.");
             }
@@ -47,10 +37,10 @@ namespace ToDoList.Core.Repository
                                     DateTime.Now,
                                     toDoItemModel.IsCaseCompletion,
                                     toDoItemModel.IsCaseCompletion == true ? DateTime.Now : null,
-                                    (Guid)_currentUser.UserId);
+                                    (Guid)currentUserAccessor.UserId);
 
-            _dbContext.ToDoItems.Add(item);
-            _dbContext.SaveChanges();
+            dbContext.ToDoItems.Add(item);
+            dbContext.SaveChanges();
         }
 
         public void Update(ToDoItems? item)
@@ -60,7 +50,7 @@ namespace ToDoList.Core.Repository
                 throw new ArgumentNullException("Case item has a value of zero.", nameof(item));
             }
 
-            var oldItem = _dbContext.ToDoItems.FirstOrDefault(e => e.Id == item.Id);
+            var oldItem = dbContext.ToDoItems.FirstOrDefault(e => e.Id == item.Id);
 
             if (oldItem == null || oldItem.Equals(item))
             {
@@ -72,25 +62,25 @@ namespace ToDoList.Core.Repository
             oldItem.DateCompletion = item.DateCompletion;
             oldItem.Description = item.Description;
 
-            _dbContext.SaveChanges();
+            dbContext.SaveChanges();
         }
 
         public void Remove(Guid? id)
         {
-            var item = _dbContext.ToDoItems.FirstOrDefault(e => e.Id == id);
+            var item = dbContext.ToDoItems.FirstOrDefault(e => e.Id == id);
 
             if (item == null)
             {
                 return;
             }
 
-            _dbContext.ToDoItems.Remove(item);
-            _dbContext.SaveChanges();
+            dbContext.ToDoItems.Remove(item);
+            dbContext.SaveChanges();
         }
 
         public void MarkCompleted(Guid? id)
         {
-            var item = _dbContext.ToDoItems.FirstOrDefault(e => e.Id == id);
+            var item = dbContext.ToDoItems.FirstOrDefault(e => e.Id == id);
 
             if (item == null)
             {
@@ -108,12 +98,12 @@ namespace ToDoList.Core.Repository
                 item.DateCompletion = DateTime.Now;
             }
 
-            _dbContext.SaveChanges();
+            dbContext.SaveChanges();
         }
 
         public void UpdateDescription(Guid? id, string description)
         {
-            var item = _dbContext.ToDoItems.FirstOrDefault(e => e.Id == id);
+            var item = dbContext.ToDoItems.FirstOrDefault(e => e.Id == id);
 
             if (item == null || item.Description == description)
             {
@@ -121,12 +111,12 @@ namespace ToDoList.Core.Repository
             }
 
             item.Description = description;
-            _dbContext.SaveChanges();
+            dbContext.SaveChanges();
         }
 
         public bool TrySearchItem(Guid? id, out ToDoItems? item)
         {
-            item = _dbContext.ToDoItems.FirstOrDefault(e => e.Id == id);
+            item = dbContext.ToDoItems.FirstOrDefault(e => e.Id == id);
             return item != null;
         }
     }

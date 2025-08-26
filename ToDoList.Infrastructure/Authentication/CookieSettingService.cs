@@ -5,23 +5,18 @@ using ToDoList.Infrastructure.Extension;
 
 namespace ToDoList.Infrastructure.Authentication
 {
-    public class CookieSettingService
+    public class CookieSettingService(TokenService tokenService, RefreshTokenService refreshTokenService)
+        : ICookieSettingService
     {
-        private readonly TokenService _tokenService;
-        private readonly RefreshTokenService _refreshTokenService;
-
-        public CookieSettingService(TokenService tokenService, RefreshTokenService refreshTokenService)
-        {
-            _tokenService = tokenService;
-            _refreshTokenService = refreshTokenService;
-        }
-
         public void SetTokens(HttpContext httpContext, User user)
         {
-            var token = _tokenService.GenerateTokenJWT(user);
-            var refreshToken = _tokenService.GenerateRefreshToken(user.Id);
+            ArgumentNullException.ThrowIfNull(httpContext);
+            ArgumentNullException.ThrowIfNull(user);
 
-            _refreshTokenService.Upsert(refreshToken);
+            var token = tokenService.GenerateTokenJWT(user);
+            var refreshToken = tokenService.GenerateRefreshToken(user.Id);
+
+            refreshTokenService.Upsert(refreshToken);
 
             httpContext.AppendToken(token);
             httpContext.AppendRefreshToken(refreshToken.Token);
@@ -29,10 +24,17 @@ namespace ToDoList.Infrastructure.Authentication
 
         public void RemoveTokens(HttpContext httpContext, string refreshToken)
         {
-            _refreshTokenService.Remove(refreshToken, (Guid)_tokenService.UserId);
+            ArgumentNullException.ThrowIfNull(httpContext);
+            ArgumentException.ThrowIfNullOrEmpty(refreshToken);
+
+            if (tokenService.UserId.HasValue)
+            {
+                refreshTokenService.Remove(refreshToken, tokenService.UserId.Value);
+            }
+
             httpContext.RemoveToken();
             httpContext.RemoveRefreshToken();
-            _tokenService.UserId = null;
+            tokenService.UserId = null;
         }
     }
 }

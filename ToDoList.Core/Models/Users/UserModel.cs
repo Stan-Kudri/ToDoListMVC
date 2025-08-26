@@ -19,6 +19,6 @@ namespace ToDoListMVC.Models
             set => _password = value;
         }
 
-        public User ToUser() => new User(_username, _password);
+        public User ToUser() => new User(Username, Password);
     }
 }

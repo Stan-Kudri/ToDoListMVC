@@ -6,13 +6,8 @@ using ToDoList.Core.Models.Users;
 
 namespace ToDoList.Core.DBContext
 {
-    public class AppDbContext : DbContext
+    public class AppDbContext(DbContextOptions optionsBuilder) : DbContext(optionsBuilder)
     {
-        public AppDbContext(DbContextOptions optionsBuilder)
-            : base(optionsBuilder)
-        {
-        }
-
         public DbSet<User> Users { get; set; }
 
         public DbSet<ToDoItems> ToDoItems { get; set; }

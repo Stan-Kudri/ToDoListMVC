@@ -2,12 +2,9 @@
 
 namespace ToDoList.Core.Models.Pages
 {
-    public class PagedList
+    public class PagedList(IQueryable<ToDoItems> queryItems)
     {
-        public PagedList(IQueryable<ToDoItems> queryItems)
-            => PageInfo = new PageInfo(queryItems.Count());
-
-        public PageInfo PageInfo { get; private set; }
+        public PageInfo PageInfo { get; private set; } = new PageInfo(queryItems.Count());
 
         public List<ToDoItems> Items { get; private set; }
 

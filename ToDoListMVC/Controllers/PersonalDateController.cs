@@ -8,25 +8,17 @@ using ToDoList.Core.Service;
 namespace ToDoListMVC.Controllers
 {
     [Authorize(Roles = "User")]
-    public class PersonalDateController : Controller
+    public class PersonalDateController(UserService userService, ICurrentUserAccessor currentUser)
+        : Controller
     {
-        private readonly UserService _userService;
-        private readonly ICurrentUserAccessor _currentUser;
-
-        public PersonalDateController(UserService userService, ICurrentUserAccessor currentUser)
-        {
-            _userService = userService;
-            _currentUser = currentUser;
-        }
-
         [HttpGet]
         public IActionResult PersonalDate()
-            => View(_userService.GetUserPersonalDate(_currentUser.UserId));
+            => View(userService.GetUserPersonalDate(currentUser.UserId));
 
         [HttpPost]
         public IActionResult Update(UserPersonalDataModel userPersonalData)
         {
-            _userService.UpdatePersonalData(userPersonalData);
+            userService.UpdatePersonalData(userPersonalData);
             return RedirectToAction(HomeController.NameHomePage, HomeController.NameHomeController);
         }
 

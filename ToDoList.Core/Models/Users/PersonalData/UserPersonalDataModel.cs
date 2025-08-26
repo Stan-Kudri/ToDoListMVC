@@ -14,10 +14,6 @@
 
         public DateTime? BirthDate { get; set; } = null;
 
-        public UserPersonalDataModel()
-        {
-        }
-
         public UserPersonalDataModel(Guid userId, string firstName, string lastName, Gender gender, Country country, DateTime? birthDate)
         {
             UserId = userId;
@@ -32,12 +28,11 @@
             => Equals(obj as User);
 
         public bool Equals(User? user)
-            => user == null
-                ? false
-                : user.FirstName == FirstName
-                  && user.LastName == LastName
-                  && user.BirthDate == BirthDate
-                  && user.Country == Country
-                  && user.Gender == Gender;
+            => user != null
+                && user.FirstName == FirstName
+                && user.LastName == LastName
+                && user.BirthDate == BirthDate
+                && user.Country == Country
+                && user.Gender == Gender;
     }
 }
