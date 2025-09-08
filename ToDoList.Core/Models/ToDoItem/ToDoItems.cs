@@ -13,9 +13,9 @@ namespace ToDoList.Core.Models.ToDoItem
         {
             Id = Guid.NewGuid();
             Description = description;
-            DateCreate = dateCreate;
+            CreateDate = dateCreate;
             IsCaseCompletion = isCaseCompletion;
-            DateCompletion = dateCompletion;
+            CompletDate = dateCompletion;
             UserId = userId;
         }
 
@@ -23,33 +23,28 @@ namespace ToDoList.Core.Models.ToDoItem
         public string Description { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "Error in creation date.")]
-        public DateTime DateCreate { get; set; } = DateTime.Now;
+        public DateTime CreateDate { get; set; } = DateTime.Now;
 
         [Required]
         public bool IsCaseCompletion { get; set; } = false;
 
-        public DateTime? DateCompletion { get; set; } = null;
+        public DateTime? CompletDate { get; set; } = null;
 
         public User User { get; set; }
 
         public Guid UserId { get; set; }
 
-        public bool Equals(ToDoItems? task)
-        {
-            return task == null
-                ? false
-                : task.Description == Description
-                   && task.IsCaseCompletion == IsCaseCompletion
-                   && task.DateCompletion == DateCompletion
-                   && task.DateCreate == DateCreate
-                   && task.Description == Description
-                   && task.UserId == UserId;
-        }
+        public bool Equals(ToDoItems? task) => task != null
+                                               && task.Description == Description
+                                               && task.IsCaseCompletion == IsCaseCompletion
+                                               && task.CompletDate == CompletDate
+                                               && task.CreateDate == CreateDate
+                                               && task.Description == Description
+                                               && task.UserId == UserId;
 
-        public override bool Equals(object? obj)
-            => Equals(obj as ToDoItems);
+        public override bool Equals(object? obj) => Equals(obj as ToDoItems);
 
         public override int GetHashCode()
-            => HashCode.Combine(Id, Description, DateCreate, DateCompletion);
+            => HashCode.Combine(Id, Description, CreateDate, CompletDate);
     }
 }

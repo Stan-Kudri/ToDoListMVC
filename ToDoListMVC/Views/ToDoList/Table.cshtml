@@ -22,8 +22,17 @@
         @foreach (var item in Model)
         {
             <div class="col-xxl-1 col-xl-1 col-lg-1 col-md-1 col-sm-1 col-1 align-self-center g-2 g-lg-3" align="center">
-                <form asp-controller="ToDoList" asp-action="ChangeExecution" method="post" asp-route-id="@item.Id" class="styled" name="changeItem">
-                    <input type="checkbox" value="@item.IsCaseCompletion" checked="@item.IsCaseCompletion" name="checkbox" onclick="this.form.submit()" />
+                <form asp-controller="ToDoList" 
+                      asp-action="ChangeExecution" 
+                      method="post" 
+                      asp-route-id="@item.Id" 
+                      class="styled" 
+                      name="changeItem">
+                        <input type="checkbox" 
+                               value="@item.IsCaseCompletion" 
+                               checked="@item.IsCaseCompletion" 
+                               name="checkbox" 
+                               onclick="this.form.submit()"/>
                 </form>
             </div>
 
@@ -58,16 +67,26 @@
 
             <div class="col-xxl-1 col-xl-1 col-lg-1 col-md-2 col-sm-2 col-6 align-self-center g-2 g-lg-3" align="center">
 
-                <form asp-controller="ToDoList" asp-action="Delete" method="post" asp-route-id="@item.Id">
-                    <input type="submit" value="Delete" class="c-button" />
+                <form asp-controller="ToDoList" 
+                      asp-action="Delete" 
+                      method="post" 
+                      asp-route-id="@item.Id">
+                    <input type="submit" 
+                           value="Delete" 
+                           class="c-button" />
                 </form>
 
             </div>
 
             <div class="col-xxl-1 col-xl-1 col-lg-1 col-md-2 col-sm-2 col-6 align-self-center g-2 g-lg-3" align="center">
 
-                <form asp-controller="ToDoList" asp-action="Edit" method="get" asp-route-id="@item.Id">
-                    <input type="submit" value="Edit" class="c-button" />
+                <form asp-controller="ToDoList" 
+                      asp-action="Edit" 
+                      method="get" 
+                      asp-route-id="@item.Id">
+                    <input type="submit" 
+                           value="Edit" 
+                           class="c-button" />
                 </form>
 
             </div>

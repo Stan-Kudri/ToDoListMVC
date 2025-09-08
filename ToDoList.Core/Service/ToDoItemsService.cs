@@ -57,9 +57,9 @@ namespace ToDoList.Core.Repository
                 return;
             }
 
-            oldItem.DateCreate = item.DateCreate;
+            oldItem.CreateDate = item.CreateDate;
             oldItem.IsCaseCompletion = item.IsCaseCompletion;
-            oldItem.DateCompletion = item.DateCompletion;
+            oldItem.CompletDate = item.CompletDate;
             oldItem.Description = item.Description;
 
             dbContext.SaveChanges();
@@ -90,12 +90,12 @@ namespace ToDoList.Core.Repository
             if (item.IsCaseCompletion)
             {
                 item.IsCaseCompletion = false;
-                item.DateCompletion = null;
+                item.CompletDate = null;
             }
             else
             {
                 item.IsCaseCompletion = true;
-                item.DateCompletion = DateTime.Now;
+                item.CompletDate = DateTime.Now;
             }
 
             dbContext.SaveChanges();

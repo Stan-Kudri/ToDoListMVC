@@ -24,35 +24,51 @@
         </div>
         
         <form asp-action="Edit" method="post">
-            
+
             <input type="hidden" asp-for="Id" />
 
-            <div class="col-auto form-group row div-class">
-                <label asp-for="Description" class="font-txt">Description:</label>
-                <textarea asp-for='Description' class="form-control description m-md-2" name="Description" onclick="autoExpand(this)" rows="1"></textarea>
+            <label asp-for="Description"
+                   class="font-txt mb-0 mr-2">
+                Description:
+            </label>
+
+            <div class="form-group d-flex align-items-center div-class">
+
+                <input asp-for="IsCaseCompletion"
+                       type="checkbox"
+                       class="form-check-input align-self-center m-2"
+                       id="IsCaseComplite"
+                       onchange="onHidden()" />
+
+                <textarea asp-for="Description"
+                          class="form-control description flex-grow-1"
+                          onclick="autoExpand(this)"
+                          rows="1">
+                </textarea>
             </div>
 
             <div class="form-group div-class">
-                <label asp-for="IsCaseCompletion" class="font-txt">Complite task:</label>
-                <select name="IsCaseCompletion" asp-for="IsCaseCompletion" onchange="onHidden()" id="IsCaseComplite">
-                    <option value=@true>Yes</option>
-                    <option value=@false>No</option>
-                </select>
+                <label asp-for="CreateDate" class="font-txt">Create Date:</label>
+                <input type="date"
+                       asp-for="CreateDate"
+                       id="DateCreate"
+                       max="@DateTime.Now.ToString("yyyy-MM-dd")" />
             </div>
-
-            <div class="form-group div-class">
-                <label asp-for="DateCreate" class="font-txt">Date Create:</label>
-                <input type="date" max="@DateTime.Now.ToString("yyyy-MM-dd")" asp-for="DateCreate" id="DateCreate"  />
-            </div>
-
 
             <div class="form-group div-class" id="DisplayDateComplite">
-                <label asp-for="DateCompletion" class="font-txt">Date Complite:</label>
-                <input type="date" max="@DateTime.Now.ToString("yyyy-MM-dd")" asp-for="DateCompletion" id="DateComplition"/>
+                <label asp-for="CompletDate" class="font-txt">Complete Date:</label>
+                <input type="date"
+                       asp-for="CompletDate"
+                       id="DateCompletion"
+                       max="@DateTime.Now.ToString("yyyy-MM-dd")" />
             </div>
 
             <div class="text-left div-class">
-                <button style="font-size:16px;" class="btn btn-outline-success" type="submit">Save</button>
+                <button class="btn btn-outline-success"
+                        style="font-size:16px;"
+                        type="submit">
+                    Save
+                </button>
             </div>
 
         </form>
@@ -67,50 +83,36 @@
     </script>
 
     <script>
-
         function onHidden() {
-            var isComplite = document.getElementById("IsCaseComplite");
-            var divDateComplite = document.getElementById("DisplayDateComplite");
-            var itemDateComplite = document.getElementById("DateComplition");
-
-            if(isComplite.value == 'False') {
-                divDateComplite.hidden = true;
-            }
+            var chk = document.getElementById("IsCaseComplite");
+            var divDate = document.getElementById("DisplayDateComplite");
+            var inputDate = document.getElementById("DateCompletion");
+            
+            if (!chk.checked) {
+                divDate.hidden = true;
+                inputDate.value = "";
+            } 
             else {
-                divDateComplite.hidden = false;
-                itemDateComplite.value = "@DateTime.Now.ToString("yyyy-MM-dd")";
-
+                divDate.hidden = false;
+                inputDate.value = '@DateTime.Now.ToString("yyyy-MM-dd")';
             }
         }
-    </script>
 
-    <script>
         $(document).ready(function () {
+            // Autosize
             $("textarea").each(function () {
-                autoExpand(this);
+              autoExpand(this);
             });
+            
+            // Checkbox state on loading
+            onHidden();
         });
-
-        $(document).ready(function () {
-            var divDateComplite = document.getElementById("DisplayDateComplite");
-            var isCaseComplite = document.getElementById("IsCaseComplite");
-
-            if (isCaseComplite.value == 'False') {
-                var itemDateComplite = document.getElementById("DateComplition");
-                divDateComplite.hidden = true;
-                itemDateComplite.value = null;
-            }
-            else {
-                divDateComplite.value
-                divDateComplite.hidden = false;
-            }
-        })
 
         window.onresize = function () {
             $("textarea").each(function () {
-                autoExpand(this);
+              autoExpand(this);
             });
-        }
+        };
     </script>
 
 </body>
