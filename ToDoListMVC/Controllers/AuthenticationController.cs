@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
-using ToDoList.Controllers;
 using ToDoList.Core.Authentication;
 using ToDoList.Core.Models.Errors;
 using ToDoList.Core.Service;
@@ -38,14 +37,14 @@ namespace ToDoListMVC.Controllers
         [HttpGet]
         public IActionResult SignIn(UserModel userModel)
             => _tokenHelper.UserId is not null
-                ? RedirectToAction(HomeController.NameHomePage, HomeController.NameHomeController)
+                ? RedirectToAction(ToDoListController.NameViewToDoPage, ToDoListController.NameToDoListController)
                 : View();
 
         [AllowAnonymous]
         [HttpGet]
         public IActionResult Registration(UserModel userModel)
             => _tokenHelper.UserId is not null
-                ? RedirectToAction(HomeController.NameHomePage, HomeController.NameHomeController)
+                ? RedirectToAction(ToDoListController.NameViewToDoPage, ToDoListController.NameToDoListController)
                 : View();
 
         [AllowAnonymous]

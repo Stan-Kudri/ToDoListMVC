@@ -14,6 +14,10 @@
 
         public DateTime? BirthDate { get; set; } = null;
 
+        public UserPersonalDataModel() 
+        { 
+        }
+
         public UserPersonalDataModel(Guid userId, string firstName, string lastName, Gender gender, Country country, DateTime? birthDate)
         {
             UserId = userId;

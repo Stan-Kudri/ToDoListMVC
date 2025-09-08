@@ -4,17 +4,17 @@ The project is a web application for managing a list of tasks with the Model-Vie
 
 ## User's personal data: 
 <p align="center">
-  <img src="PersonalDate.jpg" alt="Personal Data" width="600"/>
+  <img src="PersonalDate.png" alt="Personal Data" width="600"/>
 </p>
 
 ## ToDoList
 <p align="center">
-  <img src="ToDoList.jpg" alt="ToDo List" width="600"/>
+  <img src="ToDoList.png" alt="ToDo List" width="600"/>
 </p>
 
 ## Create/Edit item ToDoList 
 <p align="center">
-  <img src="ToDoItem.jpg" alt="ToDo Item" width="600"/>
+  <img src="ToDoItem.png" alt="ToDo Item" width="600"/>
 </p>
 
 ## Technologies:

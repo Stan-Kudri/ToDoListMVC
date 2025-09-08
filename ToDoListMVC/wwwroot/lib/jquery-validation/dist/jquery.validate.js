@@ -1,4 +1,4 @@
-/*!
+﻿/*!
  * jQuery Validation Plugin v1.17.0
  *
  * https://jqueryvalidation.org/
@@ -308,7 +308,6 @@ $.extend( $.validator, {
 			// Alt         => 18
 			// Caps lock   => 20
 			// End         => 35
-			// Home        => 36
 			// Left arrow  => 37
 			// Up arrow    => 38
 			// Right arrow => 39
@@ -317,7 +316,7 @@ $.extend( $.validator, {
 			// Num lock    => 144
 			// AltGr key   => 225
 			var excludedKeys = [
-				16, 17, 18, 20, 35, 36, 37,
+				16, 17, 18, 20, 35, 37,
 				38, 39, 40, 45, 144, 225
 			];
 
