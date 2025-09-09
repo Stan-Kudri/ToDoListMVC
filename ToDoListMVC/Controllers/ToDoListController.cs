@@ -80,6 +80,9 @@ namespace ToDoListMVC.Controllers
             return View(NameViewToDoPage);
         }
 
+        [HttpGet]
+        public IActionResult Close() => RedirectToAction(NameViewToDoPage, NameToDoListController);
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
             => View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
