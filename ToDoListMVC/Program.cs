@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using ElectronNET.API;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting.StaticWebAssets;
 using ToDoList;
 using ToDoList.Core.Authentication;
@@ -7,6 +8,10 @@ using ToDoList.Infrastructure.Authentication.Tokens;
 using ToDoList.Infrastructure.Extension;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Electron.NET
+builder.WebHost.UseElectron(args);
+
 StaticWebAssetsLoader.UseStaticWebAssets(builder.Environment, builder.Configuration);
 
 // Add services to the container.
@@ -53,7 +58,14 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Authentication}/{action=SignIn}/{id?}");
 
-app.Run();
+
+await app.StartAsync();
+if (HybridSupport.IsElectronActive)
+{
+    await Electron.WindowManager.CreateWindowAsync();
+}
+
+await app.WaitForShutdownAsync();
 
 Task RedirectIfNeeded(HttpContext context, Func<Task> func)
 {
