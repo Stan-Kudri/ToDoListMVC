@@ -6,9 +6,9 @@ namespace ToDoList.Infrastructure.Authentication.Tokens
 {
     public class TokenValidator(TokenService tokenService, RefreshTokenService refreshTokenService, UserService userService)
     {
-        private HttpContext _httpContext;
-        private string _acsessToken;
-        private string _refreshToken;
+        private HttpContext _httpContext = null!;
+        private string _acsessToken = null!;
+        private string _refreshToken = null!;
 
         public void InitializingParameters(HttpContext httpContext, string acsessToken, string refreshToken)
         {
@@ -26,8 +26,8 @@ namespace ToDoList.Infrastructure.Authentication.Tokens
             }
 
             tokenService.SetAcsessToken(_acsessToken);
-            var userId = tokenService.UserId;
-            var refreshToken = refreshTokenService.GetRefreshToken(_refreshToken, (Guid)userId);
+            var userId = tokenService.UserId ?? throw new ApplicationException("The user with this ID is not authenticated.");
+            var refreshToken = refreshTokenService.GetRefreshToken(_refreshToken, userId);
 
             if (refreshToken != null && refreshTokenService.IsExistRefreshToken(refreshToken) && !refreshToken.Expired)
             {

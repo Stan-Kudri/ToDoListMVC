@@ -14,7 +14,7 @@
 
         public DateTime? BirthDate { get; set; } = null;
 
-        public UserPersonalDataModel() 
+        public UserPersonalDataModel()
         { 
         }
 

@@ -12,7 +12,8 @@ namespace ToDoList.Core.Service
                 throw new ArgumentException("This user does not exist.");
             }
 
-            var isTokenUsed = appDbContext.RefreshTokens.Any(e => e.UserId == refreshToken.UserId && e.Id == refreshToken.Id);
+            var isTokenUsed = appDbContext.RefreshTokens.Any(rt => rt.UserId == refreshToken.UserId 
+                                                                  && rt.Id == refreshToken.Id);
 
             if (isTokenUsed)
             {
@@ -25,14 +26,15 @@ namespace ToDoList.Core.Service
 
         public void Update(RefreshToken refreshToken, out RefreshToken updatedToken)
         {
-            var item = appDbContext.RefreshTokens.FirstOrDefault(e => e.UserId == refreshToken.UserId && e.Id == refreshToken.Id);
+            var item = appDbContext.RefreshTokens.FirstOrDefault(rt => rt.UserId == refreshToken.UserId 
+                                                                      && rt.Id == refreshToken.Id);
 
             if (item == null)
             {
                 throw new ArgumentException("This refresh token does not exist.");
             }
 
-            updatedToken = tokenService.GenerateRefreshToken(refreshToken.Id);
+            updatedToken = tokenService.GenerateRefreshToken(refreshToken.UserId);
 
             item.Token = updatedToken.Token;
             item.Expires = updatedToken.Expires;
@@ -59,6 +61,7 @@ namespace ToDoList.Core.Service
             if (item != null)
             {
                 appDbContext.RefreshTokens.Remove(item);
+                appDbContext.SaveChanges();
             }
         }
 
